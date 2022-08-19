@@ -1,4 +1,4 @@
-# Jewcal
+# jewcal
 [![Tests](https://github.com/essel-dev/jewcal/actions/workflows/python-app.yml/badge.svg)](https://github.com/essel-dev/jewcal/actions/workflows/python-app.yml)
 
 Convert Gregorian dates to Jewish dates and get Shabbos / holiday details for Diaspora.
