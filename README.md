@@ -39,7 +39,7 @@ git clone # path-to-this-repository.git
 #### Initialize and activate a virtual environment
 ```sh
 cd # path-to-downloaded-reposity
-python -m virtualenv env
+python -m venv env
 source env/bin/activate
 ```
 
