@@ -18,12 +18,6 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = [
-  'coverage',
-  'darglint',
-  'flake8',
-  'mypy',
   'pre-commit',
-  'pydocstyle',
-  'pylint',
   'tox',
 ]
