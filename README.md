@@ -39,13 +39,13 @@ git clone # path-to-this-repository.git
 #### Initialize and activate a virtual environment
 ```sh
 cd # path-to-downloaded-reposity
-python3 -m virtualenv env
+python -m virtualenv env
 source env/bin/activate
 ```
 
 #### Install the dev dependencies
 ```sh
-pip3 install -e .[dev]
+pip install -e .[dev]
 ```
 
 ### Tests
