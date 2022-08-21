@@ -3,54 +3,49 @@
 
 Convert Gregorian dates to Jewish dates and get Shabbos / holiday details for Diaspora.
 
-## Local Development
-### Code Style
-* [PEP 8](https://pep8.org/) linters:
-    * flake8
-    * pylint
-* docstring linters:
-    * pydocstyle
-    using the [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings)
-    * [darglint](https://github.com/terrencepreilly/darglint)
-* static type checker:
-    * mypy
-
-To run all lint checkers:
+## Installation
 ```sh
-tox
+pip install jewcal
 ```
 
-To run a specific lint checker:
-```sh
-tox -e flake8
+## Usage
+```py
+>>> from datetime import date
+>>> from jewcal import Jewcal
+
+>>> jewcal = Jewcal(date.today())
+>>> print(jewcal)
+24 Av 5782
+>>> print(repr(jewcal))
+Jewcal(year=5782, month=5, day=24, shabbos=None, holiday=None, category=None)
+
+>>> jewcal2 = Jewcal(date(2022, 8, 19))
+>>> print(jewcal2)
+22 Av 5782
+>>> print(repr(jewcal2))
+Jewcal(year=5782, month=5, day=22, shabbos='Erev Shabbos', holiday=None, category=<Category.CANDLES: 'Candles'>)
 ```
 
-### Install
-#### Python
-Verify if Python is installed.
-```sh
-python --version
-```
-
-#### Project code
-```sh
-cd
-git clone # path-to-this-repository.git
-```
-
-#### Initialize and activate a virtual environment
-```sh
-cd # path-to-downloaded-reposity
-python -m venv env
-source env/bin/activate
-```
-
-#### Install the dev dependencies
-```sh
-pip install -e .[dev]
-```
-
-### Tests
-```sh
-tox -e test
-```
+### Possible values
+|	Shabbos / holiday	|	Category	|
+|	---	|	---	|
+|	Erev Shabbos	|	candles	|
+|	Shabbos	|	havdalah	|
+|	Erev Rosh Hashana	|	candles	|
+|	Rosh Hashana 1	|	candles	|
+|	Rosh Hashana 2	|	havdalah	|
+|	Erev Sukkos	|	candles	|
+|	Sukkos 1	|	candles	|
+|	Sukkos 2	|	havdalah	|
+|	Hoshana Rabba	|	candles	|
+|	Shmini Atzeres	|	candles	|
+|	Simchas Tora	|	havdalah	|
+|	Erev Pesach	|	candles	|
+|	Pesach 1	|	candles	|
+|	Pesach 2	|	havdalah	|
+|	Chol HaMoed Pesach 6	|	candles	|
+|	Pesach 7	|	candles	|
+|	Pesach 8	|	havdalah	|
+|	Erev Shavuos	|	candles	|
+|	Shavuos 1	|	candles	|
+|	Shavuos 2	|	havdalah	|
