@@ -1,5 +1,6 @@
 """Jewish dates with Shabbos / holiday details for Diaspora."""
 
+from dataclasses import dataclass
 from datetime import date
 from typing import List, Optional, Union, cast
 
@@ -11,8 +12,16 @@ from .utils.calculations import (
 )
 
 
+@dataclass
 class Jewcal:
     """Jewish date with Shabbos / holiday details."""
+
+    year: int
+    month: int
+    day: int
+    shabbos: Optional[str] = None
+    holiday: Optional[str] = None
+    category: Optional[Category] = None
 
     def __init__(self, gregorian_date: date) -> None:
         """Create a new jewish date.
@@ -36,10 +45,6 @@ class Jewcal:
         self.year, self.month, self.day = absdate_to_jewish(absdate)
 
         # Shabbos / holiday / category
-        self.shabbos: Optional[str] = None
-        self.holiday: Optional[str] = None
-        self.category: Optional[Category] = None
-
         weekday: int = weekday_from_absdate(absdate)
         if weekday in SHABBOS:
             self.shabbos = cast(str, SHABBOS[weekday][0])
@@ -62,19 +67,3 @@ class Jewcal:
             The jewish date.
         """
         return f'{self.day} {Months(self.month).name.capitalize()} {self.year}'
-
-    def __repr__(self) -> str:
-        """`Jewcal`-object as a string.
-
-        Returns:
-            `Jewcal`-object as a string.
-        """
-        return (
-            f'Jewcal('
-            f'year={self.year},'
-            f' month={self.month},'
-            f' day={self.day},'
-            f' shabbos={self.shabbos},'
-            f' holiday={self.holiday},'
-            f' category={self.category})'
-        )
