@@ -13,6 +13,10 @@ pip install jewcal
 >>> from datetime import date
 >>> from jewcal import Jewcal
 
+>>> jewcal = Jewcal(date(2022, 4, 15))
+>>> print(repr(jewcal))
+Jewcal(year=5782, month=1, day=14, shabbos='Erev Shabbos', holiday='Erev Pesach', category=<Category.CANDLES: 'Candles'>)
+
 >>> jewcal = Jewcal(date(2022, 4, 16))
 >>> print(repr(jewcal))
 Jewcal(year=5782, month=1, day=15, shabbos='Shabbos', holiday='Pesach 1', category=<Category.CANDLES: 'Candles'>)
