@@ -13,17 +13,33 @@ pip install jewcal
 >>> from datetime import date
 >>> from jewcal import Jewcal
 
+>>> jewcal = Jewcal(date(2022, 4, 16))
+>>> print(repr(jewcal))
+Jewcal(year=5782, month=1, day=15, shabbos='Shabbos', holiday='Pesach 1', category=<Category.CANDLES: 'Candles'>)
+
+>>> jewcal = Jewcal(date(2022, 4, 17))
+>>> print(jewcal)
+16 Nisan 5782
+>>> print(repr(jewcal))
+Jewcal(year=5782, month=1, day=16, shabbos=None, holiday='Pesach 2', category=<Category.HAVDALAH: 'Havdalah'>)
+
+>>> jewcal = Jewcal(date(2022, 8, 19))
+>>> print(jewcal)
+22 Av 5782
+>>> print(repr(jewcal))
+Jewcal(year=5782, month=5, day=22, shabbos='Erev Shabbos', holiday=None, category=<Category.CANDLES: 'Candles'>)
+
+>>> jewcal = Jewcal(date(2022, 8, 20))
+>>> print(jewcal)
+23 Av 5782
+>>> print(repr(jewcal))
+Jewcal(year=5782, month=5, day=23, shabbos='Shabbos', holiday=None, category=<Category.HAVDALAH: 'Havdalah'>)
+
 >>> jewcal = Jewcal(date.today())
 >>> print(jewcal)
 24 Av 5782
 >>> print(repr(jewcal))
 Jewcal(year=5782, month=5, day=24, shabbos=None, holiday=None, category=None)
-
->>> jewcal2 = Jewcal(date(2022, 8, 19))
->>> print(jewcal2)
-22 Av 5782
->>> print(repr(jewcal2))
-Jewcal(year=5782, month=5, day=22, shabbos='Erev Shabbos', holiday=None, category=<Category.CANDLES: 'Candles'>)
 ```
 
 ## Possible values
