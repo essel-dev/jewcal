@@ -26,7 +26,7 @@ Jewcal(year=5782, month=5, day=24, shabbos=None, holiday=None, category=None)
 Jewcal(year=5782, month=5, day=22, shabbos='Erev Shabbos', holiday=None, category=<Category.CANDLES: 'Candles'>)
 ```
 
-### Possible values
+## Possible values
 |	Shabbos / holiday	|	Category	|
 |	---	|	---	|
 |	Erev Shabbos	|	candles	|
