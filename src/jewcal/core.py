@@ -35,9 +35,15 @@ class Jewcal:
         )
         self.year, self.month, self.day = absdate_to_jewish(absdate)
 
-        # holiday / category
+        # Shabbos / holiday / category
+        self.shabbos: Optional[str] = None
         self.holiday: Optional[str] = None
         self.category: Optional[Category] = None
+
+        weekday: int = weekday_from_absdate(absdate)
+        if weekday in SHABBOS:
+            self.shabbos = cast(str, SHABBOS[weekday][0])
+            self.category = cast(Category, SHABBOS[weekday][1])
 
         holiday_attributes: Optional[List[Union[str, Category]]] = None
         try:
@@ -48,11 +54,6 @@ class Jewcal:
         if holiday_attributes:
             self.holiday = cast(str, holiday_attributes[0])
             self.category = cast(Category, holiday_attributes[1])
-        else:
-            weekday: int = weekday_from_absdate(absdate)
-            if weekday in SHABBOS:
-                self.holiday = cast(str, SHABBOS[weekday][0])
-                self.category = cast(Category, SHABBOS[weekday][1])
 
     def __str__(self) -> str:
         """Jewish date as a string.
@@ -73,6 +74,7 @@ class Jewcal:
             f'year={self.year},'
             f' month={self.month},'
             f' day={self.day},'
+            f' shabbos={self.shabbos},'
             f' holiday={self.holiday},'
             f' category={self.category})'
         )
