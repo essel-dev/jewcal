@@ -54,6 +54,8 @@ Jewcal(year=5782, month=5, day=24, shabbos=None, yomtov=None, category=None)
 |	Erev Rosh Hashana	|	candles	|
 |	Rosh Hashana 1	|	candles	|
 |	Rosh Hashana 2	|	havdalah	|
+|	Erev Yom Kippur	|	candles	|
+|	Yom Kippur	|	havdalah	|
 |	Erev Sukkos	|	candles	|
 |	Sukkos 1	|	candles	|
 |	Sukkos 2	|	havdalah	|
