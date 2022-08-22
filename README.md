@@ -1,5 +1,5 @@
 # jewcal
-[![Tests](https://github.com/essel-dev/jewcal/actions/workflows/python-app.yml/badge.svg)](https://github.com/essel-dev/jewcal/actions/workflows/python-app.yml)
+[![Tests](https://github.com/essel-dev/jewcal/actions/workflows/python-app.yml/badge.svg)](https://github.com/essel-dev/jewcal/actions/workflows/python-app.yml) [![PyPi](https://github.com/essel-dev/jewcal/actions/workflows/python-publish.yml/badge.svg)](https://github.com/essel-dev/jewcal/actions/workflows/python-publish.yml)
 
 Convert Gregorian dates to Jewish dates and get shabbos / yom tov details for Diaspora.
 
