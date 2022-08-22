@@ -33,7 +33,7 @@ def is_gregorian_leap(year: int) -> bool:
 
 
 def is_jewish_leap(year: int) -> bool:
-    """Is the jewish year a leap year.
+    """Is the Jewish year a leap year.
 
     Jewish years have 12 months in a regular year and 13 in a leap year.
     Leap years occur on the 3rd, 6th, 8th, 11th, 14th, 17th, and 19th years of
@@ -42,7 +42,7 @@ def is_jewish_leap(year: int) -> bool:
     constellation) in the sky with the same phase.
 
     Args:
-        year: The jewish year.
+        year: The Jewish year.
 
     Returns:
         True for leap year, False otherwise.
@@ -68,13 +68,13 @@ def days_in_gregorian_month(month: int, year: int) -> int:
 
 
 def days_in_jewish_year(year: int) -> int:
-    """Get the number of days in a jewish year.
+    """Get the number of days in a Jewish year.
 
     This is calculated as the difference between the elapsed days in
     successive years.
 
     Args:
-        year: The jewish year.
+        year: The Jewish year.
 
     Returns:
         The number of days.
@@ -84,11 +84,11 @@ def days_in_jewish_year(year: int) -> int:
 
 
 def days_in_jewish_month(year: int, month: int) -> int:
-    """Get the number of days in a jewish month.
+    """Get the number of days in a Jewish month.
 
     Args:
-        year: The jewish year.
-        month: The jewish month.
+        year: The Jewish year.
+        month: The Jewish month.
 
     Returns:
         The number of days.
@@ -110,10 +110,10 @@ def days_in_jewish_month(year: int, month: int) -> int:
 
 
 def months_in_jewish_year(year: int) -> int:
-    """Get the number of months in a jewish year.
+    """Get the number of months in a Jewish year.
 
     Args:
-        year: The jewish year.
+        year: The Jewish year.
 
     Returns:
         The number of months.
@@ -163,12 +163,12 @@ def gregorian_to_absdate(year: int, month: int, day: int) -> int:
 
 
 def jewish_to_absdate(year: int, month: int, day: int) -> int:
-    """Convert the jewish date to an absolute date number.
+    """Convert the Jewish date to an absolute date number.
 
     Args:
-        year: The jewish year.
-        month: The jewish month.
-        day: The jewish day.
+        year: The Jewish year.
+        month: The Jewish month.
+        day: The Jewish day.
 
     Returns:
         The absolute date number.
@@ -240,13 +240,13 @@ def absdate_to_gregorian(absdate: int) -> Tuple[int, int, int]:
 
 
 def absdate_to_jewish(absdate: int) -> Tuple[int, int, int]:
-    """Convert the absolute date number to a jewish date.
+    """Convert the absolute date number to a Jewish date.
 
     Args:
         absdate: The absolute date number.
 
     Returns:
-        A tuple with the jewish year, month and day.
+        A tuple with the Jewish year, month and day.
     """
     approx = (absdate + 1373429) // 366
 
@@ -296,13 +296,13 @@ def weekday_from_absdate(absdate: int) -> int:
 
 def _first_day_of_jewish_year(year: int) -> int:
     # pylint: disable-next=line-too-long
-    """Get the first day of the jewish year as an absolute date number.
+    """Get the first day of the Jewish year as an absolute date number.
 
-    There are 4 possibilities when the jewish year starts:
+    There are 4 possibilities when the Jewish year starts:
     https://en.wikibooks.org/wiki/Mathematics_of_the_Jewish_Calendar/The_four_postponements_of_the_New_Year
 
     Args:
-        year: The jewish year.
+        year: The Jewish year.
 
     Returns:
         The absolute date number.
@@ -364,11 +364,11 @@ def _first_day_of_jewish_year(year: int) -> int:
 def _is_long_cheshvan(year: int) -> bool:
     """Is Cheshvan a long month.
 
-    Cheshvan is the eighth month of the jewish year and the number of days can
-    vary.
+    Cheshvan is the eighth month of the Jewish year and the number of days
+    can vary.
 
     Args:
-        year: The jewish year.
+        year: The Jewish year.
 
     Returns:
          True for long, False otherwise.
@@ -379,11 +379,11 @@ def _is_long_cheshvan(year: int) -> bool:
 def _is_short_kislev(year: int) -> bool:
     """Is Kislev a short month.
 
-    Kislev is the ninth month of the jewish year and the number of days can
+    Kislev is the ninth month of the Jewish year and the number of days can
     vary.
 
     Args:
-        year: The jewish year.
+        year: The Jewish year.
 
     Returns:
          True for short, False otherwise.

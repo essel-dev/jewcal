@@ -14,7 +14,7 @@ class Category(Enum):
 
 @unique
 class Months(IntEnum):
-    """The jewish months."""
+    """The Jewish months."""
 
     TISHREI = 7
     CHESHVAN = 8

@@ -24,9 +24,9 @@ class Jewcal:
     category: Optional[Category] = None
 
     def __init__(self, gregorian_date: date) -> None:
-        """Create a new jewish date.
+        """Create a new Jewish date.
 
-        The jewish date contains optional details:
+        The Jewish date contains optional details:
             - shabbos or yom tov
             - category (candles or havdalah).
 
@@ -64,6 +64,6 @@ class Jewcal:
         """Jewish date as a string.
 
         Returns:
-            The jewish date.
+            The Jewish date.
         """
         return f'{self.day} {Months(self.month).name.capitalize()} {self.year}'

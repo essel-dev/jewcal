@@ -24,6 +24,12 @@ source env/bin/activate
 pip install -e .[dev]
 ```
 
+### Pre-commit
+```sh
+pre-commit install
+pre-commit run --all-files
+```
+
 ## Test
 ```sh
 tox -e test
