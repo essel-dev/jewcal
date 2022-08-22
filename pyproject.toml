@@ -1,12 +1,14 @@
 [build-system]
-requires = ['setuptools', 'setuptools_scm']
+requires = ['setuptools', 'setuptools_scm[toml]']
 build-backend = 'setuptools.build_meta'
+
+[tool.setuptools_scm]
 
 [project]
 name = 'jewcal'
 description = 'Convert Gregorian to Jewish dates and get shabbos / yom tov details for Diaspora.'
 license = { text = 'MIT' }
-version = 'v0.3.2'
+dynamic = ['version']
 authors = [{ name='essel-dev', email='info@essel.dev' }]
 readme = 'README.md'
 requires-python = '>=3.10.5'
