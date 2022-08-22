@@ -47,9 +47,17 @@ Jewcal(year=5782, month=5, day=24, shabbos=None, yomtov=None, category=None)
 ```
 
 ## Possible values
-|	Shabbos / Yom Tov	|	Category	|
+### Shabbos
+|	Shabbos	| Category |
 |	---	|	---	|
+|	None	|	None	|
 |	Erev Shabbos	|	candles	|
+|	Shabbos	|	havdalah	|
+
+### Yom Tov
+|	Yom Tov	|	Category	|
+|	---	|	---	|
+|	None	|	None	|
 |	Shabbos	|	havdalah	|
 |	Erev Rosh Hashana	|	candles	|
 |	Rosh Hashana 1	|	candles	|
