@@ -1,4 +1,4 @@
-"""Jewish dates with shabbos / yomtov details for Diaspora."""
+"""Jewish dates with shabbos / yom tov details for Diaspora."""
 
 from dataclasses import dataclass
 from datetime import date
@@ -14,7 +14,7 @@ from .utils.calculations import (
 
 @dataclass
 class Jewcal:
-    """Jewish date with shabbos / yomtov details."""
+    """Jewish date with shabbos / yom tov details."""
 
     year: int
     month: int
@@ -27,11 +27,11 @@ class Jewcal:
         """Create a new jewish date.
 
         The jewish date contains optional details:
-            - shabbos or yomtov
+            - shabbos or yom tov
             - category (candles or havdalah).
 
-        If the first day of a yomtov falls on shabbos, the category is set to
-        candles instead of havdalah.
+        If the first day of a yom tov starts on shabbos, the category is set
+        to candles instead of havdalah.
 
         Args:
             gregorian_date: The Gregorian date.
@@ -44,7 +44,7 @@ class Jewcal:
         )
         self.year, self.month, self.day = absdate_to_jewish(absdate)
 
-        # shabbos / yomtov / category
+        # shabbos / yom tov / category
         weekday: int = weekday_from_absdate(absdate)
         if weekday in SHABBOS:
             self.shabbos = cast(str, SHABBOS[weekday][0])

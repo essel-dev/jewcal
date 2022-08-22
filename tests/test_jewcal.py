@@ -24,28 +24,28 @@ class JewcalTestCase(TestCase):
         self.assertIsNone(jewcal.category)
 
     def test_create_jewish_date_yomtov_candles(self) -> None:
-        """Create new date and it is a yomtov with candles as category."""
+        """Create new date and it is a yom tov with candles as category."""
         jewcal = Jewcal(date(2022, 4, 16))
         self.assertEqual(jewcal.shabbos, 'Shabbos')
         self.assertEqual(jewcal.yomtov, 'Pesach 1')  # first day on Shabbos
         self.assertEqual(jewcal.category, Category.CANDLES)
 
     def test_create_jewish_date_yomtov_havdalah(self) -> None:
-        """Create new date and it is a yomtov with havdalah as category."""
+        """Create new date and it is a yom tov with havdalah as category."""
         jewcal = Jewcal(date(2022, 4, 17))
         self.assertIsNone(jewcal.shabbos)
         self.assertEqual(jewcal.yomtov, 'Pesach 2')
         self.assertEqual(jewcal.category, Category.HAVDALAH)
 
     def test_create_jewish_date_erev_shabbos(self) -> None:
-        """Create new date and it is erev Shabbos with candles as category."""
+        """Create new date and it is erev shabbos with candles as category."""
         jewcal = Jewcal(date(2022, 8, 19))
         self.assertEqual(jewcal.shabbos, 'Erev Shabbos')
         self.assertEqual(jewcal.category, Category.CANDLES)
         self.assertIsNone(jewcal.yomtov)
 
     def test_create_jewish_date_shabbos(self) -> None:
-        """Create new date and it is Shabbos with havdalah as category."""
+        """Create new date and it is shabbos with havdalah as category."""
         jewcal = Jewcal(date(2022, 8, 20))
         self.assertEqual(jewcal.shabbos, 'Shabbos')
         self.assertEqual(jewcal.category, Category.HAVDALAH)

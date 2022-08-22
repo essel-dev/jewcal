@@ -1,7 +1,7 @@
 # jewcal
 [![Tests](https://github.com/essel-dev/jewcal/actions/workflows/python-app.yml/badge.svg)](https://github.com/essel-dev/jewcal/actions/workflows/python-app.yml)
 
-Convert Gregorian dates to Jewish dates and get shabbos / yomtov details for Diaspora.
+Convert Gregorian dates to Jewish dates and get shabbos / yom tov details for Diaspora.
 
 ## Installation
 ```sh
@@ -47,7 +47,7 @@ Jewcal(year=5782, month=5, day=24, shabbos=None, yomtov=None, category=None)
 ```
 
 ## Possible values
-|	Shabbos / Yomtov	|	Category	|
+|	Shabbos / Yom Tov	|	Category	|
 |	---	|	---	|
 |	Erev Shabbos	|	candles	|
 |	Shabbos	|	havdalah	|

@@ -6,7 +6,7 @@ from typing import List, Union
 
 @unique
 class Category(Enum):
-    """Does the shabbos or yomtov start (candles) or end (havdalah)."""
+    """Does the shabbos or yom tov start (candles) or end (havdalah)."""
 
     CANDLES = 'Candles'
     HAVDALAH = 'Havdalah'
