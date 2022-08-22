@@ -6,7 +6,7 @@ build-backend = 'setuptools.build_meta'
 name = 'jewcal'
 description = 'Convert Gregorian to Jewish dates and get shabbos / yom tov details for Diaspora.'
 license = { text = 'MIT' }
-version = '0.3.1'
+version = '0.3.2'
 authors = [{ name='essel-dev', email='info@essel.dev' }]
 readme = 'README.md'
 requires-python = '>=3.10.5'
