@@ -6,7 +6,7 @@ from typing import List, Union
 
 @unique
 class Category(Enum):
-    """Does the Shabbos or holiday start (candles) or end (havdalah)."""
+    """Does the shabbos or yomtov start (candles) or end (havdalah)."""
 
     CANDLES = 'Candles'
     HAVDALAH = 'Havdalah'
@@ -31,7 +31,7 @@ class Months(IntEnum):
     ELUL = 6
 
 
-HOLIDAYS: dict[int, dict[int, List[Union[str, Category]]]] = {
+YOMTOV: dict[int, dict[int, List[Union[str, Category]]]] = {
     6: {
         29: ['Erev Rosh Hashana', Category.CANDLES],
     },

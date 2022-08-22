@@ -20,21 +20,21 @@ class JewcalTestCase(TestCase):
         """Create new date."""
         jewcal = Jewcal(date(2022, 8, 14))
         self.assertIsNone(jewcal.shabbos)
-        self.assertIsNone(jewcal.holiday)
+        self.assertIsNone(jewcal.yomtov)
         self.assertIsNone(jewcal.category)
 
-    def test_create_jewish_date_holiday_candles(self) -> None:
-        """Create new date and it is a holiday with candles as category."""
+    def test_create_jewish_date_yomtov_candles(self) -> None:
+        """Create new date and it is a yomtov with candles as category."""
         jewcal = Jewcal(date(2022, 4, 16))
         self.assertEqual(jewcal.shabbos, 'Shabbos')
-        self.assertEqual(jewcal.holiday, 'Pesach 1')  # first day on Shabbos
+        self.assertEqual(jewcal.yomtov, 'Pesach 1')  # first day on Shabbos
         self.assertEqual(jewcal.category, Category.CANDLES)
 
-    def test_create_jewish_date_holiday_havdalah(self) -> None:
-        """Create new date and it is a holiday with havdalah as category."""
+    def test_create_jewish_date_yomtov_havdalah(self) -> None:
+        """Create new date and it is a yomtov with havdalah as category."""
         jewcal = Jewcal(date(2022, 4, 17))
         self.assertIsNone(jewcal.shabbos)
-        self.assertEqual(jewcal.holiday, 'Pesach 2')
+        self.assertEqual(jewcal.yomtov, 'Pesach 2')
         self.assertEqual(jewcal.category, Category.HAVDALAH)
 
     def test_create_jewish_date_erev_shabbos(self) -> None:
@@ -42,14 +42,14 @@ class JewcalTestCase(TestCase):
         jewcal = Jewcal(date(2022, 8, 19))
         self.assertEqual(jewcal.shabbos, 'Erev Shabbos')
         self.assertEqual(jewcal.category, Category.CANDLES)
-        self.assertIsNone(jewcal.holiday)
+        self.assertIsNone(jewcal.yomtov)
 
     def test_create_jewish_date_shabbos(self) -> None:
         """Create new date and it is Shabbos with havdalah as category."""
         jewcal = Jewcal(date(2022, 8, 20))
         self.assertEqual(jewcal.shabbos, 'Shabbos')
         self.assertEqual(jewcal.category, Category.HAVDALAH)
-        self.assertIsNone(jewcal.holiday)
+        self.assertIsNone(jewcal.yomtov)
 
     def test_jewcal_to_string(self) -> None:
         """Test `Jewcal`-object to `str`."""
@@ -62,5 +62,5 @@ class JewcalTestCase(TestCase):
         self.assertEqual(
             repr(jewcal),
             'Jewcal(year=5782, month=5, day=21, shabbos=None,'
-            ' holiday=None, category=None)'
+            ' yomtov=None, category=None)'
         )
