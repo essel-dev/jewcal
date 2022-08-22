@@ -38,6 +38,8 @@ YOMTOV: dict[int, dict[int, List[Union[str, Category]]]] = {
     7: {
         1: ['Rosh Hashana 1', Category.CANDLES],
         2: ['Rosh Hashana 2', Category.HAVDALAH],
+        9: ['Erev Yom Kippur', Category.CANDLES],
+        10: ['Yom Kippur', Category.HAVDALAH],
         14: ['Erev Sukkos', Category.CANDLES],
         15: ['Sukkos 1', Category.CANDLES],
         16: ['Sukkos 2', Category.HAVDALAH],
