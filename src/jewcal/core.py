@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from datetime import date
-from typing import Optional, Tuple
+from typing import Optional
 
 from .constants import YOMTOV, SHABBOS, Category, Months
 from .utils.calculations import (
@@ -44,21 +44,20 @@ class Jewcal:
         )
         self.year, self.month, self.day = absdate_to_jewish(absdate)
 
-        # shabbos / yom tov / category
+        # shabbos
         weekday: int = weekday_from_absdate(absdate)
         if weekday in SHABBOS:
-            self.shabbos = SHABBOS[weekday][0]
-            self.category = SHABBOS[weekday][1]
+            event = SHABBOS[weekday]
+            self.shabbos = event.title
+            self.category = event.category
 
-        yomtov_attributes: Optional[Tuple[str, Category]] = None
+        # yom tov
         try:
-            yomtov_attributes = YOMTOV[self.month][self.day]
+            event = YOMTOV[self.month][self.day]
+            self.yomtov = event.title
+            self.category = event.category
         except KeyError:
             pass
-
-        if yomtov_attributes:
-            self.yomtov = yomtov_attributes[0]
-            self.category = yomtov_attributes[1]
 
     def __str__(self) -> str:
         """Jewish date as a string.
