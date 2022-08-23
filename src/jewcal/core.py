@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from datetime import date
 from typing import Optional
 
-from .constants import YOMTOV, SHABBOS, Category, Months
+from .constants import YOMTOV, SHABBOS, Months
 from .utils.calculations import (
     absdate_to_jewish,
     weekday_from_absdate,
@@ -19,9 +19,10 @@ class Jewcal:
     year: int
     month: int
     day: int
+    gregorian_date: date
     shabbos: Optional[str] = None
     yomtov: Optional[str] = None
-    category: Optional[Category] = None
+    category: Optional[str] = None
 
     def __init__(self, gregorian_date: date) -> None:
         """Create a new Jewish date.
@@ -36,7 +37,7 @@ class Jewcal:
         Args:
             gregorian_date: The Gregorian date.
         """
-        # date
+        # jewish date
         absdate = gregorian_to_absdate(
             gregorian_date.year,
             gregorian_date.month,
@@ -44,18 +45,21 @@ class Jewcal:
         )
         self.year, self.month, self.day = absdate_to_jewish(absdate)
 
+        # gregorian date
+        self.gregorian_date = gregorian_date
+
         # shabbos
         weekday: int = weekday_from_absdate(absdate)
         if weekday in SHABBOS:
             event = SHABBOS[weekday]
             self.shabbos = event.title
-            self.category = event.category
+            self.category = event.category.value
 
         # yom tov
         try:
             event = YOMTOV[self.month][self.day]
             self.yomtov = event.title
-            self.category = event.category
+            self.category = event.category.value
         except KeyError:
             pass
 

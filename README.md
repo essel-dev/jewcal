@@ -1,4 +1,4 @@
-# jewcal
+# Jewcal
 [![Tests](https://github.com/essel-dev/jewcal/actions/workflows/tests.yml/badge.svg)](https://github.com/essel-dev/jewcal/actions/workflows/tests.yml) [![PyPi](https://github.com/essel-dev/jewcal/actions/workflows/pypi.yml/badge.svg)](https://github.com/essel-dev/jewcal/actions/workflows/pypi.yml)
 
 Convert Gregorian to Jewish dates and get shabbos / yom tov details for Diaspora.
@@ -14,36 +14,40 @@ pip install jewcal
 >>> from jewcal import Jewcal
 
 >>> jewcal = Jewcal(date(2022, 4, 15))
+>>> print(jewcal)
+14 Nisan 5782
 >>> print(repr(jewcal))
-Jewcal(year=5782, month=1, day=14, shabbos='Erev Shabbos', yomtov='Erev Pesach', category=<Category.CANDLES: 'Candles'>)
+Jewcal(year=5782, month=1, day=14, gregorian_date=datetime.date(2022, 4, 15), shabbos='Erev Shabbos', yomtov='Erev Pesach', category='Candles')
 
 >>> jewcal = Jewcal(date(2022, 4, 16))
+>>> print(jewcal)
+15 Nisan 5782
 >>> print(repr(jewcal))
-Jewcal(year=5782, month=1, day=15, shabbos='Shabbos', yomtov='Pesach 1', category=<Category.CANDLES: 'Candles'>)
+Jewcal(year=5782, month=1, day=15, gregorian_date=datetime.date(2022, 4, 16), shabbos='Shabbos', yomtov='Pesach 1', category='Candles')
 
 >>> jewcal = Jewcal(date(2022, 4, 17))
 >>> print(jewcal)
 16 Nisan 5782
 >>> print(repr(jewcal))
-Jewcal(year=5782, month=1, day=16, shabbos=None, yomtov='Pesach 2', category=<Category.HAVDALAH: 'Havdalah'>)
+Jewcal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17), shabbos=None, yomtov='Pesach 2', category='Havdalah')
 
 >>> jewcal = Jewcal(date(2022, 8, 19))
 >>> print(jewcal)
 22 Av 5782
 >>> print(repr(jewcal))
-Jewcal(year=5782, month=5, day=22, shabbos='Erev Shabbos', yomtov=None, category=<Category.CANDLES: 'Candles'>)
+Jewcal(year=5782, month=5, day=22, gregorian_date=datetime.date(2022, 8, 19), shabbos='Erev Shabbos', yomtov=None, category='Candles')
 
 >>> jewcal = Jewcal(date(2022, 8, 20))
 >>> print(jewcal)
 23 Av 5782
 >>> print(repr(jewcal))
-Jewcal(year=5782, month=5, day=23, shabbos='Shabbos', yomtov=None, category=<Category.HAVDALAH: 'Havdalah'>)
+Jewcal(year=5782, month=5, day=23, gregorian_date=datetime.date(2022, 8, 20), shabbos='Shabbos', yomtov=None, category='Havdalah')
 
 >>> jewcal = Jewcal(date.today())
 >>> print(jewcal)
 24 Av 5782
 >>> print(repr(jewcal))
-Jewcal(year=5782, month=5, day=24, shabbos=None, yomtov=None, category=None)
+Jewcal(year=5782, month=5, day=24, gregorian_date=datetime.date(2022, 8, 21), shabbos=None, yomtov=None, category=None)
 ```
 
 ## Possible values
@@ -78,5 +82,3 @@ Jewcal(year=5782, month=5, day=24, shabbos=None, yomtov=None, category=None)
 |	Erev Shavuos	|	Candles	|
 |	Shavuos 1	|	Candles	|
 |	Shavuos 2	|	Havdalah	|
-
-
