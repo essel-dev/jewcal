@@ -48,34 +48,35 @@ Jewcal(year=5782, month=5, day=24, shabbos=None, yomtov=None, category=None)
 
 ## Possible values
 ### Shabbos
-|	Shabbos	| Category |
-|	---	|	---	|
+|`jewcal.shabbos`|`jewcal.category`|
+| :--- | :--- |
 |	None	|	None	|
-|	Erev Shabbos	|	candles	|
-|	Shabbos	|	havdalah	|
+|	Erev Shabbos	|	Candles	|
+|	Shabbos	|	Havdalah	|
 
 ### Yom Tov
-|	Yom Tov	|	Category	|
-|	---	|	---	|
+|`jewcal.yomtov`|`jewcal.category`|
+| :--- | :--- |
 |	None	|	None	|
-|	Shabbos	|	havdalah	|
-|	Erev Rosh Hashana	|	candles	|
-|	Rosh Hashana 1	|	candles	|
-|	Rosh Hashana 2	|	havdalah	|
-|	Erev Yom Kippur	|	candles	|
-|	Yom Kippur	|	havdalah	|
-|	Erev Sukkos	|	candles	|
-|	Sukkos 1	|	candles	|
-|	Sukkos 2	|	havdalah	|
-|	Hoshana Rabba	|	candles	|
-|	Shmini Atzeres	|	candles	|
-|	Simchas Tora	|	havdalah	|
-|	Erev Pesach	|	candles	|
-|	Pesach 1	|	candles	|
-|	Pesach 2	|	havdalah	|
-|	Chol HaMoed Pesach 6	|	candles	|
-|	Pesach 7	|	candles	|
-|	Pesach 8	|	havdalah	|
-|	Erev Shavuos	|	candles	|
-|	Shavuos 1	|	candles	|
-|	Shavuos 2	|	havdalah	|
+|	Erev Rosh Hashana	|	Candles	|
+|	Rosh Hashana 1	|	Candles	|
+|	Rosh Hashana 2	|	Havdalah	|
+|	Erev Yom Kippur	|	Candles	|
+|	Yom Kippur	|	Havdalah	|
+|	Erev Sukkos	|	Candles	|
+|	Sukkos 1	|	Candles	|
+|	Sukkos 2	|	Havdalah	|
+|	Hoshana Rabba	|	Candles	|
+|	Shmini Atzeres	|	Candles	|
+|	Simchas Tora	|	Havdalah	|
+|	Erev Pesach	|	Candles	|
+|	Pesach 1	|	Candles	|
+|	Pesach 2	|	Havdalah	|
+|	Chol HaMoed Pesach 6	|	Candles	|
+|	Pesach 7	|	Candles	|
+|	Pesach 8	|	Havdalah	|
+|	Erev Shavuos	|	Candles	|
+|	Shavuos 1	|	Candles	|
+|	Shavuos 2	|	Havdalah	|
+
+
