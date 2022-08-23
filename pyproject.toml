@@ -7,6 +7,9 @@ build-backend = 'setuptools.build_meta'
 [project]
 name = 'jewcal'
 description = 'Convert Gregorian to Jewish dates and get shabbos / yom tov details for Diaspora.'
+keywords = [
+  'jewish calendar',
+]
 license = { text = 'MIT' }
 dynamic = ['version']
 authors = [{ name='essel-dev', email='info@essel.dev' }]
@@ -22,4 +25,16 @@ dependencies = []
 dev = [
   'pre-commit',
   'tox',
+]
+
+[tool.mypy]
+files = 'src, tests'
+strict = true
+show_error_codes = true
+enable_error_code = ['ignore-without-code', 'redundant-expr', 'truthy-bool']
+warn_unreachable = true
+namespace_packages = true
+explicit_package_bases = true
+exclude = [
+    '^_version\.py$',
 ]
