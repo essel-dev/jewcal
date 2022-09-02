@@ -54,15 +54,15 @@ Jewcal(year=5782, month=5, day=24, gregorian_date=datetime.date(2022, 8, 21), sh
 ### Shabbos
 |`jewcal.shabbos`|`jewcal.category`|
 | :--- | :--- |
-|	None	|	None	|
+|	`None`	|	`None`	|
 |	Erev Shabbos	|	Candles	|
 |	Shabbos	|	Havdalah	|
 
 ### Yom Tov
 |`jewcal.yomtov`|`jewcal.category`|
 | :--- | :--- |
-|	None	|	None	|
-|	Erev Rosh Hashana	|	Candles	|
+|	`None`	|	`None`	|
+| Erev Rosh Hashana	|	Candles	|
 |	Rosh Hashana 1	|	Candles	|
 |	Rosh Hashana 2	|	Havdalah	|
 |	Erev Yom Kippur	|	Candles	|
@@ -70,13 +70,20 @@ Jewcal(year=5782, month=5, day=24, gregorian_date=datetime.date(2022, 8, 21), sh
 |	Erev Sukkos	|	Candles	|
 |	Sukkos 1	|	Candles	|
 |	Sukkos 2	|	Havdalah	|
-|	Hoshana Rabba	|	Candles	|
-|	Shmini Atzeres	|	Candles	|
+|	Chol HaMoed 1 (Sukkos 3)  |	`None`	|
+|	Chol HaMoed 2 (Sukkos 4)  |	`None`	|
+|	Chol HaMoed 3 (Sukkos 5)  |	`None`	|
+|	Chol HaMoed 4 (Sukkos 6)  |	`None`	|
+|	Hoshana Rabba (Sukkos 7) |	Candles	|
+|	Shmini Atzeres (Sukkos 8) |	Candles	|
 |	Simchas Tora	|	Havdalah	|
 |	Erev Pesach	|	Candles	|
-|	Pesach 1	|	Candles	|
+|	Pesach 1  |	Candles	|
 |	Pesach 2	|	Havdalah	|
-|	Chol HaMoed Pesach 6	|	Candles	|
+|	Chol HaMoed 1 (Pesach 3)  |	`None`	|
+|	Chol HaMoed 2 (Pesach 4)  |	`None`	|
+|	Chol HaMoed 3 (Pesach 5)  |	`None`	|
+|	Chol HaMoed 4 (Pesach 6)  |	Candles	|
 |	Pesach 7	|	Candles	|
 |	Pesach 8	|	Havdalah	|
 |	Erev Shavuos	|	Candles	|
