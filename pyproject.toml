@@ -20,6 +20,7 @@ dependencies = []
 [project.urls]
 'Homepage' = 'https://github.com/essel-dev/jewcal'
 'Bug Tracker' = 'https://github.com/essel-dev/jewcal/issues'
+'Changelog' = 'https://github.com/essel-dev/jewcal/releases
 
 [project.optional-dependencies]
 dev = [
