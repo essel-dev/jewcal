@@ -53,15 +53,15 @@ class Jewcal:
         if weekday in SHABBOS:
             event = SHABBOS[weekday]
             self.shabbos = event.title
-            self.category = event.category.value
+            self.category = event.category
 
         # yom tov
-        try:
+        if self.month in YOMTOV and self.day in YOMTOV[self.month]:
             event = YOMTOV[self.month][self.day]
             self.yomtov = event.title
-            self.category = event.category.value
-        except KeyError:
-            pass
+            if event.category:
+                # don't overwrite category if chol hamoed is on shabbos
+                self.category = event.category
 
     def __str__(self) -> str:
         """Jewish date as a string.
