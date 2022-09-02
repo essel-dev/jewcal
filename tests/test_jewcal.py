@@ -71,8 +71,19 @@ class JewcalTestCase(TestCase):
         self.assertEqual(jewcal.category, Category.HAVDALAH.value)
         self.assertIsNone(jewcal.yomtov)
 
-    def test_shabbos_chol_hamoed(self) -> None:
-        """It is Shabbos chol hamoed pesach with havdalah as category."""
+    def test_shabbos_chol_hamoed_sukkos(self) -> None:
+        """It is Shabbos Chol Hamoed Sukkos with havdalah as category."""
+        gregorian_date = date(2021, 9, 25)
+        jewcal = Jewcal(gregorian_date)
+
+        self.assertEqual(jewcal.gregorian_date, gregorian_date)
+
+        self.assertEqual(jewcal.shabbos, SHABBOS[6].title)  # Shabbos
+        self.assertEqual(jewcal.category, Category.HAVDALAH.value)
+        self.assertEqual(jewcal.yomtov, YOMTOV[7][19].title)  # Ch'H Sukkos 5
+
+    def test_shabbos_chol_hamoed_pesach(self) -> None:
+        """It is Shabbos Chol Hamoed Pesach with havdalah as category."""
         gregorian_date = date(2020, 4, 11)
         jewcal = Jewcal(gregorian_date)
 
