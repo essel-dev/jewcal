@@ -13,9 +13,9 @@ JewCal - Jewish Calendar
     :target: https://github.com/essel-dev/jewcal/actions/workflows/pypi.yml
     :alt: PyPi Status
 
-.. .. image:: https://readthedocs.org/projects/jewcal/badge/?version=latest
-..     :target: https://jewcal.readthedocs.io/en/latest/?badge=latest
-..     :alt: Documentation Status
+.. image:: https://readthedocs.org/projects/jewcal/badge/?version=latest
+    :target: https://jewcal.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
 
 |
 
