@@ -6,4 +6,3 @@ env
 build
 *.egg-info
 dist
-_build

@@ -19,7 +19,7 @@ extensions = [
 ]
 
 templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = []
 
 autodoc_class_signature = 'separated'
 autodoc_default_options = {
