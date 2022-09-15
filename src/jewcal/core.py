@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from datetime import date
-from typing import Optional, cast
+from typing import Optional
 
 from .models.day import Day
 
@@ -30,7 +30,7 @@ class JewCal:
             diaspora: True if outside of Israel, False if in Israel.
         """
         self.__diaspora = diaspora
-        self.day = cast(Day, gregorian if gregorian else date.today())
+        self.current_day(gregorian if gregorian else date.today())
 
     def __str__(self) -> str:
         """Get the day as a readable string.
@@ -54,16 +54,13 @@ class JewCal:
 
         Returns:
             The day.
-        ----
-        .. # noqa: DAR102 gregorian
-        .. # noqa: DAR201 return
-        Set the current day.
+        """
+        return self.__day
+
+    def current_day(self, gregorian: date) -> None:
+        """Set the current day.
 
         Args:
             gregorian: The Gregorian date.
         """
-        return self.__day
-
-    @day.setter
-    def day(self, gregorian: date) -> None:
         self.__day = Day(gregorian, self.__diaspora)

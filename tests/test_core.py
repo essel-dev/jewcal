@@ -53,6 +53,6 @@ class JewCalTestCase(TestCase):
         jewcal = JewCal(date(2022, 9, 5))
 
         gregorian = date(2022, 9, 7)
-        jewcal.day = gregorian  # type: ignore[assignment]
+        jewcal.current_day(gregorian)
 
         self.assertEqual(jewcal.day, Day(gregorian, True))
