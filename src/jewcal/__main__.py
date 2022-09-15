@@ -1,7 +1,7 @@
 """Simple JewCal example.
 
 This script can be invoked from the command line:
-    `python -m jewcal`
+    `jewcal`
 """
 
 from .core import JewCal

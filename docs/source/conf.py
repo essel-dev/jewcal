@@ -1,4 +1,5 @@
-# Configuration file for the Sphinx documentation builder.
+"""Configuration file for the Sphinx documentation builder."""
+
 #
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
@@ -19,7 +20,6 @@ extensions = [
 ]
 
 templates_path = ['_templates']
-exclude_patterns = []
 
 autodoc_class_signature = 'separated'
 autodoc_default_options = {

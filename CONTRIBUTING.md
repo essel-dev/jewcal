@@ -52,5 +52,5 @@ pre-commit run --all-files
 
 ## Document
 ```sh
-sphinx-autobuild --watch . --open-browser docs docs/_build/html
+sphinx-autobuild --watch . --open-browser docs/source docs/build/html
 ```
