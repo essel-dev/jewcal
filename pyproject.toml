@@ -13,7 +13,7 @@ authors = [{name='essel-dev', email='info@essel.dev'}]
 description = 'Jewish Calendar with holidays and fasts.'
 readme = 'README.rst'
 dynamic = ['version']
-requires-python = '>=3.10.5'
+requires-python = '>=3.10'
 keywords = ['jewish calendar']
 license = {text = 'MIT'}
 classifiers = [
