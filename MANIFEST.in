@@ -8,4 +8,6 @@ exclude CONTRIBUTING.md
 exclude tox.ini
 prune tests
 prune .github
+prune docs
+exclude .readthedocs.yaml
 exclude MANIFEST.in
