@@ -1,72 +1,69 @@
-"""Jewish dates with shabbos / yom tov details for Diaspora."""
+"""Jewish Calendar."""
 
-from dataclasses import dataclass
+# https://stackoverflow.com/a/67483317
+# Show return type in Sphinx without its full path
+from __future__ import annotations
+
 from datetime import date
-from typing import Optional
+from typing import Optional, cast
 
-from .constants import YOMTOV, SHABBOS, Months
-from .utils.calculations import (
-    absdate_to_jewish,
-    weekday_from_absdate,
-    gregorian_to_absdate
-)
+from .models.day import Day
 
 
-@dataclass
-class Jewcal:
-    """Jewish date with shabbos / yom tov details."""
+class JewCal:
+    """The Jewish Calendar."""
 
-    year: int
-    month: int
-    day: int
-    gregorian_date: date
-    shabbos: Optional[str] = None
-    yomtov: Optional[str] = None
-    category: Optional[str] = None
+    __slots__ = [
+        '__day',
+        '__diaspora',
+    ]
 
-    def __init__(self, gregorian_date: date) -> None:
-        """Create a new Jewish date.
-
-        The Jewish date contains optional details:
-            - shabbos or yom tov
-            - category (candles or havdalah).
-
-        If the first day of a yom tov starts on shabbos, the category is set
-        to candles instead of havdalah.
+    def __init__(
+        self,
+        gregorian: Optional[date] = None,
+        diaspora: bool = True
+    ) -> None:
+        """Create a Jewish calendar with a starting date as the current day.
 
         Args:
-            gregorian_date: The Gregorian date.
+            gregorian: The Gregorian date. Defaults to today.
+            diaspora: True if outside of Israel, False if in Israel.
         """
-        # jewish date
-        absdate = gregorian_to_absdate(
-            gregorian_date.year,
-            gregorian_date.month,
-            gregorian_date.day
-        )
-        self.year, self.month, self.day = absdate_to_jewish(absdate)
-
-        # gregorian date
-        self.gregorian_date = gregorian_date
-
-        # shabbos
-        weekday: int = weekday_from_absdate(absdate)
-        if weekday in SHABBOS:
-            event = SHABBOS[weekday]
-            self.shabbos = event.title
-            self.category = event.category
-
-        # yom tov
-        if self.month in YOMTOV and self.day in YOMTOV[self.month]:
-            event = YOMTOV[self.month][self.day]
-            self.yomtov = event.title
-            if event.category:
-                # don't overwrite category if chol hamoed is on shabbos
-                self.category = event.category
+        self.__diaspora = diaspora
+        self.day = cast(Day, gregorian if gregorian else date.today())
 
     def __str__(self) -> str:
-        """Jewish date as a string.
+        """Get the day as a readable string.
 
         Returns:
-            The Jewish date.
+            The day.
         """
-        return f'{self.day} {Months(self.month).name.capitalize()} {self.year}'
+        return str(self.__day)
+
+    def __repr__(self) -> str:
+        """Get the day as a formal string.
+
+        Returns:
+            The day.
+        """
+        return repr(self.__day)
+
+    @property
+    def day(self) -> Day:
+        """Get the current day.
+
+        Returns:
+            The day.
+        ----
+        .. # noqa: DAR102 gregorian
+        .. # noqa: DAR201 return
+        Set the current day.
+
+        Args:
+            gregorian: The Gregorian date.
+        """
+        return self.__day
+
+    @day.setter
+    def day(self, gregorian: date) -> None:
+        self.__day = Day(gregorian, self.__diaspora)

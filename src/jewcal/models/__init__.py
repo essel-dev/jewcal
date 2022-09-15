@@ -1,0 +1,1 @@
+"""JewCal models."""
