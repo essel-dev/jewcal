@@ -4,28 +4,42 @@ build-backend = 'setuptools.build_meta'
 
 [tool.setuptools_scm]
 
+[tool.setuptools.package-data]
+jewcal = ['py.typed']
+
 [project]
-name = 'jewcal'
-description = 'Convert Gregorian to Jewish dates and get shabbos / yom tov details for Diaspora.'
-keywords = [
-  'jewish calendar',
-]
-license = { text = 'MIT' }
+name = 'JewCal'
+authors = [{name='essel-dev', email='info@essel.dev'}]
+description = 'Jewish Calendar with holidays and fasts.'
+readme = 'README.rst'
 dynamic = ['version']
-authors = [{ name='essel-dev', email='info@essel.dev' }]
-readme = 'README.md'
 requires-python = '>=3.10.5'
+keywords = ['jewish calendar']
+license = {text = 'MIT'}
+classifiers = [
+  'Programming Language :: Python',
+  'Programming Language :: Python :: 3',
+  'Programming Language :: Python :: 3.10',
+  'Topic :: Utilities',
+  'Typing :: Typed',
+]
 dependencies = []
 
+[project.scripts]
+jewcal = 'jewcal.__main__:main'
+
 [project.urls]
-'Homepage' = 'https://github.com/essel-dev/jewcal'
 'Bug Tracker' = 'https://github.com/essel-dev/jewcal/issues'
 'Changelog' = 'https://github.com/essel-dev/jewcal/releases'
+'Documentation' = 'https://jewcal.readthedocs.io/'
+'Homepage' = 'https://github.com/essel-dev/jewcal'
 
 [project.optional-dependencies]
 dev = [
   'pre-commit',
   'tox',
+  'sphinx',
+  'sphinx-autobuild',
 ]
 
 [tool.mypy]
@@ -36,6 +50,3 @@ enable_error_code = ['ignore-without-code', 'redundant-expr', 'truthy-bool']
 warn_unreachable = true
 namespace_packages = true
 explicit_package_bases = true
-exclude = [
-    '^_version\.py$',
-]

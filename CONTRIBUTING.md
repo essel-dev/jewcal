@@ -1,9 +1,8 @@
-# Local Development
+# Development
 ## Install
-### Python
-Verify if Python is installed.
+### Upgrade pip and setuptools
 ```sh
-python --version
+python -m pip install --upgrade pip setuptools
 ```
 
 ### Project code
@@ -27,15 +26,15 @@ pip install -e .[dev]
 ### Pre-commit
 ```sh
 pre-commit install
-pre-commit run --all-files
 ```
 
-## Test
+## Develop
+### Test
 ```sh
 tox -e test
 ```
 
-## Linters
+### Lint
 To run all lint checkers:
 ```sh
 tox
@@ -44,4 +43,14 @@ tox
 To run a specific lint checker:
 ```sh
 tox -e flake8
+```
+
+### Pre-commit
+```sh
+pre-commit run --all-files
+```
+
+## Document
+```sh
+sphinx-autobuild --watch . --open-browser docs docs/_build/html
 ```
