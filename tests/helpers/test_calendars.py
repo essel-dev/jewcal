@@ -12,18 +12,6 @@ from src.jewcal.models.date import Months
 class CalendarGeneratorCase(TestCase):
     """Unittests for `Calendargenerator`."""
 
-    def test__slots__fail(self) -> None:
-        """Test __slots__ should fail."""
-        generator = CalendarGenerator(True, 5782)  # 2022
-
-        with self.assertRaises(AttributeError):
-            # pylint: disable-next=protected-access, unused-private-member
-            generator.__calendar = 'x'  # type: ignore[assignment]
-
-        with self.assertRaises(AttributeError):
-            # pylint: disable-next=assigning-non-slot
-            generator.x = 'x'  # type: ignore[attr-defined]
-
     def test__init__fail(self) -> None:
         """Test __init__ should fail."""
         with self.assertRaises(TypeError) as context_manager:

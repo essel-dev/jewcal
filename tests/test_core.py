@@ -10,18 +10,6 @@ from src.jewcal.models.day import Day
 class JewCalTestCase(TestCase):
     """Unittests for `JewCal`."""
 
-    def test__slots__fail(self) -> None:
-        """Test __slots__ should fail."""
-        jewcal = JewCal(date(2022, 9, 1))
-
-        with self.assertRaises(AttributeError):
-            # pylint: disable-next=protected-access, unused-private-member
-            jewcal.__day = 'x'  # type: ignore[assignment]
-
-        with self.assertRaises(AttributeError):
-            # pylint: disable-next=assigning-non-slot
-            jewcal.x = 'x'  # type: ignore[attr-defined]
-
     def test__init__(self) -> None:
         """Test __init__."""
         gregorian = date(2022, 9, 1)
@@ -39,7 +27,6 @@ class JewCalTestCase(TestCase):
         jewish_day = Day(gregorian, True)
 
         self.assertEqual(str(jewcal), str(jewish_day))
-        self.assertEqual(repr(jewcal), repr(jewish_day))
 
     def test_day(self) -> None:
         """Test get the current day."""
@@ -53,6 +40,6 @@ class JewCalTestCase(TestCase):
         jewcal = JewCal(date(2022, 9, 5))
 
         gregorian = date(2022, 9, 7)
-        jewcal.current_day(gregorian)
+        jewcal.date(gregorian)
 
         self.assertEqual(jewcal.day, Day(gregorian, True))

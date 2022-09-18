@@ -9,19 +9,26 @@ Source code Copyright © by Ulrich and David Greve (2005)
 https://www.david-greve.de/luach-code/jewish-python.html
 """
 
+from dataclasses import dataclass
 from datetime import date
 from typing import Tuple
 
 
+@dataclass(slots=True)
 class DateConverter:
-    """Date converter."""
+    """Date converter for Gregorian to Jewish dates."""
 
-    __slots__ = [
-        '__gregorian',
-        '__jewish_date',
-        '__jewish_weekday',
-        '__jewish_leap',
-    ]
+    gregorian: date
+    """Get the Gregorian date."""
+
+    jewish_date: Tuple[int, int, int]
+    """The Jewish year, month and day."""
+
+    jewish_weekday: int
+    """The Jewish weekday number in the range of 0-6, where 0 = Sunday."""
+
+    jewish_leap: bool
+    """Is the Jewish year a leap year."""
 
     def __init__(self, gregorian: date) -> None:
         """Create a date converter.
@@ -36,51 +43,15 @@ class DateConverter:
         if not isinstance(gregorian, date):
             raise TypeError(f'unsupported type {gregorian.__class__.__name__}')
 
-        self.__gregorian: date = gregorian
+        self.gregorian: date = gregorian
 
         # jewish
         absdate: int = _gregorian_to_absdate(
-            self.__gregorian.year, self.__gregorian.month, self.__gregorian.day
+            self.gregorian.year, self.gregorian.month, self.gregorian.day
         )
-        self.__jewish_date: Tuple[int, int, int] = _absdate_to_jewish(absdate)
-        self.__jewish_weekday: int = _weekday_from_absdate(absdate)
-        self.__jewish_leap: bool = _is_jewish_leap(self.__jewish_date[0])
-
-    @property
-    def gregorian(self) -> date:
-        """Get the Gregorian date.
-
-        Returns:
-            The date.
-        """
-        return self.__gregorian
-
-    @property
-    def jewish_date(self) -> Tuple[int, int, int]:
-        """Get the Jewish date.
-
-        Returns:
-            A tuple with the Jewish year, month and day.
-        """
-        return self.__jewish_date
-
-    @property
-    def jewish_weekday(self) -> int:
-        """Get the Jewish weekday number.
-
-        Returns:
-            The weekday number in the range of 0-6, where 0 = Sunday.
-        """
-        return self.__jewish_weekday
-
-    @property
-    def jewish_leap(self) -> bool:
-        """Is the Jewish year a leap year.
-
-        Returns:
-            True for leap year, False otherwise.
-        """
-        return self.__jewish_leap
+        self.jewish_date = _absdate_to_jewish(absdate)
+        self.jewish_weekday = _weekday_from_absdate(absdate)
+        self.jewish_leap = _is_jewish_leap(self.jewish_date[0])
 
 
 def _is_gregorian_leap(year: int) -> bool:

@@ -9,18 +9,6 @@ from src.jewcal.models.date import Date
 class DateTestCase(TestCase):
     """Unittests for `Date`."""
 
-    def test__slots__fail(self) -> None:
-        """Test __slots__ should fail."""
-        jewish_date = Date(date(2022, 9, 1))
-
-        with self.assertRaises(AttributeError):
-            # pylint: disable-next=protected-access, unused-private-member
-            jewish_date.__day = 'x'  # type: ignore[assignment]
-
-        with self.assertRaises(AttributeError):
-            # pylint: disable-next=assigning-non-slot
-            jewish_date.x = 'x'  # type: ignore[attr-defined]
-
     def test__init__(self) -> None:
         """Test __init__."""
         gregorian = date(2022, 9, 2)

@@ -33,7 +33,8 @@ class Event():
 TYearDict = dict[Months, dict[int, list[Event]]]
 
 
-class CalendarGenerator:  # pylint: disable=too-few-public-methods
+@dataclass(slots=True, repr=False)
+class CalendarGenerator:
     """Jewish calendar generator.
 
     - Diaspora and Israel use a different calendar.
@@ -43,11 +44,14 @@ class CalendarGenerator:  # pylint: disable=too-few-public-methods
     - Rosh Chodesh is one or two days, depending on the month.
     """
 
-    __slots__ = [
-        '__calendar',
-        '__year',
-        '__leap',
-    ]
+    calendar: TYearDict
+    """The Jewish calendar."""
+
+    year: int
+    """The Jewish year."""
+
+    leap: bool
+    """Is it a Jewish leap year."""
 
     def __init__(self, diaspora: bool, jewish_year: int) -> None:
         """Create the calendar.
@@ -67,25 +71,14 @@ class CalendarGenerator:  # pylint: disable=too-few-public-methods
                 f'unsupported type {jewish_year.__class__.__name__}'
             )
 
-        self.__calendar: TYearDict = \
-            deepcopy(DIASPORA if diaspora else ISRAEL)
-
-        self.__year: int = jewish_year
-        self.__leap: bool = _is_jewish_leap(self.__year)
+        self.calendar = deepcopy(DIASPORA if diaspora else ISRAEL)
+        self.year = jewish_year
+        self.leap = _is_jewish_leap(self.year)
 
         self._postpone_fastdays()
         self._set_chanuka_and_asara_betevet()
         self._set_tanit_esther_and_purim()
         self._set_rosh_chodesh()
-
-    @property
-    def calendar(self) -> TYearDict:
-        """Get the Jewish calendar.
-
-        Returns:
-            The calendar.
-        """
-        return self.__calendar
 
     def _postpone_fastdays(self) -> None:
         """Postpone fasts if they occur on Shabbat.
@@ -93,21 +86,21 @@ class CalendarGenerator:  # pylint: disable=too-few-public-methods
         If a fast day falls on Shabbat, it is postponed until Sunday.
         """
         # Shiva Asar BeTamuz
-        if _weekday_from_jewish(self.__year, Months.TAMUZ, 17) == 6:
-            self.__calendar[Months.TAMUZ][18] = \
-                self.__calendar[Months.TAMUZ][17]
-            self.__calendar[Months.TAMUZ].pop(17)
+        if _weekday_from_jewish(self.year, Months.TAMUZ, 17) == 6:
+            self.calendar[Months.TAMUZ][18] = \
+                self.calendar[Months.TAMUZ][17]
+            self.calendar[Months.TAMUZ].pop(17)
 
         # Tisha BeAv
-        if _weekday_from_jewish(self.__year, Months.AV, 9) == 6:
-            self.__calendar[Months.AV][10] = self.__calendar[Months.AV][9]
-            self.__calendar[Months.AV].pop(9)
+        if _weekday_from_jewish(self.year, Months.AV, 9) == 6:
+            self.calendar[Months.AV][10] = self.calendar[Months.AV][9]
+            self.calendar[Months.AV].pop(9)
 
         # Tzom Gedaliah
-        if _weekday_from_jewish(self.__year, Months.TISHREI, 3) == 6:
-            self.__calendar[Months.TISHREI][4] = \
-                self.__calendar[Months.TISHREI][3]
-            self.__calendar[Months.TISHREI].pop(3)
+        if _weekday_from_jewish(self.year, Months.TISHREI, 3) == 6:
+            self.calendar[Months.TISHREI][4] = \
+                self.calendar[Months.TISHREI][3]
+            self.calendar[Months.TISHREI].pop(3)
 
     def _set_chanuka_and_asara_betevet(self) -> None:
         """Set Chanuka and Asara BeTevet.
@@ -115,15 +108,15 @@ class CalendarGenerator:  # pylint: disable=too-few-public-methods
         Chanuka is adjusted depending on the amount of days in Kislev.
         """
         # Chanuka
-        if _is_short_kislev(self.__year):
-            self.__calendar[Months.TEVET] = CHANUKA_SHORT_KISLEV[Months.TEVET]
+        if _is_short_kislev(self.year):
+            self.calendar[Months.TEVET] = CHANUKA_SHORT_KISLEV[Months.TEVET]
         else:
-            self.__calendar[Months.KISLEV][30] = \
+            self.calendar[Months.KISLEV][30] = \
                 CHANUKA_LONG_KISLEV[Months.KISLEV][30]
-            self.__calendar[Months.TEVET] = CHANUKA_LONG_KISLEV[Months.TEVET]
+            self.calendar[Months.TEVET] = CHANUKA_LONG_KISLEV[Months.TEVET]
 
         # Asara BeTevet
-        self.__calendar[Months.TEVET][10] = \
+        self.calendar[Months.TEVET][10] = \
             [Event('Asara BeTevet', [Category.FAST])]
 
     def _set_tanit_esther_and_purim(self) -> None:
@@ -133,22 +126,22 @@ class CalendarGenerator:  # pylint: disable=too-few-public-methods
         - If the Jewish year is a leap year, Purim is celebrated in Adar 2.
         """
         # Purim
-        if self.__leap:
+        if self.leap:
             # Adar 2
-            self.__calendar[Months.ADAR_2] = self.__calendar[Months.ADAR]
-            self.__calendar.pop(Months.ADAR)
+            self.calendar[Months.ADAR_2] = self.calendar[Months.ADAR]
+            self.calendar.pop(Months.ADAR)
 
             # TaAnit Esther
-            if _weekday_from_jewish(self.__year, Months.ADAR_2, 13) == 6:
-                self.__calendar[Months.ADAR_2][11] = \
-                    self.__calendar[Months.ADAR_2][13]
-                self.__calendar[Months.ADAR_2].pop(13)
+            if _weekday_from_jewish(self.year, Months.ADAR_2, 13) == 6:
+                self.calendar[Months.ADAR_2][11] = \
+                    self.calendar[Months.ADAR_2][13]
+                self.calendar[Months.ADAR_2].pop(13)
         else:
             # TaAnit Esther
-            if _weekday_from_jewish(self.__year, Months.ADAR, 13) == 6:
-                self.__calendar[Months.ADAR][11] = \
-                    self.__calendar[Months.ADAR][13]
-                self.__calendar[Months.ADAR].pop(13)
+            if _weekday_from_jewish(self.year, Months.ADAR, 13) == 6:
+                self.calendar[Months.ADAR][11] = \
+                    self.calendar[Months.ADAR][13]
+                self.calendar[Months.ADAR].pop(13)
 
     def _set_rosh_chodesh(self) -> None:
         """Set Rosh Chodesh for each month.
@@ -166,7 +159,7 @@ class CalendarGenerator:  # pylint: disable=too-few-public-methods
 
             match month_index:
                 case Months.ADAR:
-                    if self.__leap:
+                    if self.leap:
                         next_month_index = 13
                     else:
                         next_month_index = 1
@@ -176,7 +169,7 @@ class CalendarGenerator:  # pylint: disable=too-few-public-methods
                     next_month_index += 1
 
             # create event
-            if self.__leap and next_month_index == 12:
+            if self.leap and next_month_index == 12:
                 next_month_name = 'Adar 1'
             else:
                 next_month_name = str(Months(next_month_index))
@@ -186,15 +179,15 @@ class CalendarGenerator:  # pylint: disable=too-few-public-methods
 
             # save event
             # 30th of the month
-            if _days_in_jewish_month(self.__year, month_index) == 30:
-                day = self.__calendar \
+            if _days_in_jewish_month(self.year, month_index) == 30:
+                day = self.calendar \
                     .setdefault(Months(month_index), {}) \
                     .setdefault(30, [])
                 if event not in day:
                     day.append(event)
 
             # 1st of the month
-            day = self.__calendar \
+            day = self.calendar \
                 .setdefault(Months(next_month_index), {}) \
                 .setdefault(1, [])
             if event not in day:

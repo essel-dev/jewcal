@@ -1,6 +1,6 @@
 """Jewish date model."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 from enum import IntEnum
 
@@ -33,24 +33,27 @@ class Months(IntEnum):
         return self.name.capitalize().replace('_', ' ')
 
 
-@dataclass
-class Date:  # pylint: disable=too-many-instance-attributes
+@dataclass(slots=True)
+class Date:
     """A date in the Jewish calendar."""
 
-    __slots__ = [
-        '__gregorian',
-        '__year',
-        '__month',
-        '__day',
-        '__weekday',
-        '__leap',
-    ]
-
     gregorian: date
+    """The Gregorian date."""
+
     year: int
+    """The Jewish year in the range of 1-6000."""
+
     month: int
+    """The Jewish month in the range of 1-13."""
+
     day: int
+    """The Jewish day in the range of 1-30."""
+
     weekday: int
+    """The Jewish weekday in the range of 0-6, where 0 = Sunday."""
+
+    _leap: bool = field(repr=False)
+    """Is it a Jewish leap year."""
 
     def __init__(self, gregorian: date) -> None:
         """Create a Jewish date.
@@ -60,43 +63,10 @@ class Date:  # pylint: disable=too-many-instance-attributes
         """
         converter = DateConverter(gregorian)
 
-        self.__gregorian: date = converter.gregorian
-
-        year, month, day = converter.jewish_date
-        self.__year: int = year
-        self.__month: int = month
-        self.__day: int = day
-
-        self.__weekday: int = converter.jewish_weekday
-
-        self.__leap: bool = converter.jewish_leap
-
-    @property  # type: ignore[no-redef]
-    def gregorian(self) -> date:
-        """Get the Gregorian date.
-
-        Returns:
-            The Gregorian date.
-        """
-        return self.__gregorian
-
-    @property  # type: ignore[no-redef]
-    def year(self) -> int:
-        """Get the Jewish year.
-
-        Returns:
-            The Jewish year in the range of 1-6000.
-        """
-        return self.__year
-
-    @property  # type: ignore[no-redef]
-    def month(self) -> int:
-        """Get the Jewish month number.
-
-        Returns:
-            The Jewish month in the range of 1-13.
-        """
-        return self.__month
+        self.gregorian = converter.gregorian
+        self.year, self.month, self.day = converter.jewish_date
+        self.weekday = converter.jewish_weekday
+        self._leap = converter.jewish_leap
 
     @property
     def month_name(self) -> str:
@@ -105,30 +75,12 @@ class Date:  # pylint: disable=too-many-instance-attributes
         Returns:
             The Jewish month name.
         """
-        month = str(Months(self.__month))
+        month = str(Months(self.month))
 
-        if self.__leap and self.__month == 12:
+        if self._leap and self.month == 12:
             month = 'Adar 1'
 
         return month
-
-    @property  # type: ignore[no-redef]
-    def day(self) -> int:
-        """Get the Jewish day number.
-
-        Returns:
-            The Jewish day in the range of 1-30.
-        """
-        return self.__day
-
-    @property  # type: ignore[no-redef]
-    def weekday(self) -> int:
-        """Get the Jewish weekday number.
-
-        Returns:
-            The Jewish weekday in the range of 0-6, where 0 = Sunday.
-        """
-        return self.__weekday
 
     def __str__(self) -> str:
         """Get the Jewish date as a readable string.
@@ -137,8 +89,8 @@ class Date:  # pylint: disable=too-many-instance-attributes
             The Jewish date.
         """
         return (
-            f'{self.__day}'
+            f'{self.day}'
             f' {self.month_name}'
-            f' {self.__year}'
-            f' ({self.__gregorian})'
+            f' {self.year}'
+            f' ({self.gregorian})'
         )

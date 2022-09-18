@@ -9,18 +9,6 @@ from src.jewcal.helpers.dates import DateConverter
 class DateConverterTestCase(TestCase):
     """Unittests for `DateConverter`."""
 
-    def test__slots__fail(self) -> None:
-        """Test __slots__ should fail."""
-        converter = DateConverter(date(2022, 9, 1))
-
-        with self.assertRaises(AttributeError):
-            # pylint: disable-next=protected-access, unused-private-member
-            converter.__gregorian = 'x'  # type: ignore[assignment]
-
-        with self.assertRaises(AttributeError):
-            # pylint: disable-next=assigning-non-slot
-            converter.x = 'x'  # type: ignore[attr-defined]
-
     def test__init__(self) -> None:
         """Test __init__."""
         gregorian = date(2022, 8, 21)
