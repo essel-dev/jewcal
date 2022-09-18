@@ -136,7 +136,7 @@ class Day:
         if self.categories.fast:
             try:
                 active_categories.remove(Category.FAST.name.lower())
-            except ValueError:
+            except ValueError:  # pragma: no cover
                 pass
 
         return len(active_categories) > 0
@@ -186,7 +186,7 @@ class Day:
             except ValueError:
                 pass
 
-            return self.categories.erev and 'Erev Shabbat' not in names
+            return 'Erev Shabbat' not in names
 
         return False
 
