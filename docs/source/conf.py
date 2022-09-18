@@ -40,7 +40,9 @@ html_theme = 'alabaster'
 html_static_path = ['_static']
 
 html_theme_options = {
-    'description': ('Jewish Calendar with holidays and fasts.'),
+    'description': (
+        'Jewish Calendar for Diaspora and Israel with holidays and fasts.'
+    ),
     'fixed_sidebar': True,
     'sidebar_collapse': False,
     'github_user': 'essel-dev',
@@ -49,3 +51,4 @@ html_theme_options = {
     'github_type': 'star',
     'show_relbars': True,
 }
+html_show_sourcelink = False

@@ -13,7 +13,7 @@ git clone # path-to-this-repository.git
 
 ### Virtual environment
 ```sh
-cd # path-to-downloaded-reposity
+cd # path-to-downloaded-repository
 python -m venv env
 source env/bin/activate
 ```
@@ -23,11 +23,6 @@ source env/bin/activate
 pip install -e .[dev]
 ```
 
-### Pre-commit
-```sh
-pre-commit install
-```
-
 ## Develop
 ### Test
 ```sh
@@ -35,22 +30,18 @@ tox -e test
 ```
 
 ### Lint
-To run all lint checkers:
-```sh
-tox
-```
+See [tox.ini](tox.ini) for all linters.
 
-To run a specific lint checker:
+To run a specific linter:
 ```sh
 tox -e flake8
 ```
 
-### Pre-commit
-```sh
-pre-commit run --all-files
-```
-
 ## Document
 ```sh
-sphinx-autobuild --watch . --open-browser docs/source docs/build/html
+cd docs
+make clean
+make html
 ```
+
+The HTML pages are in build/html.
