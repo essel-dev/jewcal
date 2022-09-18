@@ -44,7 +44,6 @@ html_theme_options = {
         'Jewish Calendar for Diaspora and Israel with holidays and fasts.'
     ),
     'fixed_sidebar': True,
-    'sidebar_collapse': False,
     'github_user': 'essel-dev',
     'github_repo': 'jewcal',
     'github_button': True,

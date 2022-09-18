@@ -35,7 +35,7 @@ class Months(IntEnum):
 
 @dataclass(slots=True)
 class Date:
-    """A date in the Jewish calendar."""
+    """A Jewish date."""
 
     gregorian: date
     """The Gregorian date."""

@@ -21,10 +21,14 @@ JewCal - Jewish Calendar
 
 .. include_start_intro
 
-JewCal is a Jewish Calendar with holidays and fasts.
+JewCal is a Jewish Calendar for Diaspora and Israel with holidays and fasts.
 
-One of the advantages of JewCal is using Boolean values to deduce if it is
-Shabbat or Yom Tov.
+These holidays occur on the same dates every year, but the dates vary in the
+Gregorian calendar. JewCal makes it possible to convert Gregorian to Jewish
+dates and to get the holiday and fast details.
+
+One of the advantages of JewCal is using Boolean functions to deduce if it is
+*(Erev) Shabbat* or *Yom Tov* and if it is *Issur Melacha* (forbidden to work).
 
 The aim of JewCal is using it in other projects like
 `Home Assistant <https://www.home-assistant.io/>`_ with
@@ -34,14 +38,15 @@ The aim of JewCal is using it in other projects like
 
 .. include_start_install
 
-Installing
-----------
+Installation
+------------
 .. code-block:: bash
 
   pip install jewcal
 
-A Simple Example
-----------------
+
+Quickstart
+----------
 
 Run in the console:
 
@@ -54,25 +59,15 @@ The output:
 
 .. code-block:: console
 
-  Today is 19 Elul 5782 (2022-09-15).
+  Today is 14 Nisan 5782 (2022-04-15) Erev Shabbat, Erev Pesach.
 
-  Day(
-    date=Date(
-      gregorian=datetime.date(2022, 9, 15),
-      year=5782,
-      month=6,
-      day=19,
-      weekday=4
-    ),
-    erev=False,
-    shabbat=False,
-    yom_tov=False,
-    chol_hamoed=False,
-    chag=False,
-    rosh_chodesh=False,
-    fast=False,
-    names=[]
-  )
+  It is Erev Shabbat: True
+  It is Erev Yom Tov: True
+
+  It is Shabbat: False
+  It is Yom Tov: False
+
+  It is Issur Melacha: False
 
 
 The code:
@@ -81,9 +76,15 @@ The code:
 
   jewcal = JewCal()
 
-  print(f'Today is {jewcal.day}\n')
+  print(f'Today is {jewcal.day}.')
 
-  print(repr(jewcal.day))
+  print(f'It is Erev Shabbat: {jewcal.day.is_erev_shabbat()}')
+  print(f'It is Erev Yom Tov: {jewcal.day.is_erev_yom_tov()}')
+
+  print(f'It is Shabbat: {jewcal.day.is_shabbat()}')
+  print(f'It is Yom Tov: {jewcal.day.is_yom_tov()}')
+
+  print(f'It is Issur Melacha: {jewcal.day.is_issur_melacha()}')
 
 .. include_end_install
 
