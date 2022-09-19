@@ -31,6 +31,10 @@ autodoc_default_options = {
     'exclude-members': '__weakref__'
 }
 
+autodoc_type_aliases = {  # https://stackoverflow.com/a/67483317
+    'Day': 'Day',
+}
+
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 

@@ -1,32 +1,32 @@
 Reference
 =========
 
-JewCal
-------
+The JewCal Class
+----------------
 
 .. autoclass:: jewcal.JewCal
 
 Other Classes
 -------------
 
-Date
-~~~~
+The Date
+~~~~~~~~
 
 .. note:: You don't have to instantiate this class because
   **JewCal()** takes care of that.
 
 .. autoclass:: jewcal.Date
 
-Day
-~~~
+The Day
+~~~~~~~
 
 .. note:: You don't have to instantiate this class because
   **JewCal()** takes care of that.
 
 .. autoclass:: jewcal.Day
 
-DayCategories
-~~~~~~~~~~~~~
+The DayCategories
+~~~~~~~~~~~~~~~~~
 
 .. note:: You don't have to instantiate this class because
   **JewCal()** takes care of that.

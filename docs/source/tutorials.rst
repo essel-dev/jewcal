@@ -238,3 +238,49 @@ Get all the holiday / fast names for the current day:
   jewcal = JewCal()
 
   print(jewcal.day.names)
+
+
+Get day(s) in the past / future
+"""""""""""""""""""""""""""""""
+
+.. code-block:: python
+
+  from jewcal import JewCal
+
+  jewcal = JewCal()
+
+  for day in jewcal.days(-1):  # yesterday
+    print(day)
+
+  for day in jewcal.days(2):  # next 2 days
+    print(day)
+
+
+Get current week
+""""""""""""""""
+
+.. code-block:: python
+
+  from jewcal import JewCal
+
+  jewcal = JewCal()
+
+  for day in jewcal.current_week():
+    print(day)
+
+
+Get weeks(s) in the past / future
+"""""""""""""""""""""""""""""""""
+
+.. code-block:: python
+
+  from jewcal import JewCal
+
+  jewcal = JewCal()
+
+  for day in jewcal.weeks(-1):  # last week
+    print(day)
+
+
+  for day in jewcal.weeks(3):  # next 3 weeks
+    print(day)

@@ -22,4 +22,3 @@ Contents
   tutorials
   reference
   explanations
-
