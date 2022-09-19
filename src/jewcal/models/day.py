@@ -210,8 +210,9 @@ class Day:
     def is_issur_melacha(self) -> bool:
         """Is it Issur Melacha.
 
-        Issur Melacha means that it is forbidden to work on Shabbat and
-        Yom Tov.
+        Holidays that take into account:
+            - Shabbat
+            - Yom Tov
 
         Returns:
             True if Issur Melacha, False otherwise.
