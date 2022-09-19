@@ -17,6 +17,7 @@ author = 'essel.dev'
 extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.duration',
+    'sphinx.ext.autosectionlabel',
 ]
 
 templates_path = ['_templates']
@@ -38,7 +39,7 @@ html_static_path = ['_static']
 
 html_theme_options = {
     'description': (
-        'Jewish Calendar for Diaspora and Israel with holidays and fasts.'
+        'A Jewish Calendar with holidays and fasts.'
     ),
     'fixed_sidebar': True,
 }

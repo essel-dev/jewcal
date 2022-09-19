@@ -149,7 +149,7 @@ class CalendarsCache(metaclass=Singleton):
 class CalendarGenerator:
     """Jewish calendar generator.
 
-    - Diaspora and Israel use a different calendar.
+    - Israel and Diaspora use a different calendar.
     - Chanuka is adjusted depending on the amount of days in Kislev.
     - A Jewish year has an extra month (Adar 2) if it is a leap year.
     - If fast days occur on Shabbat, some fast days are moved up or postponed.

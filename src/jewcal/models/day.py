@@ -223,8 +223,8 @@ class Day:
         """Is it Chol HaMoed.
 
         Holidays that fall under this category:
-            - Pesach: 3rd (2nd in Israel) through 6th days.
-            - Sukkot: 3rd (2nd in Israel) through 7th days.
+            - Pesach: 2nd (3rd in Diaspora) through 6th days.
+            - Sukkot: 2nd (3rd in Diaspora) through 7th days.
 
         Returns:
             True if Chol HaMoed, False otherwise.

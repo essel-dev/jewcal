@@ -12,34 +12,14 @@
   :end-before: .. include_intro_end
 
 
-User guide
-----------
-
-How to get started with JewCal.
+Contents
+--------
 
 .. toctree::
   :maxdepth: 4
 
-  howto
+  quickstart
+  tutorials
+  reference
+  explanations
 
-
-API Reference
--------------
-
-An overview of all public JewCal classes and methods.
-
-.. toctree::
-  :maxdepth: 4
-
-  api
-
-
-Resources
----------
-
-Useful links.
-
-.. toctree::
-  :maxdepth: 4
-
-  resources

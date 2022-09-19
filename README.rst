@@ -1,7 +1,7 @@
 .. include_title_start
 
-JewCal - Jewish Calendar
-=========================
+JewCal
+======
 
 .. include_title_end
 
@@ -21,18 +21,14 @@ JewCal - Jewish Calendar
 
 .. include_intro_start
 
-JewCal is a Jewish Calendar for Diaspora and Israel with holidays and fasts.
+A Jewish Calendar with holidays and fasts.
 
-These holidays occur on the same dates every year, but the dates vary in the
-Gregorian calendar. JewCal makes it possible to convert Gregorian to Jewish
-dates and to get the holiday and fast details.
-
-One of the advantages of JewCal is using Boolean functions to deduce if it is
-*(Erev) Shabbat* or *Yom Tov* and if it is *Issur Melacha*.
-
-The aim of JewCal is using it in other projects like
-`Home Assistant <https://www.home-assistant.io/>`_ with
-`AppDaemon <https://github.com/AppDaemon/appdaemon>`_ for home automation.
+- Convert Gregorian to Jewish dates.
+- Determine whether it is *(Erev) Shabbat, (Erev) Yom Tov, Issur Melacha*, ... .
+- For Israel and Diaspora.
+- Ideal for home automation (e.g. `Home Assistant
+  <https://www.home-assistant.io/>`_ with `AppDaemon
+  <https://github.com/AppDaemon/appdaemon>`_).
 
 .. include_intro_end
 
@@ -96,7 +92,4 @@ Resources
 ---------
 
 - `JewCal @ PyPI <https://pypi.org/project/jewcal/>`_
-
-.. include_resources_end
-
 - `JewCal @ Read the Docs <https://jewcal.readthedocs.io/>`_

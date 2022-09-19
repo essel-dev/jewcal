@@ -1,5 +1,5 @@
-API Reference
-=============
+Reference
+=========
 
 JewCal
 ------
@@ -12,15 +12,15 @@ Other Classes
 Date
 ~~~~
 
-.. note:: You don't have to instantiate this class yourself because
+.. note:: You don't have to instantiate this class because
   **JewCal()** takes care of that.
 
 .. autoclass:: jewcal.Date
 
 Day
-~~~~
+~~~
 
-.. note:: You don't have to instantiate this class yourself because
+.. note:: You don't have to instantiate this class because
   **JewCal()** takes care of that.
 
 .. autoclass:: jewcal.Day
@@ -28,7 +28,7 @@ Day
 DayCategories
 ~~~~~~~~~~~~~
 
-.. note:: You don't have to instantiate this class yourself because
+.. note:: You don't have to instantiate this class because
   **JewCal()** takes care of that.
 
 .. autoclass:: jewcal.DayCategories

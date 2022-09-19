@@ -1,13 +1,5 @@
-User guide
-==========
-
-.. include:: ../../README.rst
-  :start-after: .. include_quickstart_start
-  :end-before: .. include_quickstart_end
-
-
-How To
-------
+Tutorials
+=========
 
 Calendar
 ~~~~~~~~
