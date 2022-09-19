@@ -1,12 +1,18 @@
 """Jewish Calendar Generator."""
 
+from __future__ import annotations
+
 from copy import deepcopy
 from dataclasses import dataclass
 from enum import Enum, unique
+from logging import getLogger
+from typing import Optional
 
 from ..models.date import Months
 from .dates import (_days_in_jewish_month, _is_jewish_leap, _is_short_kislev,
                     _weekday_from_jewish)
+
+logger = getLogger(__name__)
 
 
 @unique
@@ -31,6 +37,112 @@ class Event():
 
 
 TYearDict = dict[Months, dict[int, list[Event]]]
+
+
+@unique
+class CalendarType(Enum):
+    """The calendar types."""
+
+    DIASPORA = 'Diaspora'
+    ISRAEL = 'Israel'
+
+
+class Singleton(type):
+    """Singleton to restrict the instantiation to one 'single' instance."""
+
+    # https://stackoverflow.com/a/6798042 create
+    # https://stackoverflow.com/a/50065732 clear
+
+    _instances: dict[Singleton, Singleton] = {}
+
+    def __call__(cls, *args, **kwargs):  # type: ignore[no-untyped-def]
+        """Return the instance.
+
+        Args:
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+
+        Returns:
+            The instance.
+        """
+        if cls not in cls._instances:
+            logger.info('Returning new Singleton instance')
+
+            cls._instances[cls] = \
+                super(Singleton, cls).__call__(*args, **kwargs)
+        else:
+            logger.info('Returning existing Singleton instance')
+
+        return cls._instances[cls]
+
+    def clear(cls) -> None:  # pragma: no cover
+        """Reset Singleton for unittests."""
+        try:
+            del Singleton._instances[cls]
+            logger.info('Singleton instance reset')
+        except KeyError:
+            pass
+
+
+class CalendarsCache(metaclass=Singleton):
+    """Cache generated calendars.
+
+    Uses the Singleton pattern.
+    """
+
+    calendars: dict[CalendarType, dict[int, TYearDict]]
+    """The cached calendars."""
+
+    def __init__(self) -> None:
+        """Initialize the cache."""
+        self.calendars = {
+            CalendarType.DIASPORA: {},
+            CalendarType.ISRAEL: {},
+        }
+
+    def add(
+        self,
+        year: int,
+        calendar: TYearDict,
+        calendar_type: CalendarType
+    ) -> None:
+        """Add a new calendar to the cache.
+
+        Args:
+            year: The Jewish calendar year.
+            calendar: The calendar to store.
+            calendar_type: Is the calendar for Diaspora or Israel.
+        """
+        logger.info(
+            'Calendar for %s added to Singleton',
+            (year, calendar_type.name)
+        )
+
+        self.calendars[calendar_type][year] = calendar
+
+    def get(
+        self,
+        year: int,
+        calendar_type: CalendarType
+    ) -> Optional[TYearDict]:
+        """Get a cached calendar.
+
+        Args:
+            year: The Jewish calendar year.
+            calendar_type: Is the calendar for Diaspora or Israel.
+
+        Returns:
+            The calendar.
+        """
+        logger.info(
+            'Calendar for %s requested from Singleton',
+            (year, calendar_type.name)
+        )
+
+        if year in self.calendars[calendar_type]:
+            return self.calendars[calendar_type][year]
+
+        return None
 
 
 @dataclass(slots=True, repr=False)
@@ -71,14 +183,28 @@ class CalendarGenerator:
                 f'unsupported type {jewish_year.__class__.__name__}'
             )
 
-        self.calendar = deepcopy(DIASPORA if diaspora else ISRAEL)
         self.year = jewish_year
         self.leap = _is_jewish_leap(self.year)
 
-        self._postpone_fastdays()
-        self._set_chanuka_and_asara_betevet()
-        self._set_tanit_esther_and_purim()
-        self._set_rosh_chodesh()
+        # singleton to cache calendars
+        calendar_type = \
+            CalendarType.DIASPORA if diaspora else CalendarType.ISRAEL
+        cache = CalendarsCache()
+        calendar = cache.get(self.year, calendar_type)
+
+        if calendar:
+            # calendar already in cache
+            self.calendar = calendar
+        else:
+            # generate new calendar and add to cache
+            self.calendar = deepcopy(DIASPORA if diaspora else ISRAEL)
+            cache.add(self.year, self.calendar, calendar_type)
+
+            # set / adjust holidays
+            self._postpone_fastdays()
+            self._set_chanuka_and_asara_betevet()
+            self._set_tanit_esther_and_purim()
+            self._set_rosh_chodesh()
 
     def _postpone_fastdays(self) -> None:
         """Postpone fasts if they occur on Shabbat.

@@ -2,7 +2,7 @@
 
 from unittest import TestCase
 
-from src.jewcal.helpers.calendars import CalendarGenerator
+from src.jewcal.helpers.calendars import CalendarGenerator, CalendarsCache
 from src.jewcal.models.date import Months
 
 # pylint: disable=pointless-statement
@@ -327,3 +327,42 @@ class CalendarGeneratorCase(TestCase):
             generator.calendar[Months.TISHREI][23][0].name,
             'Isru Chag'
         )
+
+    def test_singleton(self) -> None:
+        """Test the singleton."""
+        logger = 'src.jewcal.helpers.calendars'
+
+        with self.assertLogs(logger, level='INFO') as context_m:
+            CalendarsCache.clear()
+
+            CalendarGenerator(True, 5783)
+            CalendarGenerator(True, 5783)
+            CalendarGenerator(True, 5785)
+            CalendarGenerator(True, 5783)
+
+            self.assertEqual(
+                context_m.output,
+                [
+                    f'INFO:{logger}:Singleton instance reset',
+
+                    f'INFO:{logger}:Returning new Singleton instance',
+                    f"INFO:{logger}:Calendar for (5783, 'DIASPORA') requested"
+                    ' from Singleton',
+                    f"INFO:{logger}:Calendar for (5783, 'DIASPORA') added to"
+                    ' Singleton',
+
+                    f'INFO:{logger}:Returning existing Singleton instance',
+                    f"INFO:{logger}:Calendar for (5783, 'DIASPORA') requested"
+                    ' from Singleton',
+
+                    f'INFO:{logger}:Returning existing Singleton instance',
+                    f"INFO:{logger}:Calendar for (5785, 'DIASPORA') requested"
+                    ' from Singleton',
+                    f"INFO:{logger}:Calendar for (5785, 'DIASPORA') added to"
+                    ' Singleton',
+
+                    f'INFO:{logger}:Returning existing Singleton instance',
+                    f"INFO:{logger}:Calendar for (5783, 'DIASPORA') requested"
+                    ' from Singleton',
+                ]
+            )
