@@ -194,11 +194,11 @@ class Day:
         """Is it Yom Tov.
 
         Holidays that fall under this category:
-            - Pesach
+            - Pesach (excl. Chol HaMoed)
             - Shavuot
             - Rosh Hashana
             - Yom Kippur
-            - Sukkot
+            - Sukkot (excl. Chol HaMoed)
             - Shmini Atzeret
             - Simchat Tora
 
@@ -208,9 +208,9 @@ class Day:
         return self.categories.yom_tov
 
     def is_issur_melacha(self) -> bool:
-        """Is it Issur Melacha.
+        """Is it Issur Melacha (forbidden to work).
 
-        Holidays that take into account:
+        Holidays taken into account:
             - Shabbat
             - Yom Tov
 
@@ -220,16 +220,14 @@ class Day:
         return self.categories.shabbat or self.categories.yom_tov
 
     def is_chol_hamoed(self) -> bool:
-        """Is it Chol Hamoed.
+        """Is it Chol HaMoed.
 
         Holidays that fall under this category:
-            - Pesach: second through sixth days
-                (third through sixth in the Diaspora).
-            - Sukkot: second through seventh days
-                (third through seventh in the Diaspora).
+            - Pesach: 3rd (2nd in Israel) through 6th days.
+            - Sukkot: 3rd (2nd in Israel) through 7th days.
 
         Returns:
-            True if Chol Hamoed, False otherwise.
+            True if Chol HaMoed, False otherwise.
         """
         return self.categories.chol_hamoed
 

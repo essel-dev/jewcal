@@ -1,8 +1,19 @@
+User guide
+==========
+
+.. include:: ../../README.rst
+  :start-after: .. include_quickstart_start
+  :end-before: .. include_quickstart_end
+
+
 How To
-======
+------
+
+Calendar
+~~~~~~~~
 
 Create a calendar
------------------
+"""""""""""""""""
 
 .. code-block:: python
 
@@ -18,8 +29,11 @@ Create a calendar
   jewcal = JewCal(date(2022, 4, 16), False)  # specific date
 
 
+Day
+~~~
+
 Get the current day
--------------------
+"""""""""""""""""""
 
 .. code-block:: python
 
@@ -31,7 +45,7 @@ Get the current day
 
 
 Set the current day
--------------------
+"""""""""""""""""""
 
 .. code-block:: python
 
@@ -46,7 +60,7 @@ Set the current day
 
 
 Is it a holiday
----------------
+"""""""""""""""
 
 .. code-block:: python
 
@@ -58,7 +72,7 @@ Is it a holiday
 
 
 Is it a fast day
-----------------
+""""""""""""""""
 
 .. code-block:: python
 
@@ -69,8 +83,13 @@ Is it a fast day
   print(f'Is a fast day: {jewcal.day.is_fast_day()}')
 
 
+.. seealso::
+  .. automethod:: jewcal.Day.is_fast_day
+    :noindex:
+
+
 Is it Erev Shabbat
-------------------
+""""""""""""""""""
 
 .. code-block:: python
 
@@ -82,7 +101,7 @@ Is it Erev Shabbat
 
 
 Is it Shabbat
--------------
+"""""""""""""
 
 .. code-block:: python
 
@@ -94,7 +113,7 @@ Is it Shabbat
 
 
 Is it Erev Yom Tov
-------------------
+""""""""""""""""""
 
 .. code-block:: python
 
@@ -106,7 +125,7 @@ Is it Erev Yom Tov
 
 
 Is it Yom Tov
-------------------
+"""""""""""""
 
 .. code-block:: python
 
@@ -117,8 +136,13 @@ Is it Yom Tov
   print(f'Is Yom Tov: {jewcal.day.is_yom_tov()}')
 
 
+.. seealso::
+  .. automethod:: jewcal.Day.is_yom_tov
+    :noindex:
+
+
 Is it Issur Melacha
--------------------
+"""""""""""""""""""
 
 .. code-block:: python
 
@@ -129,8 +153,13 @@ Is it Issur Melacha
   print(f'Issur Melacha: {jewcal.day.is_issur_melacha()}')
 
 
+.. seealso::
+  .. automethod:: jewcal.Day.is_issur_melacha
+    :noindex:
+
+
 Is it Chol HaMoed
------------------
+"""""""""""""""""
 
 .. code-block:: python
 
@@ -141,8 +170,13 @@ Is it Chol HaMoed
   print(f'Is Chol HaMoed: {jewcal.day.is_chol_hamoed()}')
 
 
+.. seealso::
+  .. automethod:: jewcal.Day.is_chol_hamoed
+    :noindex:
+
+
 Is it a Chag
-------------
+""""""""""""
 
 .. code-block:: python
 
@@ -153,8 +187,13 @@ Is it a Chag
   print(f'Is Chag: {jewcal.day.is_chag()}')
 
 
+.. seealso::
+  .. automethod:: jewcal.Day.is_chag
+    :noindex:
+
+
 Is it Rosh Chodesh
-------------------
+""""""""""""""""""
 
 .. code-block:: python
 
@@ -166,7 +205,7 @@ Is it Rosh Chodesh
 
 
 Get all categories
-------------------
+""""""""""""""""""
 
 Get all categories (holiday and fast) for the current day with ``True`` or
 ``False`` values:
@@ -180,8 +219,9 @@ Get all categories (holiday and fast) for the current day with ``True`` or
   for category, value in jewcal.day.categories:
     print(category, value)
 
+
 Get all active categories
--------------------------
+"""""""""""""""""""""""""
 
 Get all categories (holiday and fast) for the current day that are ``True``:
 
@@ -195,7 +235,7 @@ Get all categories (holiday and fast) for the current day that are ``True``:
 
 
 Get all holiday / fast names
-----------------------------
+""""""""""""""""""""""""""""
 
 Get all the holiday / fast names for the current day:
 

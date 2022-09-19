@@ -251,7 +251,7 @@ class DayTestCase(TestCase):
         self.assertEqual(day.is_rosh_chodesh(), False)
 
     def test_event_shabbat_chol_hamoed(self) -> None:
-        """Test event Shabbat and Chol Hamoed."""
+        """Test event Shabbat and Chol HaMoed."""
         # diaspora
         gregorian = date(2021, 9, 25)
         jewish_date = Date(gregorian)

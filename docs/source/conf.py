@@ -29,9 +29,6 @@ autodoc_default_options = {
     'undoc-members': False,
     'exclude-members': '__weakref__'
 }
-autodoc_type_aliases = {  # https://stackoverflow.com/a/67483317
-    'Day': 'Day',
-}
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -44,10 +41,6 @@ html_theme_options = {
         'Jewish Calendar for Diaspora and Israel with holidays and fasts.'
     ),
     'fixed_sidebar': True,
-    'github_user': 'essel-dev',
-    'github_repo': 'jewcal',
-    'github_button': True,
-    'github_type': 'star',
-    'show_relbars': True,
 }
+
 html_show_sourcelink = False

@@ -4,19 +4,42 @@
    contain the root `toctree` directive.
 
 .. include:: ../../README.rst
-  :start-after: .. include_start_title
-  :end-before: .. include_end_title
+  :start-after: .. include_title_start
+  :end-before: .. include_title_end
 
 .. include:: ../../README.rst
-  :start-after: .. include_start_intro
-  :end-before: .. include_end_intro
+  :start-after: .. include_intro_start
+  :end-before: .. include_intro_end
 
-Contents
---------
+
+User guide
+----------
+
+How to get started with JewCal.
 
 .. toctree::
   :maxdepth: 4
 
-  install
   howto
-  reference
+
+
+API Reference
+-------------
+
+An overview of all public JewCal classes and methods.
+
+.. toctree::
+  :maxdepth: 4
+
+  api
+
+
+Resources
+---------
+
+Useful links.
+
+.. toctree::
+  :maxdepth: 4
+
+  resources

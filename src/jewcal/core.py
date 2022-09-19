@@ -1,9 +1,5 @@
 """Jewish Calendar."""
 
-# https://stackoverflow.com/a/67483317
-# Show return type in Sphinx without its full path
-from __future__ import annotations
-
 from dataclasses import dataclass, field
 from datetime import date
 from typing import Optional

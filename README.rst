@@ -1,9 +1,9 @@
-.. include_start_title
+.. include_title_start
 
 JewCal - Jewish Calendar
 =========================
 
-.. include_end_title
+.. include_title_end
 
 .. image:: https://github.com/essel-dev/jewcal/actions/workflows/tests.yml/badge.svg
     :target: https://github.com/essel-dev/jewcal/actions/workflows/tests.yml
@@ -19,7 +19,7 @@ JewCal - Jewish Calendar
 
 |
 
-.. include_start_intro
+.. include_intro_start
 
 JewCal is a Jewish Calendar for Diaspora and Israel with holidays and fasts.
 
@@ -34,12 +34,14 @@ The aim of JewCal is using it in other projects like
 `Home Assistant <https://www.home-assistant.io/>`_ with
 `AppDaemon <https://github.com/AppDaemon/appdaemon>`_ for home automation.
 
-.. include_end_intro
+.. include_intro_end
 
-.. include_start_install
+
+.. include_quickstart_start
 
 Installation
 ------------
+
 .. code-block:: bash
 
   pip install jewcal
@@ -86,9 +88,15 @@ The code:
 
   print(f'It is Issur Melacha: {jewcal.day.is_issur_melacha()}')
 
-.. include_end_install
+.. include_quickstart_end
+
+.. include_resources_start
 
 Resources
 ---------
-- Documentation: https://jewcal.readthedocs.io/
-- PyPI: https://pypi.org/project/jewcal/
+
+- `JewCal @ PyPI <https://pypi.org/project/jewcal/>`_
+
+.. include_resources_end
+
+- `JewCal @ Read the Docs <https://jewcal.readthedocs.io/>`_
