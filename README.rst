@@ -28,7 +28,7 @@ Gregorian calendar. JewCal makes it possible to convert Gregorian to Jewish
 dates and to get the holiday and fast details.
 
 One of the advantages of JewCal is using Boolean functions to deduce if it is
-*(Erev) Shabbat* or *Yom Tov* and if it is *Issur Melacha* (forbidden to work).
+*(Erev) Shabbat* or *Yom Tov* and if it is *Issur Melacha*.
 
 The aim of JewCal is using it in other projects like
 `Home Assistant <https://www.home-assistant.io/>`_ with
