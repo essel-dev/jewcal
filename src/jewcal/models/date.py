@@ -2,35 +2,9 @@
 
 from dataclasses import dataclass, field
 from datetime import date
-from enum import IntEnum
 
 from ..helpers.dates import DateConverter
-
-
-class Months(IntEnum):
-    """The Jewish months."""
-
-    NISAN = 1
-    IYAR = 2
-    SIVAN = 3
-    TAMUZ = 4
-    AV = 5
-    ELUL = 6
-    TISHREI = 7
-    CHESHVAN = 8
-    KISLEV = 9
-    TEVET = 10
-    SHEVAT = 11
-    ADAR = 12
-    ADAR_2 = 13
-
-    def __str__(self) -> str:
-        """Get the month as a readable string.
-
-        Returns:
-            The month.
-        """
-        return self.name.capitalize().replace('_', ' ')
+from .enums import Month
 
 
 @dataclass(slots=True)
@@ -56,7 +30,7 @@ class Date:
     """Is it a Jewish leap year."""
 
     def __init__(self, gregorian: date) -> None:
-        """Create a Jewish date.
+        """Initialize a Jewish date.
 
         Args:
             gregorian: The Gregorian date.
@@ -68,20 +42,6 @@ class Date:
         self.weekday = converter.jewish_weekday
         self._leap = converter.jewish_leap
 
-    @property
-    def month_name(self) -> str:
-        """Get the Jewish month name.
-
-        Returns:
-            The Jewish month name.
-        """
-        month = str(Months(self.month))
-
-        if self._leap and self.month == 12:
-            month = 'Adar 1'
-
-        return month
-
     def __str__(self) -> str:
         """Get the Jewish date as a readable string.
 
@@ -90,7 +50,7 @@ class Date:
         """
         return (
             f'{self.day}'
-            f' {self.month_name}'
+            f' {Month.get(self.month, self._leap)}'  # Adar 1/2 in leap year
             f' {self.year}'
             f' ({self.gregorian})'
         )

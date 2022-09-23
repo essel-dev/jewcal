@@ -1,22 +1,17 @@
 """Jewish day model."""
 
-from copy import deepcopy
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date as datetime_date
-from typing import Final, Iterator, Tuple
+from typing import Iterator, Tuple
 
-from ..helpers.calendars import CalendarGenerator, Category, Event
-from .date import Date, Months
-
-SHABBAT: Final[dict[int, Event]] = {
-    5: Event('Erev Shabbat', [Category.EREV]),
-    6: Event('Shabbat', [Category.SHABBAT]),
-}
+from ..helpers.calendars import CalendarGenerator
+from .date import Date
+from .enums import Fast, Month, Shabbat
 
 
 @dataclass(slots=True)
 class DayCategories:
-    """The different categories of holidays / fast."""
+    """The different day categories."""
 
     erev: bool = False
     """Is it the day before Shabbat or Yom Tov."""
@@ -24,17 +19,11 @@ class DayCategories:
     shabbat: bool = False
     """Is it Shabbat."""
 
-    yom_tov: bool = False
+    yomtov: bool = False
     """Is it Yom Tov."""
-
-    chol_hamoed: bool = False
-    """Is it Chol HaMoed."""
 
     chag: bool = False
     """Is it a Chag."""
-
-    rosh_chodesh: bool = False
-    """Is it Rosh Chodesh."""
 
     fast: bool = False
     """Is it a Fast day."""
@@ -45,8 +34,8 @@ class DayCategories:
         Yields:
             A tuple with the category name and value.
         """
-        for field in self.__dataclass_fields__:  # pylint: disable=no-member
-            yield field, getattr(self, field)
+        for category in self.__dataclass_fields__:  # pylint: disable=no-member
+            yield category, getattr(self, category)
 
 
 @dataclass(slots=True)
@@ -65,8 +54,11 @@ class Day:
     names: list[str]
     """The holiday names."""
 
+    _erev_shabbat: bool = field(repr=False)
+    _erev_yomtov: bool = field(repr=False)
+
     def __init__(self, gregorian: datetime_date, diaspora: bool) -> None:
-        """Create a day.
+        """Initialize a day.
 
         Args:
             gregorian: The Gregorian date.
@@ -76,18 +68,26 @@ class Day:
         self.categories = DayCategories()
         self.names = []
 
-        events: list[Event] = []
-        weekday = self.date.weekday
+        self._erev_shabbat = False
+        self._erev_yomtov = False
 
         # shabbat
-        if weekday in (5, 6):
-            events.append(SHABBAT[weekday])
+        weekday = self.date.weekday
+        match weekday:
+            case 5:
+                self.categories.erev = True
+                self._erev_shabbat = True
+                self.names.append(str(Shabbat.EREV))
+            case 6:
+                self.categories.shabbat = True
+                self.names.append(str(Shabbat.SHABBAT))
 
         # holiday / fast
         year = self.date.year
-        month = Months(self.date.month)
+        month = Month(self.date.month)
         day = self.date.day
         calendar = CalendarGenerator(diaspora, year).calendar
+        events = []
         try:
             calendar[month][day]
         except KeyError:
@@ -95,13 +95,19 @@ class Day:
         else:
             events.extend(calendar[month][day])
 
-        # save in self
         for event in events:
-            for category in event.categories:
-                attr = f'{category.name.lower()}'
-                setattr(self.categories, attr, True)
+            attr = event.holiday.__class__.__name__.lower()
+            setattr(self.categories, attr, True)
 
-            self.names.append(event.name)
+            if event.holiday is Fast.YOM_KIPPUR:
+                continue  # don't add Yom Kippur twice to names
+
+            if event.erev:
+                self.categories.erev = True
+                self._erev_yomtov = True
+                self.categories.yomtov = False
+
+            self.names.append(str(event))
 
     def __str__(self) -> str:
         """Get the day as a readable string.
@@ -109,9 +115,9 @@ class Day:
         Returns:
             The day.
         """
-        date: str = f'{str(self.date)}'
+        date = f'{str(self.date)}'
 
-        names: str = f' {", ".join(self.names)}' if self.names else ''
+        names = f' {", ".join(self.names)}' if self.names else ''
 
         return f'{date}{names}'
 
@@ -126,31 +132,28 @@ class Day:
     def is_holiday(self) -> bool:
         """Is it a holiday.
 
-        If any of the categories (except fast) are ``True``.
+        Categories taken into account:
+            - Shabbat
+            - :py:class:`~.enums.YomTov`
+            - :py:class:`~.enums.Chag`
 
         Returns:
             True if holiday, False otherwise.
         """
-        active_categories = self.active_categories()
+        if any([
+            self.categories.shabbat,
+            self.categories.yomtov,
+            self.categories.chag,
+        ]):
+            return True
 
-        if self.categories.fast:
-            try:
-                active_categories.remove(Category.FAST.name.lower())
-            except ValueError:  # pragma: no cover
-                pass
-
-        return len(active_categories) > 0
+        return False
 
     def is_fast_day(self) -> bool:
         """Is it a fast day.
 
-        Fast days that fall under this category:
-            - Shiva Asar BeTamuz
-            - Tisha BeAv
-            - Tzom Gedalia
-            - Yom Kippur
-            - Asara BeTevet
-            - TaAnit Esther
+        Fasts taken into account:
+            - :py:class:`~.enums.Fast`
 
         Returns:
             True if a fast day, False otherwise.
@@ -163,7 +166,7 @@ class Day:
         Returns:
             True if Erev Shabbat, False otherwise.
         """
-        return self.categories.erev and self.date.weekday == 5
+        return self._erev_shabbat
 
     def is_shabbat(self) -> bool:
         """Is it Shabbat.
@@ -173,87 +176,44 @@ class Day:
         """
         return self.categories.shabbat
 
-    def is_erev_yom_tov(self) -> bool:
+    def is_erev_yomtov(self) -> bool:
         """Is it Erev Yom Tov.
 
         Returns:
             True if Erev Yom Tov, False otherwise.
         """
-        if self.categories.erev:
-            names = deepcopy(self.names)
-            try:
-                names.remove('Erev Shabbat')
-            except ValueError:
-                pass
+        return self._erev_yomtov
 
-            return 'Erev Shabbat' not in names
-
-        return False
-
-    def is_yom_tov(self) -> bool:
+    def is_yomtov(self) -> bool:
         """Is it Yom Tov.
 
-        Holidays that fall under this category:
-            - Pesach (excl. Chol HaMoed)
-            - Shavuot
-            - Rosh Hashana
-            - Yom Kippur
-            - Sukkot (excl. Chol HaMoed)
-            - Shmini Atzeret
-            - Simchat Tora
+        Holidays taken into account:
+            - :py:class:`~.enums.YomTov`
 
         Returns:
             True if Yom Tov, False otherwise.
         """
-        return self.categories.yom_tov
+        return self.categories.yomtov
 
     def is_issur_melacha(self) -> bool:
         """Is it Issur Melacha (forbidden to work).
 
         Holidays taken into account:
             - Shabbat
-            - Yom Tov
+            - :py:class:`~.enums.YomTov`
 
         Returns:
             True if Issur Melacha, False otherwise.
         """
-        return self.categories.shabbat or self.categories.yom_tov
-
-    def is_chol_hamoed(self) -> bool:
-        """Is it Chol HaMoed.
-
-        Holidays that fall under this category:
-            - Pesach: 2nd (3rd in Diaspora) through 6th days.
-            - Sukkot: 2nd (3rd in Diaspora) through 7th days.
-
-        Returns:
-            True if Chol HaMoed, False otherwise.
-        """
-        return self.categories.chol_hamoed
+        return self.categories.shabbat or self.categories.yomtov
 
     def is_chag(self) -> bool:
         """Is it a Chag.
 
-        Holidays that fall under this category:
-            - Isru Chag (the day after each Pesach, Shavuot and Sukkot)
-            - Lag BaOmer
-            - Chanuka
-            - Tu BiShevat
-            - Purim
-            - Shushan Purim
+        Holidays taken into account:
+            - :py:class:`~.enums.Chag`
 
         Returns:
             True if Chag, False otherwise.
         """
         return self.categories.chag
-
-    def is_rosh_chodesh(self) -> bool:
-        """Is it Rosh Chodesh.
-
-        Ooccurs monthly and is 1 or 2 days, depending on the length of the
-        month.
-
-        Returns:
-            True if Rosh Chodesh, False otherwise.
-        """
-        return self.categories.rosh_chodesh
