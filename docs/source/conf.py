@@ -1,6 +1,5 @@
 """Configuration file for the Sphinx documentation builder."""
 
-#
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
@@ -31,6 +30,8 @@ autodoc_default_options = {
     'exclude-members': '__weakref__'
 }
 
+add_module_names = False
+
 autodoc_type_aliases = {  # https://stackoverflow.com/a/67483317
     'Day': 'Day',
 }
@@ -46,6 +47,11 @@ html_theme_options = {
         'A Jewish Calendar with holidays and fasts.'
     ),
     'fixed_sidebar': True,
+    'github_user': 'essel-dev',
+    'github_repo': 'jewcal',
+    'github_button': True,
+    'github_type': 'star',
+    'show_relbars': True,
 }
 
 html_show_sourcelink = False

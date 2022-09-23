@@ -13,7 +13,16 @@ from .models.day import Day
 
 @dataclass(slots=True)
 class JewCal:
-    """The Jewish Calendar."""
+    """The Jewish Calendar.
+
+    Calendars are cached when they are created. This optimization is
+    noticeable when creating a large number of Jewish dates in a single
+    run. In that scenario it is preferable to (re)set the
+    current :py:meth:`date` on an existing JewCal-instance rather than
+    creating new ones.
+
+    .. see helpers.calendars
+    """
 
     day: Day
     """The current day in the Jewish calendar."""
@@ -26,7 +35,7 @@ class JewCal:
         gregorian: Optional[date] = None,
         diaspora: bool = True
     ) -> None:
-        """Create a Jewish calendar with a starting Gregorian date.
+        """Initialize a Jewish calendar.
 
         Args:
             gregorian: The Gregorian date. Default is today.
@@ -54,11 +63,6 @@ class JewCal:
     def days(self, days: int) -> list[Day]:
         """Get the next or past day(s).
 
-        Examples:
-            >>> days(-1) # past day
-            >>> days(1)  # next day
-            >>> days(5)  # next 5 days
-
         Args:
             days: The number of days to get.
 
@@ -66,7 +70,7 @@ class JewCal:
             A list of days.
 
         Raises:
-            TypeError: If `days` has an unsupported type.
+            TypeError: If `days` is an unsupported type.
             ValueError: If `days` is zero.
         """
         if not isinstance(days, int):
@@ -97,7 +101,7 @@ class JewCal:
         """Get the current week.
 
         Returns:
-            A list of days with Sunday as the first day of the week.
+            A list of 7 days with Sunday as the first day of the week.
         """
         weekday = self.day.date.weekday
 
@@ -110,19 +114,14 @@ class JewCal:
     def weeks(self, weeks: int) -> list[Day]:
         """Get the next or past week(s).
 
-        Examples:
-            >>> weeks(-2) # past 2 weeks
-            >>> weeks(1)  # next week
-            >>> weeks(3)  # next 3 weeks
-
         Args:
             weeks: The number of weeks to get.
 
         Returns:
-            A list of days. The first day is Sunday.
+            Weeks as a list of days. The first day is Sunday.
 
         Raises:
-            TypeError: If `weeks` has an unsupported type.
+            TypeError: If `weeks` is an unsupported type.
             ValueError: If `weeks` is zero.
         """
         if not isinstance(weeks, int):
@@ -186,10 +185,10 @@ class JewCal:
             ]
 
         if quantity < 0:  # past day(s) / week(s)
-            startdate = gregorian - timedelta(days=abs(quantity))
+            start_date = gregorian - timedelta(days=abs(quantity))
 
             selected_days = [
-                Day(startdate + timedelta(days=i), diaspora=diaspora)
+                Day(start_date + timedelta(days=i), diaspora=diaspora)
                 for i in range(start, stop)
             ]
 

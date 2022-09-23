@@ -46,8 +46,7 @@ tox -e flake8
 ## Document
 ```sh
 cd docs
-make clean
-make html
+make clean html
 ```
 
 The HTML pages are in build/html.

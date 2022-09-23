@@ -12,27 +12,11 @@ def main() -> None:
     jewcal = JewCal()
 
     print(f'Today is {jewcal.day}')
-
-    print(f'It is Erev Shabbat: {jewcal.day.is_erev_shabbat()}')
-    print(f'It is Erev Yom Tov: {jewcal.day.is_erev_yom_tov()}')
-    print(f'It is Shabbat: {jewcal.day.is_shabbat()}')
-    print(f'It is Yom Tov: {jewcal.day.is_yom_tov()}')
-    print(f'It is Issur Melacha: {jewcal.day.is_issur_melacha()}')
-
-    print(f'\nYesterday was {jewcal.days(-1)[0]}')
-    print(f'Tomorrow is {jewcal.days(1)[0]}')
-
-    print('\nPast week:')
-    for day in jewcal.weeks(-1):
-        print(day)
-
-    print('\nCurrent week:')
-    for day in jewcal.current_week():
-        print(day)
-
-    print('\nNext 2 weeks:')
-    for day in jewcal.weeks(2):
-        print(day)
+    print(f'Is Erev Shabbat: {jewcal.day.is_erev_shabbat()}')
+    print(f'Is Shabbat: {jewcal.day.is_shabbat()}')
+    print(f'Is Erev Yom Tov: {jewcal.day.is_erev_yomtov()}')
+    print(f'Is Yom Tov: {jewcal.day.is_yomtov()}')
+    print(f'Is Issur Melacha: {jewcal.day.is_issur_melacha()}')
 
 
 if __name__ == '__main__':

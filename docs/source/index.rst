@@ -19,6 +19,5 @@ Contents
   :maxdepth: 4
 
   quickstart
-  tutorials
+  tutorial
   reference
-  explanations

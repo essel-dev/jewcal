@@ -1,11 +1,13 @@
 """Convert between Gregorian and Jewish dates.
 
+Use the :py:class:`DateConverter` to convert Gregorian to Jewish dates.
+
 Absolute date means the number of days elapsed since the Gregorian date
 Sunday, December 31, 1 BCE. (Since there was no year 0, the year following
 1 BCE is 1 CE.) Thus the Gregorian date January 1, 1 CE is absolute date
 number 1.
 
-Source code Copyright © by Ulrich and David Greve (2005)
+The functions are based on the source code from Ulrich and David Greve (2005).
 https://www.david-greve.de/luach-code/jewish-python.html
 """
 
@@ -37,7 +39,7 @@ class DateConverter:
             gregorian: The Gregorian date.
 
         Raises:
-            TypeError: If gregorian has an unsupported type.
+            TypeError: If gregorian is an unsupported type.
         """
         # gregorian
         if not isinstance(gregorian, date):
@@ -67,14 +69,12 @@ def _is_gregorian_leap(year: int) -> bool:
         True for leap year, False otherwise.
     """
     return bool(
-        all(
-            [
-                ((year % 4) == 0),
-                ((year % 400) != 100),
-                ((year % 400) != 200),
-                ((year % 400) != 300),
-            ]
-        )
+        all([
+            ((year % 4) == 0),
+            ((year % 400) != 100),
+            ((year % 400) != 200),
+            ((year % 400) != 300),
+        ])
     )
 
 
@@ -248,42 +248,42 @@ def _jewish_to_absdate(year: int, month: int, day: int) -> int:
     return return_value
 
 
-def _absdate_to_gregorian(absdate: int) -> Tuple[int, int, int]:
-    """Convert the absolute date number to a Gregorian date.
+# def _absdate_to_gregorian(absdate: int) -> Tuple[int, int, int]:
+#     """Convert the absolute date number to a Gregorian date.
 
-    Args:
-        absdate: The absolute date number.
+#     Args:
+#         absdate: The absolute date number.
 
-    Returns:
-        A tuple with the Gregorian year, month and day.
-    """
-    approx = absdate // 366
+#     Returns:
+#         A tuple with the Gregorian year, month and day.
+#     """
+#     approx = absdate // 366
 
-    # search forward from the approximation
-    year_temp = approx
-    while 1:
-        absdate_temp = _gregorian_to_absdate(year_temp + 1, 1, 1)
-        if absdate < absdate_temp:
-            break
-        year_temp += 1
-    year = year_temp
+#     # search forward from the approximation
+#     year_temp = approx
+#     while 1:
+#         absdate_temp = _gregorian_to_absdate(year_temp + 1, 1, 1)
+#         if absdate < absdate_temp:
+#             break
+#         year_temp += 1
+#     year = year_temp
 
-    # search forward from January
-    month_temp = 1
-    while 1:
-        absdate_temp = _gregorian_to_absdate(
-            year, month_temp, _days_in_gregorian_month(month_temp, year)
-        )
-        if absdate <= absdate_temp:
-            break
-        month_temp += 1
-    month = month_temp
+#     # search forward from January
+#     month_temp = 1
+#     while 1:
+#         absdate_temp = _gregorian_to_absdate(
+#             year, month_temp, _days_in_gregorian_month(month_temp, year)
+#         )
+#         if absdate <= absdate_temp:
+#             break
+#         month_temp += 1
+#     month = month_temp
 
-    # calculate the day by subtraction
-    absdate_temp = _gregorian_to_absdate(year, month, 1)
-    day = absdate - absdate_temp + 1
+#     # calculate the day by subtraction
+#     absdate_temp = _gregorian_to_absdate(year, month, 1)
+#     day = absdate - absdate_temp + 1
 
-    return (year, month, day)
+#     return (year, month, day)
 
 
 def _absdate_to_jewish(absdate: int) -> Tuple[int, int, int]:
