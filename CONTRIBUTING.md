@@ -23,10 +23,16 @@ source env/bin/activate
 pip install -e .[dev]
 ```
 
+## Pre-commit
+```sh
+pre-commit install
+pre-commit run --all-files
+```
+
 ## Develop
 ### Test
 ```sh
-tox -e test
+tox -e py310
 ```
 
 ### Lint
