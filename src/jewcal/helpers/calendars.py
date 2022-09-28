@@ -189,9 +189,8 @@ class CalendarGenerator:
 
         # singleton to cache calendars
         cache = CalendarsCache()
-        calendar = cache.get(self.year, self.calendar_type)
 
-        if calendar:
+        if calendar := cache.get(self.year, self.calendar_type):
             # calendar already in cache
             self.calendar = calendar
         else:
