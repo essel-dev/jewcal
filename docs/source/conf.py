@@ -44,7 +44,7 @@ html_static_path = ['_static']
 
 html_theme_options = {
     'description': (
-        'A Jewish Calendar with holidays and fasts.'
+        'Jewish Calendar for (home) automation.'
     ),
     'fixed_sidebar': True,
     'github_user': 'essel-dev',

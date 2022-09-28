@@ -26,7 +26,7 @@ JewCal is a Jewish Calendar with holidays and fasts for Israel and Diaspora.
 You can convert Gregorian to Jewish dates and determine whether a day is
 *(Erev) Shabbat, (Erev) Yom Tov, Issur Melacha* and more.
 
-The aim of JewCal is using it with home automation
+JewCal is mainly developed for use with home automation
 (e.g. `Home Assistant <https://www.home-assistant.io/>`_ with `AppDaemon
 <https://github.com/AppDaemon/appdaemon>`_).
 

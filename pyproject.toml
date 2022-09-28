@@ -10,7 +10,7 @@ jewcal = ['py.typed']
 [project]
 name = 'JewCal'
 authors = [{name='essel-dev', email='info@essel.dev'}]
-description = 'A Jewish Calendar with holidays and fasts.'
+description = 'Jewish Calendar for (home) automation.'
 readme = 'README.rst'
 dynamic = ['version']
 requires-python = '>=3.10'
