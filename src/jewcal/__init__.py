@@ -59,15 +59,16 @@ Get (active) day categories
 >>> # Get all categories with True or False values.
 >>> for category in jewcal.day.categories:
 ...    category
-('erev', True)
+('erev_shabbat', True)
 ('shabbat', False)
+('erev_yomtov', False)
 ('yomtov', False)
 ('chag', False)
 ('fast', False)
 >>>
 >>> # Get all categories that are True.
 >>> jewcal.day.active_categories()
-['erev']
+['erev_shabbat']
 
 
 Get holiday/fast names

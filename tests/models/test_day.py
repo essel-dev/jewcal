@@ -18,8 +18,9 @@ class DayTestCase(TestCase):
 
         self.assertEqual(jewish_date, day.date)
 
-        self.assertEqual(day.categories.erev, False)
+        self.assertEqual(day.categories.erev_shabbat, False)
         self.assertEqual(day.categories.shabbat, False)
+        self.assertEqual(day.categories.erev_yomtov, False)
         self.assertEqual(day.categories.yomtov, False)
         self.assertEqual(day.categories.chag, False)
         self.assertEqual(day.categories.fast, False)
@@ -44,15 +45,16 @@ class DayTestCase(TestCase):
 
         self.assertEqual(jewish_date, day.date)
 
-        self.assertEqual(day.categories.erev, True)
+        self.assertEqual(day.categories.erev_shabbat, False)
         self.assertEqual(day.categories.shabbat, False)
+        self.assertEqual(day.categories.erev_yomtov, True)
         self.assertEqual(day.categories.yomtov, False)
         self.assertEqual(day.categories.chag, False)
         self.assertEqual(day.categories.fast, False)
 
         self.assertEqual(day.names, ['Erev Rosh Hashana'])
 
-        self.assertEqual(day.active_categories(), ['erev'])
+        self.assertEqual(day.active_categories(), ['erev_yomtov'])
         self.assertEqual(day.is_holiday(), False)
         self.assertEqual(day.is_fast_day(), False)
         self.assertEqual(day.is_erev_shabbat(), False)
@@ -70,8 +72,9 @@ class DayTestCase(TestCase):
 
         self.assertEqual(jewish_date, day.date)
 
-        self.assertEqual(day.categories.erev, False)
+        self.assertEqual(day.categories.erev_shabbat, False)
         self.assertEqual(day.categories.shabbat, True)
+        self.assertEqual(day.categories.erev_yomtov, False)
         self.assertEqual(day.categories.yomtov, False)
         self.assertEqual(day.categories.chag, False)
         self.assertEqual(day.categories.fast, False)
@@ -96,8 +99,9 @@ class DayTestCase(TestCase):
 
         self.assertEqual(jewish_date, day.date)
 
-        self.assertEqual(day.categories.erev, False)
+        self.assertEqual(day.categories.erev_shabbat, False)
         self.assertEqual(day.categories.shabbat, False)
+        self.assertEqual(day.categories.erev_yomtov, False)
         self.assertEqual(day.categories.yomtov, True)
         self.assertEqual(day.categories.chag, False)
         self.assertEqual(day.categories.fast, False)
@@ -123,8 +127,9 @@ class DayTestCase(TestCase):
 
         self.assertEqual(jewish_date, day.date)
 
-        self.assertEqual(day.categories.erev, False)
+        self.assertEqual(day.categories.erev_shabbat, False)
         self.assertEqual(day.categories.shabbat, False)
+        self.assertEqual(day.categories.erev_yomtov, False)
         self.assertEqual(day.categories.yomtov, False)
         self.assertEqual(day.categories.chag, True)
         self.assertEqual(day.categories.fast, False)
@@ -148,8 +153,9 @@ class DayTestCase(TestCase):
 
         self.assertEqual(jewish_date, day.date)
 
-        self.assertEqual(day.categories.erev, False)
+        self.assertEqual(day.categories.erev_shabbat, False)
         self.assertEqual(day.categories.shabbat, False)
+        self.assertEqual(day.categories.erev_yomtov, False)
         self.assertEqual(day.categories.yomtov, False)
         self.assertEqual(day.categories.chag, True)
         self.assertEqual(day.categories.fast, False)
@@ -175,15 +181,16 @@ class DayTestCase(TestCase):
 
         self.assertEqual(jewish_date, day.date)
 
-        self.assertEqual(day.categories.erev, True)
+        self.assertEqual(day.categories.erev_shabbat, False)
         self.assertEqual(day.categories.shabbat, False)
+        self.assertEqual(day.categories.erev_yomtov, True)
         self.assertEqual(day.categories.yomtov, False)
         self.assertEqual(day.categories.chag, True)
         self.assertEqual(day.categories.fast, False)
 
         self.assertEqual(day.names, ['Hoshana Raba'])
 
-        self.assertEqual(day.active_categories(), ['erev', 'chag'])
+        self.assertEqual(day.active_categories(), ['erev_yomtov', 'chag'])
         self.assertEqual(day.is_holiday(), True)
         self.assertEqual(day.is_fast_day(), False)
         self.assertEqual(day.is_erev_shabbat(), False)
@@ -201,8 +208,9 @@ class DayTestCase(TestCase):
 
         self.assertEqual(jewish_date, day.date)
 
-        self.assertEqual(day.categories.erev, False)
+        self.assertEqual(day.categories.erev_shabbat, False)
         self.assertEqual(day.categories.shabbat, False)
+        self.assertEqual(day.categories.erev_yomtov, False)
         self.assertEqual(day.categories.yomtov, False)
         self.assertEqual(day.categories.chag, True)
         self.assertEqual(day.categories.fast, False)
@@ -227,8 +235,9 @@ class DayTestCase(TestCase):
 
         self.assertEqual(jewish_date, day.date)
 
-        self.assertEqual(day.categories.erev, False)
+        self.assertEqual(day.categories.erev_shabbat, False)
         self.assertEqual(day.categories.shabbat, False)
+        self.assertEqual(day.categories.erev_yomtov, False)
         self.assertEqual(day.categories.yomtov, False)
         self.assertEqual(day.categories.chag, False)
         self.assertEqual(day.categories.fast, True)
@@ -254,8 +263,9 @@ class DayTestCase(TestCase):
 
         self.assertEqual(jewish_date, day.date)
 
-        self.assertEqual(day.categories.erev, False)
+        self.assertEqual(day.categories.erev_shabbat, False)
         self.assertEqual(day.categories.shabbat, True)
+        self.assertEqual(day.categories.erev_yomtov, False)
         self.assertEqual(day.categories.yomtov, False)
         self.assertEqual(day.categories.chag, True)
         self.assertEqual(day.categories.fast, False)
@@ -282,8 +292,9 @@ class DayTestCase(TestCase):
 
         self.assertEqual(jewish_date, day.date)
 
-        self.assertEqual(day.categories.erev, False)
+        self.assertEqual(day.categories.erev_shabbat, False)
         self.assertEqual(day.categories.shabbat, True)
+        self.assertEqual(day.categories.erev_yomtov, False)
         self.assertEqual(day.categories.yomtov, False)
         self.assertEqual(day.categories.chag, True)
         self.assertEqual(day.categories.fast, False)
@@ -312,8 +323,9 @@ class DayTestCase(TestCase):
 
         self.assertEqual(jewish_date, day.date)
 
-        self.assertEqual(day.categories.erev, False)
+        self.assertEqual(day.categories.erev_shabbat, False)
         self.assertEqual(day.categories.shabbat, True)
+        self.assertEqual(day.categories.erev_yomtov, False)
         self.assertEqual(day.categories.yomtov, True)
         self.assertEqual(day.categories.chag, False)
         self.assertEqual(day.categories.fast, False)
@@ -337,8 +349,9 @@ class DayTestCase(TestCase):
 
         self.assertEqual(jewish_date, day.date)
 
-        self.assertEqual(day.categories.erev, False)
+        self.assertEqual(day.categories.erev_shabbat, False)
         self.assertEqual(day.categories.shabbat, True)
+        self.assertEqual(day.categories.erev_yomtov, False)
         self.assertEqual(day.categories.yomtov, False)
         self.assertEqual(day.categories.chag, True)
         self.assertEqual(day.categories.fast, False)
@@ -363,15 +376,19 @@ class DayTestCase(TestCase):
 
         self.assertEqual(jewish_date, day.date)
 
-        self.assertEqual(day.categories.erev, True)
+        self.assertEqual(day.categories.erev_shabbat, True)
         self.assertEqual(day.categories.shabbat, False)
+        self.assertEqual(day.categories.erev_yomtov, True)
         self.assertEqual(day.categories.yomtov, False)
         self.assertEqual(day.categories.chag, False)
         self.assertEqual(day.categories.fast, False)
 
         self.assertEqual(day.names, ['Erev Shabbat', 'Erev Pesach'])
 
-        self.assertEqual(day.active_categories(), ['erev'])
+        self.assertEqual(
+            day.active_categories(),
+            ['erev_shabbat', 'erev_yomtov']
+        )
         self.assertEqual(day.is_holiday(), False)
         self.assertEqual(day.is_fast_day(), False)
         self.assertEqual(day.is_erev_shabbat(), True)
@@ -389,8 +406,9 @@ class DayTestCase(TestCase):
 
         self.assertEqual(jewish_date, day.date)
 
-        self.assertEqual(day.categories.erev, False)
+        self.assertEqual(day.categories.erev_shabbat, False)
         self.assertEqual(day.categories.shabbat, True)
+        self.assertEqual(day.categories.erev_yomtov, False)
         self.assertEqual(day.categories.yomtov, True)
         self.assertEqual(day.categories.chag, False)
         self.assertEqual(day.categories.fast, False)
@@ -416,8 +434,9 @@ class DayTestCase(TestCase):
 
         self.assertEqual(jewish_date, day.date)
 
-        self.assertEqual(day.categories.erev, False)
+        self.assertEqual(day.categories.erev_shabbat, False)
         self.assertEqual(day.categories.shabbat, False)
+        self.assertEqual(day.categories.erev_yomtov, False)
         self.assertEqual(day.categories.yomtov, True)
         self.assertEqual(day.categories.chag, False)
         self.assertEqual(day.categories.fast, True)
@@ -441,8 +460,9 @@ class DayTestCase(TestCase):
 
         self.assertEqual(jewish_date, day.date)
 
-        self.assertEqual(day.categories.erev, False)
+        self.assertEqual(day.categories.erev_shabbat, False)
         self.assertEqual(day.categories.shabbat, True)
+        self.assertEqual(day.categories.erev_yomtov, False)
         self.assertEqual(day.categories.yomtov, True)
         self.assertEqual(day.categories.chag, False)
         self.assertEqual(day.categories.fast, True)
@@ -469,8 +489,9 @@ class DayTestCase(TestCase):
 
         self.assertEqual(jewish_date, day.date)
 
-        self.assertEqual(day.categories.erev, False)
+        self.assertEqual(day.categories.erev_shabbat, False)
         self.assertEqual(day.categories.shabbat, True)
+        self.assertEqual(day.categories.erev_yomtov, False)
         self.assertEqual(day.categories.yomtov, False)
         self.assertEqual(day.categories.chag, True)
         self.assertEqual(day.categories.fast, False)

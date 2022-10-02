@@ -1,6 +1,6 @@
 """Jewish day model."""
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import date as datetime_date
 from typing import Iterator, Tuple
 
@@ -13,11 +13,14 @@ from .enums import Fast, Month, Shabbat
 class DayCategories:
     """The different day categories."""
 
-    erev: bool = False
-    """Is it the day before Shabbat or Yom Tov."""
+    erev_shabbat: bool = False
+    """Is it the day before Shabbat."""
 
     shabbat: bool = False
     """Is it Shabbat."""
+
+    erev_yomtov: bool = False
+    """Is it the day before Yom Tov."""
 
     yomtov: bool = False
     """Is it Yom Tov."""
@@ -54,9 +57,6 @@ class Day:
     names: list[str]
     """The holiday names."""
 
-    _erev_shabbat: bool = field(repr=False)
-    _erev_yomtov: bool = field(repr=False)
-
     def __init__(self, gregorian: datetime_date, diaspora: bool) -> None:
         """Initialize a day.
 
@@ -68,15 +68,11 @@ class Day:
         self.categories = DayCategories()
         self.names = []
 
-        self._erev_shabbat = False
-        self._erev_yomtov = False
-
         # shabbat
         weekday = self.date.weekday
         match weekday:
             case 5:
-                self.categories.erev = True
-                self._erev_shabbat = True
+                self.categories.erev_shabbat = True
                 self.names.append(str(Shabbat.EREV))
             case 6:
                 self.categories.shabbat = True
@@ -103,8 +99,7 @@ class Day:
                 continue  # don't add Yom Kippur twice to names
 
             if event.erev:
-                self.categories.erev = True
-                self._erev_yomtov = True
+                self.categories.erev_yomtov = True
                 self.categories.yomtov = False
 
             self.names.append(str(event))
@@ -166,7 +161,7 @@ class Day:
         Returns:
             True if Erev Shabbat, False otherwise.
         """
-        return self._erev_shabbat
+        return self.categories.erev_shabbat
 
     def is_shabbat(self) -> bool:
         """Is it Shabbat.
@@ -182,7 +177,7 @@ class Day:
         Returns:
             True if Erev Yom Tov, False otherwise.
         """
-        return self._erev_yomtov
+        return self.categories.erev_yomtov
 
     def is_yomtov(self) -> bool:
         """Is it Yom Tov.
