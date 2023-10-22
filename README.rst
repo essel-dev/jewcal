@@ -10,7 +10,7 @@ Jewcal
 
 |
 
-Convert Gregorian to Jewish dates and get shabbos / yom tov details for Diaspora.
+Convert Gregorian to Jewish dates and get Shabbos / Yom Tov details for Diaspora and Israel.
 
 Installation
 ------------
@@ -20,46 +20,39 @@ Installation
 
 Usage
 -----
+
+Diaspora
+~~~~~~~~
+
 .. code-block:: python
 
   >>> from datetime import date
   >>> from jewcal import Jewcal
 
-  >>> jewcal = Jewcal(date(2022, 4, 15))
-  >>> print(jewcal)
-  14 Nisan 5782
-  >>> print(repr(jewcal))
-  Jewcal(year=5782, month=1, day=14, gregorian_date=datetime.date(2022, 4, 15), shabbos='Erev Shabbos', yomtov='Erev Pesach', category='Candles')
-
-  >>> jewcal = Jewcal(date(2022, 4, 16))
-  >>> print(jewcal)
-  15 Nisan 5782
-  >>> print(repr(jewcal))
-  Jewcal(year=5782, month=1, day=15, gregorian_date=datetime.date(2022, 4, 16), shabbos='Shabbos', yomtov='Pesach 1', category='Candles')
-
   >>> jewcal = Jewcal(date(2022, 4, 17))
   >>> print(jewcal)
   16 Nisan 5782
   >>> print(repr(jewcal))
-  Jewcal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17), shabbos=None, yomtov='Pesach 2', category='Havdalah')
+  Jewcal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17),
+  shabbos=None, yomtov='Pesach 2', category='Havdalah', diaspora=True)
 
-  >>> jewcal = Jewcal(date(2022, 8, 19))
-  >>> print(jewcal)
-  22 Av 5782
-  >>> print(repr(jewcal))
-  Jewcal(year=5782, month=5, day=22, gregorian_date=datetime.date(2022, 8, 19), shabbos='Erev Shabbos', yomtov=None, category='Candles')
 
-  >>> jewcal = Jewcal(date(2022, 8, 20))
-  >>> print(jewcal)
-  23 Av 5782
-  >>> print(repr(jewcal))
-  Jewcal(year=5782, month=5, day=23, gregorian_date=datetime.date(2022, 8, 20), shabbos='Shabbos', yomtov=None, category='Havdalah')
+Israel
+~~~~~~
 
-  >>> jewcal = Jewcal(date.today())
+.. code-block:: python
+
+  >>> from datetime import date
+  >>> from jewcal import Jewcal
+
+  >>> jewcal = Jewcal(date(2022, 4, 17), diaspora=False)
   >>> print(jewcal)
-  24 Av 5782
+  16 Nisan 5782
   >>> print(repr(jewcal))
-  Jewcal(year=5782, month=5, day=24, gregorian_date=datetime.date(2022, 8, 21), shabbos=None, yomtov=None, category=None)
+  Jewcal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17),
+  shabbos=None, yomtov='Chol HaMoed 1 (Pesach 2)', category=None, diaspora=False)
+
+
 
 Possible values
 ---------------
@@ -81,8 +74,11 @@ Shabbos
 Yom Tov
 ~~~~~~~
 
+Diaspora
+++++++++
+
 +---------------------------+----------------------+
-| ``jewcal.yomtov``         | ``jewcal.category``  |
+|``jewcal.yomtov``          | ``jewcal.category``  |
 +===========================+======================+
 | ``None``                  | ``None``             |
 +---------------------------+----------------------+
@@ -141,3 +137,60 @@ Yom Tov
 | Shavuos 2                 | Havdalah             |
 +---------------------------+----------------------+
 
+
+Israel
+++++++++
+
++-------------------------------+----------------------+
+|``jewcal.yomtov``              |``jewcal.category``   |
++===============================+======================+
+| ``None``                      | ``None``             |
++-------------------------------+----------------------+
+| Erev Rosh Hashana             | Candles              |
++-------------------------------+----------------------+
+| Rosh Hashana 1                | Candles              |
++-------------------------------+----------------------+
+| Rosh Hashana 2                | Havdalah             |
++-------------------------------+----------------------+
+| Erev Yom Kippur               | Candles              |
++-------------------------------+----------------------+
+| Yom Kippur                    | Havdalah             |
++-------------------------------+----------------------+
+| Erev Sukkot                   | Candles              |
++-------------------------------+----------------------+
+| Sukkot 1                      | Havdalah             |
++-------------------------------+----------------------+
+| Chol HaMoed 1 (Sukkot 2)      | ``None``             |
++-------------------------------+----------------------+
+| Chol HaMoed 2 (Sukkot 3)      | ``None``             |
++-------------------------------+----------------------+
+| Chol HaMoed 3 (Sukkot 4)      | ``None``             |
++-------------------------------+----------------------+
+| Chol HaMoed 4 (Sukkot 5)      | ``None``             |
++-------------------------------+----------------------+
+| Chol HaMoed 5 (Sukkot 6)      | ``None``             |
++-------------------------------+----------------------+
+| Hoshana Rabba (Sukkot 7)      | Candles              |
++-------------------------------+----------------------+
+| Shmini Atzeret / Simchat Tora | Havdalah             |
++-------------------------------+----------------------+
+| Erev Pesach                   | Candles              |
++-------------------------------+----------------------+
+| Pesach 1                      | Havdalah             |
++-------------------------------+----------------------+
+| Chol HaMoed 1 (Pesach 2)      | ``None``             |
++-------------------------------+----------------------+
+| Chol HaMoed 2 (Pesach 3)      | ``None``             |
++-------------------------------+----------------------+
+| Chol HaMoed 3 (Pesach 4)      | ``None``             |
++-------------------------------+----------------------+
+| Chol HaMoed 4 (Pesach 5)      | ``None``             |
++-------------------------------+----------------------+
+| Chol HaMoed 5 (Pesach 6)      | Candles              |
++-------------------------------+----------------------+
+| Pesach 7                      | Havdalah             |
++-------------------------------+----------------------+
+| Erev Shavuot                  | Candles              |
++-------------------------------+----------------------+
+| Shavuot                       | Havdalah             |
++-------------------------------+----------------------+

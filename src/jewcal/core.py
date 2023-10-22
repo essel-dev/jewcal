@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from datetime import date
 from typing import Optional
 
-from .constants import YOMTOV, SHABBOS, Months
+from .constants import YOMTOV, SHABBOS, YOMTOV_ISRAEL, Months
 from .utils.calculations import (
     absdate_to_jewish,
     weekday_from_absdate,
@@ -13,7 +13,7 @@ from .utils.calculations import (
 
 
 @dataclass
-class Jewcal:
+class Jewcal:  # pylint: disable=too-many-instance-attributes
     """Jewish date with shabbos / yom tov details."""
 
     year: int
@@ -23,8 +23,9 @@ class Jewcal:
     shabbos: Optional[str] = None
     yomtov: Optional[str] = None
     category: Optional[str] = None
+    diaspora: Optional[bool] = True
 
-    def __init__(self, gregorian_date: date) -> None:
+    def __init__(self, gregorian_date: date, diaspora: bool = True) -> None:
         """Create a new Jewish date.
 
         The Jewish date contains optional details:
@@ -36,6 +37,7 @@ class Jewcal:
 
         Args:
             gregorian_date: The Gregorian date.
+            diaspora: True if outside of Israel, False if in Israel.
         """
         # jewish date
         absdate = gregorian_to_absdate(
@@ -48,6 +50,9 @@ class Jewcal:
         # gregorian date
         self.gregorian_date = gregorian_date
 
+        # diaspora
+        self.diaspora = diaspora
+
         # shabbos
         weekday: int = weekday_from_absdate(absdate)
         if weekday in SHABBOS:
@@ -56,8 +61,9 @@ class Jewcal:
             self.category = event.category
 
         # yom tov
-        if self.month in YOMTOV and self.day in YOMTOV[self.month]:
-            event = YOMTOV[self.month][self.day]
+        holidays = YOMTOV if self.diaspora else YOMTOV_ISRAEL
+        if self.month in holidays and self.day in holidays[self.month]:
+            event = holidays[self.month][self.day]
             self.yomtov = event.title
             if event.category:
                 # don't overwrite category if chol hamoed is on shabbos
