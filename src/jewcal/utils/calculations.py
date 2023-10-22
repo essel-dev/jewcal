@@ -144,19 +144,19 @@ def gregorian_to_absdate(year: int, month: int, day: int) -> int:
         absdate += value
 
     # days in prior years
-    value = (365 * (year - 1))
+    value = 365 * (year - 1)
     absdate += value
 
     # Julian leap days in prior years
-    value = ((year - 1) // 4)
+    value = (year - 1) // 4
     absdate += value
 
     # minus prior century years
-    value = ((year - 1) // 100)
+    value = (year - 1) // 100
     absdate -= value
 
     # plus prior years divisible by 400
-    value = ((year - 1) // 400)
+    value = (year - 1) // 400
     absdate += value
 
     return absdate
