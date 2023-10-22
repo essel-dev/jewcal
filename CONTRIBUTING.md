@@ -6,6 +6,18 @@ Verify if Python is installed.
 python --version
 ```
 
+To install multiple Python versions, use [pyenv](https://github.com/pyenv/pyenv).
+
+To activate multiple version for `tox -e test`:
+```sh
+pyenv local 3.10 3.11
+```
+
+### pip and setuptools
+```sh
+python -m pip install --upgrade pip setuptools
+```
+
 ### Project code
 ```sh
 cd
@@ -30,18 +42,16 @@ pre-commit install
 pre-commit run --all-files
 ```
 
+## Develop
+### Lint
+See [tox](pyproject.toml) for all linters.
+
+To run a specific linter:
+```sh
+tox -e flake8
+```
+
 ## Test
 ```sh
 tox -e test
-```
-
-## Linters
-To run all lint checkers:
-```sh
-tox
-```
-
-To run a specific lint checker:
-```sh
-tox -e flake8
 ```
