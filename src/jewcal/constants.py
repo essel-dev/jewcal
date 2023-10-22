@@ -79,6 +79,43 @@ YOMTOV: dict[int, dict[int, Event]] = {
     },
 }
 
+YOMTOV_ISRAEL: dict[int, dict[int, Event]] = {
+    6: {
+        29: Event('Erev Rosh Hashana', Category.CANDLES.value),
+    },
+    7: {
+        1: Event('Rosh Hashana 1', Category.CANDLES.value),
+        2: Event('Rosh Hashana 2', Category.HAVDALAH.value),
+
+        9: Event('Erev Yom Kippur', Category.CANDLES.value),
+        10: Event('Yom Kippur', Category.HAVDALAH.value),
+
+        14: Event('Erev Sukkot', Category.CANDLES.value),
+        15: Event('Sukkot 1', Category.HAVDALAH.value),
+        16: Event('Chol HaMoed 1 (Sukkot 2)', None),
+        17: Event('Chol HaMoed 2 (Sukkot 3)', None),
+        18: Event('Chol HaMoed 3 (Sukkot 4)', None),
+        19: Event('Chol HaMoed 4 (Sukkot 5)', None),
+        20: Event('Chol HaMoed 5 (Sukkot 6)', None),
+        21: Event('Hoshana Rabba (Sukkot 7)', Category.CANDLES.value),
+        22: Event('Shmini Atzeret / Simchat Tora', Category.HAVDALAH.value),
+    },
+    1: {
+        14: Event('Erev Pesach', Category.CANDLES.value),
+        15: Event('Pesach 1', Category.HAVDALAH.value),
+        16: Event('Chol HaMoed 1 (Pesach 2)', None),
+        17: Event('Chol HaMoed 2 (Pesach 3)', None),
+        18: Event('Chol HaMoed 3 (Pesach 4)', None),
+        19: Event('Chol HaMoed 4 (Pesach 5)', None),
+        20: Event('Chol HaMoed 5 (Pesach 6)', Category.CANDLES.value),
+        21: Event('Pesach 7', Category.HAVDALAH.value),
+    },
+    3: {
+        5: Event('Erev Shavuot', Category.CANDLES.value),
+        6: Event('Shavuot', Category.HAVDALAH.value),
+    },
+}
+
 # SHABBOS[weekday]
 SHABBOS: dict[int, Event] = {
     5: Event('Erev Shabbos', Category.CANDLES.value),
