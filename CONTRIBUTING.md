@@ -6,6 +6,13 @@ Verify if Python is installed.
 python --version
 ```
 
+To install multiple Python versions, use [pyenv](https://github.com/pyenv/pyenv).
+
+To activate multiple version for `tox -e test`:
+```sh
+pyenv local 3.10 3.11
+```
+
 ### pip and setuptools
 ```sh
 python -m pip install --upgrade pip setuptools

@@ -32,8 +32,7 @@ dev = [
 legacy_tox_ini = """
   [tox]
 	envlist =
-		py310
-		test
+		py{310,311}
 		flake8
 		pylint
 		pydocstyle
@@ -45,9 +44,10 @@ legacy_tox_ini = """
 
 	[gh-actions]
 	python =
-		3.10: py310, test, flake8, pylint, pydocstyle, mypy, darglint
+		3.10: py310
+		3.11: py311, flake8, pylint, pydocstyle, mypy, darglint
 
-	[testenv:test]
+	[testenv]
 	deps = coverage
 	commands =
 		coverage run --source src -m unittest discover
