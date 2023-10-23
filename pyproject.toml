@@ -28,6 +28,7 @@ dev = [
   'pre-commit',
   'tox',
 	'sphinx',
+	'sphinx-rtd-theme',
 ]
 
 [tool.tox]
