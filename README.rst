@@ -1,5 +1,12 @@
-Jewcal
-------
+.. include_title_start
+
+JewCal
+======
+
+.. include_title_end
+
+
+
 .. image:: https://github.com/essel-dev/jewcal/actions/workflows/tests.yml/badge.svg
     :target: https://github.com/essel-dev/jewcal/actions/workflows/tests.yml
     :alt: Tests Status
@@ -10,19 +17,30 @@ Jewcal
 
 |
 
+
+
+.. include_intro_start
+
 Convert Gregorian to Jewish dates and get Shabbos / Yom Tov details for Diaspora and Israel.
 
+.. include_intro_end
+
+
+
+.. include_content_start
+
 Installation
-------------
+============
+
 .. code-block:: bash
 
   pip install jewcal
 
 Usage
------
+=====
 
 Diaspora
-~~~~~~~~
+--------
 
 .. code-block:: python
 
@@ -38,7 +56,7 @@ Diaspora
 
 
 Israel
-~~~~~~
+------
 
 .. code-block:: python
 
@@ -75,7 +93,7 @@ Yom Tov
 ~~~~~~~
 
 Diaspora
-++++++++
+********
 
 +---------------------------+----------------------+
 |``jewcal.yomtov``          | ``jewcal.category``  |
@@ -139,7 +157,7 @@ Diaspora
 
 
 Israel
-++++++++
+******
 
 +-------------------------------+----------------------+
 |``jewcal.yomtov``              |``jewcal.category``   |
@@ -194,3 +212,5 @@ Israel
 +-------------------------------+----------------------+
 | Shavuot                       | Havdalah             |
 +-------------------------------+----------------------+
+
+.. include_content_end

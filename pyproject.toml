@@ -19,13 +19,15 @@ dependencies = []
 
 [project.urls]
 'Homepage' = 'https://github.com/essel-dev/jewcal'
-'Bug Tracker' = 'https://github.com/essel-dev/jewcal/issues'
+'Documentation' = 'https://jewcal.readthedocs.io/'
 'Changelog' = 'https://github.com/essel-dev/jewcal/releases'
+'Bug Tracker' = 'https://github.com/essel-dev/jewcal/issues'
 
 [project.optional-dependencies]
 dev = [
   'pre-commit',
   'tox',
+	'sphinx',
 ]
 
 [tool.tox]
