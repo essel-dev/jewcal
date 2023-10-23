@@ -7,8 +7,7 @@ python --version
 ```
 
 To install multiple Python versions, use [pyenv](https://github.com/pyenv/pyenv).
-
-To activate multiple version for `tox -e test`:
+To activate:
 ```sh
 pyenv local 3.10 3.11
 ```
@@ -40,7 +39,10 @@ pip install -e .[dev]
 ```sh
 pre-commit install
 pre-commit run --all-files
+pre-commit autoupdate
 ```
+
+https://pre-commit.com/
 
 ## Develop
 ### Lint
@@ -51,7 +53,15 @@ To run a specific linter:
 tox -e flake8
 ```
 
-## Test
+### Test
 ```sh
-tox -e test
+tox -e py311
 ```
+
+### Document
+```sh
+cd docs
+make clean html
+```
+
+The HTML pages are in build/html.

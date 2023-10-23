@@ -1,5 +1,12 @@
-Jewcal
-------
+.. include_title_start
+
+JewCal
+======
+
+.. include_title_end
+
+
+
 .. image:: https://github.com/essel-dev/jewcal/actions/workflows/tests.yml/badge.svg
     :target: https://github.com/essel-dev/jewcal/actions/workflows/tests.yml
     :alt: Tests Status
@@ -8,21 +15,36 @@ Jewcal
     :target: https://github.com/essel-dev/jewcal/actions/workflows/pypi.yml
     :alt: PyPi Status
 
+.. image:: https://readthedocs.org/projects/jewcal/badge/?version=stable
+    :target: https://jewcal.readthedocs.io/en/stable/?badge=stable
+    :alt: Documentation Status
+
 |
+
+
+
+.. include_intro_start
 
 Convert Gregorian to Jewish dates and get Shabbos / Yom Tov details for Diaspora and Israel.
 
+.. include_intro_end
+
+
+
+.. include_content_start
+
 Installation
-------------
+============
+
 .. code-block:: bash
 
   pip install jewcal
 
 Usage
------
+=====
 
 Diaspora
-~~~~~~~~
+--------
 
 .. code-block:: python
 
@@ -38,7 +60,7 @@ Diaspora
 
 
 Israel
-~~~~~~
+------
 
 .. code-block:: python
 
@@ -55,10 +77,10 @@ Israel
 
 
 Possible values
----------------
+===============
 
 Shabbos
-~~~~~~~
+-------
 
 +---------------------+----------------------+
 | ``jewcal.shabbos``  | ``jewcal.category``  |
@@ -72,10 +94,10 @@ Shabbos
 
 
 Yom Tov
-~~~~~~~
+-------
 
 Diaspora
-++++++++
+~~~~~~~~
 
 +---------------------------+----------------------+
 |``jewcal.yomtov``          | ``jewcal.category``  |
@@ -139,7 +161,7 @@ Diaspora
 
 
 Israel
-++++++++
+~~~~~~
 
 +-------------------------------+----------------------+
 |``jewcal.yomtov``              |``jewcal.category``   |
@@ -194,3 +216,5 @@ Israel
 +-------------------------------+----------------------+
 | Shavuot                       | Havdalah             |
 +-------------------------------+----------------------+
+
+.. include_content_end

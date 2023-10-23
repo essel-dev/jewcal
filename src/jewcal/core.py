@@ -4,12 +4,9 @@ from dataclasses import dataclass
 from datetime import date
 from typing import Optional
 
-from .constants import YOMTOV, SHABBOS, YOMTOV_ISRAEL, Months
-from .utils.calculations import (
-    absdate_to_jewish,
-    weekday_from_absdate,
-    gregorian_to_absdate
-)
+from .constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Months
+from .utils.calculations import (absdate_to_jewish, gregorian_to_absdate,
+                                 weekday_from_absdate)
 
 
 @dataclass

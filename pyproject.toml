@@ -13,19 +13,22 @@ keywords = [
 license = { text = 'MIT' }
 dynamic = ['version']
 authors = [{ name='essel-dev', email='info@essel.dev' }]
-readme = 'README.md'
+readme = 'README.rst'
 requires-python = '>=3.10'
 dependencies = []
 
 [project.urls]
 'Homepage' = 'https://github.com/essel-dev/jewcal'
-'Bug Tracker' = 'https://github.com/essel-dev/jewcal/issues'
+'Documentation' = 'https://jewcal.readthedocs.io/'
 'Changelog' = 'https://github.com/essel-dev/jewcal/releases'
+'Bug Tracker' = 'https://github.com/essel-dev/jewcal/issues'
 
 [project.optional-dependencies]
 dev = [
   'pre-commit',
   'tox',
+	'sphinx',
+	'sphinx-rtd-theme',
 ]
 
 [tool.tox]
@@ -33,12 +36,14 @@ legacy_tox_ini = """
   [tox]
 	envlist =
 		py{310,311}
-		flake8
-		pylint
-		pydocstyle
-		mypy
-		darglint
-		pre-commit
+    isort
+    flake8
+    pylint
+    pydocstyle
+    mypy
+    darglint
+    pre-commit
+    bandit
 	isolated_build = True
 	skipsdist = True
 
@@ -52,6 +57,10 @@ legacy_tox_ini = """
 	commands =
 		coverage run --source src -m unittest discover
 		coverage report -m
+
+	[testenv:isort]
+	deps = isort
+	commands = isort src tests
 
 	[testenv:flake8]
 	deps =
@@ -67,7 +76,7 @@ legacy_tox_ini = """
 	deps =
 		pydocstyle
 		toml
-	commands = pydocstyle src tests
+	commands = pydocstyle src tests --convention=google
 
 	[testenv:mypy]
 	deps = mypy
@@ -80,6 +89,10 @@ legacy_tox_ini = """
 	[testenv:pre-commit]
 	deps = pre-commit
 	commands = pre-commit run --all-files
+
+	[testenv:bandit]
+	deps = bandit[toml]
+	commands = bandit -r src tests
 """
 
 [tool.mypy]
