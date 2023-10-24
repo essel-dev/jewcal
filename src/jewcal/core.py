@@ -10,7 +10,7 @@ from .utils.calculations import (absdate_to_jewish, gregorian_to_absdate,
 
 
 @dataclass
-class Jewcal:  # pylint: disable=too-many-instance-attributes
+class JewCal:  # pylint: disable=too-many-instance-attributes
     """Jewish date with shabbos / yom tov details."""
 
     year: int

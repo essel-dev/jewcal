@@ -3,12 +3,12 @@
 from datetime import date
 from unittest import TestCase
 
-from src.jewcal import Jewcal
+from src.jewcal import JewCal
 from src.jewcal.constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Category
 
 
-class JewcalTestCase(TestCase):
-    """Unittests for jewcal."""
+class JewCalTestCase(TestCase):
+    """Unittests for JewCal."""
 
     def setUp(self) -> None:
         """Initialize."""
@@ -16,12 +16,18 @@ class JewcalTestCase(TestCase):
     def tearDown(self) -> None:
         """Clean up after tests."""
 
+    def test_deprecated_class_name(self) -> None:
+        """Using the old class name should alert the user."""
+        with self.assertWarns(UserWarning):
+            # pylint: disable=import-outside-toplevel,unused-import
+            from src.jewcal import Jewcal  # noqa: F401
+
     def test_no_shabbos_and_yom_tov(self) -> None:
         """Create a new date."""
         gregorian_date = date(2022, 8, 14)
 
         # Diaspora
-        jewcal = Jewcal(gregorian_date)
+        jewcal = JewCal(gregorian_date)
 
         self.assertEqual(jewcal.gregorian_date, gregorian_date)
 
@@ -30,7 +36,7 @@ class JewcalTestCase(TestCase):
         self.assertIsNone(jewcal.category)
 
         # Israel
-        jewcal = Jewcal(gregorian_date, diaspora=False)
+        jewcal = JewCal(gregorian_date, diaspora=False)
 
         self.assertEqual(jewcal.gregorian_date, gregorian_date)
 
@@ -43,7 +49,7 @@ class JewcalTestCase(TestCase):
         gregorian_date = date(2022, 4, 16)
 
         # Diaspora
-        jewcal = Jewcal(gregorian_date)
+        jewcal = JewCal(gregorian_date)
 
         self.assertEqual(jewcal.gregorian_date, gregorian_date)
 
@@ -52,7 +58,7 @@ class JewcalTestCase(TestCase):
         self.assertEqual(jewcal.category, Category.CANDLES.value)
 
         # Israel
-        jewcal = Jewcal(gregorian_date, diaspora=False)
+        jewcal = JewCal(gregorian_date, diaspora=False)
 
         self.assertEqual(jewcal.gregorian_date, gregorian_date)
 
@@ -65,7 +71,7 @@ class JewcalTestCase(TestCase):
         gregorian_date = date(2022, 4, 17)
 
         # Diaspora
-        jewcal = Jewcal(gregorian_date)
+        jewcal = JewCal(gregorian_date)
 
         self.assertEqual(jewcal.gregorian_date, gregorian_date)
 
@@ -74,7 +80,7 @@ class JewcalTestCase(TestCase):
         self.assertEqual(jewcal.category, Category.HAVDALAH.value)
 
         # Israel
-        jewcal = Jewcal(gregorian_date, diaspora=False)
+        jewcal = JewCal(gregorian_date, diaspora=False)
 
         self.assertEqual(jewcal.gregorian_date, gregorian_date)
 
@@ -87,7 +93,7 @@ class JewcalTestCase(TestCase):
         gregorian_date = date(2022, 8, 19)
 
         # Diaspora
-        jewcal = Jewcal(gregorian_date)
+        jewcal = JewCal(gregorian_date)
 
         self.assertEqual(jewcal.gregorian_date, gregorian_date)
 
@@ -96,7 +102,7 @@ class JewcalTestCase(TestCase):
         self.assertIsNone(jewcal.yomtov)
 
         # Israel
-        jewcal = Jewcal(gregorian_date, diaspora=False)
+        jewcal = JewCal(gregorian_date, diaspora=False)
 
         self.assertEqual(jewcal.gregorian_date, gregorian_date)
 
@@ -109,7 +115,7 @@ class JewcalTestCase(TestCase):
         gregorian_date = date(2022, 8, 20)
 
         # Diaspora
-        jewcal = Jewcal(gregorian_date)
+        jewcal = JewCal(gregorian_date)
 
         self.assertEqual(jewcal.gregorian_date, gregorian_date)
 
@@ -118,7 +124,7 @@ class JewcalTestCase(TestCase):
         self.assertIsNone(jewcal.yomtov)
 
         # Israel
-        jewcal = Jewcal(gregorian_date, diaspora=False)
+        jewcal = JewCal(gregorian_date, diaspora=False)
 
         self.assertEqual(jewcal.gregorian_date, gregorian_date)
 
@@ -131,7 +137,7 @@ class JewcalTestCase(TestCase):
         gregorian_date = date(2021, 9, 25)
 
         # Diaspora
-        jewcal = Jewcal(gregorian_date)
+        jewcal = JewCal(gregorian_date)
 
         self.assertEqual(jewcal.gregorian_date, gregorian_date)
 
@@ -140,7 +146,7 @@ class JewcalTestCase(TestCase):
         self.assertEqual(jewcal.yomtov, YOMTOV[7][19].title)  # Ch'H Sukkos 5
 
         # Israel
-        jewcal = Jewcal(gregorian_date, diaspora=False)
+        jewcal = JewCal(gregorian_date, diaspora=False)
 
         self.assertEqual(jewcal.gregorian_date, gregorian_date)
 
@@ -153,7 +159,7 @@ class JewcalTestCase(TestCase):
         gregorian_date = date(2020, 4, 11)
 
         # Diaspora
-        jewcal = Jewcal(gregorian_date)
+        jewcal = JewCal(gregorian_date)
 
         self.assertEqual(jewcal.gregorian_date, gregorian_date)
 
@@ -162,7 +168,7 @@ class JewcalTestCase(TestCase):
         self.assertEqual(jewcal.yomtov, YOMTOV[1][17].title)  # Ch'H Pesach 3
 
         # Israel
-        jewcal = Jewcal(gregorian_date, diaspora=False)
+        jewcal = JewCal(gregorian_date, diaspora=False)
 
         self.assertEqual(jewcal.gregorian_date, gregorian_date)
 
@@ -171,26 +177,26 @@ class JewcalTestCase(TestCase):
         self.assertEqual(jewcal.yomtov, YOMTOV_ISRAEL[1][17].title)  # Pesach 3
 
     def test_jewcal_to_string(self) -> None:
-        """Test `Jewcal`-object to `str`."""
-        jewcal = Jewcal(date(2022, 4, 16))
+        """Test `JewCal`-object to `str`."""
+        jewcal = JewCal(date(2022, 4, 16))
         self.assertEqual(str(jewcal), '15 Nisan 5782')
 
     def test_jewcal_to_repr(self) -> None:
-        """Test `Jewcal`-object to `repr`."""
+        """Test `JewCal`-object to `repr`."""
         # Diaspora
-        jewcal = Jewcal(date(2022, 4, 16))
+        jewcal = JewCal(date(2022, 4, 16))
         self.assertEqual(
             repr(jewcal),
-            'Jewcal(year=5782, month=1, day=15, '
+            'JewCal(year=5782, month=1, day=15, '
             + "gregorian_date=datetime.date(2022, 4, 16), shabbos='Shabbos', "
             + "yomtov='Pesach 1', category='Candles', diaspora=True)"
         )
 
         # Israel
-        jewcal = Jewcal(date(2022, 4, 16), diaspora=False)
+        jewcal = JewCal(date(2022, 4, 16), diaspora=False)
         self.assertEqual(
             repr(jewcal),
-            'Jewcal(year=5782, month=1, day=15, '
+            'JewCal(year=5782, month=1, day=15, '
             + 'gregorian_date=datetime.date(2022, 4, 16), '
             + "shabbos='Shabbos', yomtov='Pesach 1', category='Havdalah', "
             + 'diaspora=False)'

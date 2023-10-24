@@ -10,11 +10,9 @@ JewCal
 .. image:: https://github.com/essel-dev/jewcal/actions/workflows/tests.yml/badge.svg
     :target: https://github.com/essel-dev/jewcal/actions/workflows/tests.yml
     :alt: Tests Status
-
 .. image:: https://github.com/essel-dev/jewcal/actions/workflows/pypi.yml/badge.svg
     :target: https://github.com/essel-dev/jewcal/actions/workflows/pypi.yml
     :alt: PyPi Status
-
 .. image:: https://readthedocs.org/projects/jewcal/badge/?version=stable
     :target: https://jewcal.readthedocs.io/en/stable/?badge=stable
     :alt: Documentation Status
@@ -49,13 +47,13 @@ Diaspora
 .. code-block:: python
 
   >>> from datetime import date
-  >>> from jewcal import Jewcal
+  >>> from jewcal import JewCal
 
-  >>> jewcal = Jewcal(date(2022, 4, 17))
+  >>> jewcal = JewCal(date(2022, 4, 17))
   >>> print(jewcal)
   16 Nisan 5782
   >>> print(repr(jewcal))
-  Jewcal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17),
+  JewCal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17),
   shabbos=None, yomtov='Pesach 2', category='Havdalah', diaspora=True)
 
 
@@ -65,13 +63,13 @@ Israel
 .. code-block:: python
 
   >>> from datetime import date
-  >>> from jewcal import Jewcal
+  >>> from jewcal import JewCal
 
-  >>> jewcal = Jewcal(date(2022, 4, 17), diaspora=False)
+  >>> jewcal = JewCal(date(2022, 4, 17), diaspora=False)
   >>> print(jewcal)
   16 Nisan 5782
   >>> print(repr(jewcal))
-  Jewcal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17),
+  JewCal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17),
   shabbos=None, yomtov='Chol HaMoed 1 (Pesach 2)', category=None, diaspora=False)
 
 
