@@ -1,0 +1,12 @@
+# https://github.com/pypa/setuptools_scm/issues/190
+# https://pypi.org/project/setuptools-scm/#:~:text=Unwanted%20files%20must%20be%20excluded%20by%20discarding%20them%20via%20MANIFEST.in.
+
+exclude .gitignore
+exclude .pre-commit-config.yaml
+exclude CODE_OF_CONDUCT.md
+exclude CONTRIBUTING.md
+prune tests
+prune .github
+prune docs
+exclude .readthedocs.yaml
+exclude MANIFEST.in
