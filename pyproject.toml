@@ -3,7 +3,6 @@ requires = ['setuptools', 'setuptools_scm[toml]']
 build-backend = 'setuptools.build_meta'
 
 [tool.setuptools_scm]
-local_scheme = 'no-local-version'
 
 [project]
 name = 'jewcal'
@@ -104,6 +103,3 @@ enable_error_code = ['ignore-without-code', 'redundant-expr', 'truthy-bool']
 warn_unreachable = true
 namespace_packages = true
 explicit_package_bases = true
-exclude = [
-    '^_version\.py$',
-]
