@@ -60,23 +60,23 @@ legacy_tox_ini = """
 
 	[testenv:isort]
 	deps = isort
-	commands = isort src tests
+	commands = isort src tests docs
 
 	[testenv:flake8]
 	deps =
 		flake8
 		flake8-bugbear
-	commands = flake8 src tests
+	commands = flake8 src tests docs
 
 	[testenv:pylint]
 	deps = pylint
-	commands = pylint src tests
+	commands = pylint src tests docs
 
 	[testenv:pydocstyle]
 	deps =
 		pydocstyle
 		toml
-	commands = pydocstyle src tests --convention=google
+	commands = pydocstyle src tests docs --convention=google
 
 	[testenv:mypy]
 	deps = mypy
@@ -84,7 +84,7 @@ legacy_tox_ini = """
 
 	[testenv:darglint]
 	deps = darglint
-	commands = darglint -s google src tests
+	commands = darglint -s google src tests docs
 
 	[testenv:pre-commit]
 	deps = pre-commit
@@ -92,11 +92,11 @@ legacy_tox_ini = """
 
 	[testenv:bandit]
 	deps = bandit[toml]
-	commands = bandit -r src tests
+	commands = bandit -r src tests docs
 """
 
 [tool.mypy]
-files = 'src, tests'
+files = 'src, tests, docs'
 strict = true
 show_error_codes = true
 enable_error_code = ['ignore-without-code', 'redundant-expr', 'truthy-bool']

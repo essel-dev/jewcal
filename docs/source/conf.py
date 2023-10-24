@@ -7,10 +7,10 @@ https://www.sphinx-doc.org/en/master/usage/configuration.html
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'JewCal'
-copyright = '2023, essel.dev'
-author = 'essel.dev'
-release = '0.4'
+project: str = 'JewCal'
+project_copyright: str = '2023, essel.dev'
+author: str = 'essel.dev'
+release: str = '0.4'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
