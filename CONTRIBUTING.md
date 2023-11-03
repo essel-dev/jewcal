@@ -60,7 +60,6 @@ tox -e py311
 
 ### Document
 ```sh
-cd docs
-make clean html
+make clean html -C docs/
 ```
-The HTML pages are in build/html.
+The HTML pages are in docs/build/html.

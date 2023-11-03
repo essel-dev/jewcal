@@ -6,6 +6,7 @@ https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 # https://setuptools-scm.readthedocs.io/en/latest/usage/#usage-from-sphinx
 from importlib.metadata import version as get_version
+from typing import Optional, Union
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
@@ -18,10 +19,23 @@ release: str = get_version(project)
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions: list[str] = []
+extensions: list[str] = [
+    'sphinx.ext.napoleon',
+]
 
 templates_path: list[str] = ['_templates']
 exclude_patterns: list[str] = []
+
+autodoc_class_signature: str = 'separated'
+autodoc_default_options: dict[str, Optional[Union[str, bool]]] = {
+    'members': None,
+    'member-order': 'alphabetical',
+    'special-members': '__init__, __str__, __repr__',
+    'undoc-members': False,
+    'exclude-members': '__weakref__'
+}
+
+add_module_names: bool = False
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
