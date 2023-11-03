@@ -29,6 +29,9 @@ classifiers = [
 requires-python = '>=3.10'
 dependencies = []
 
+[project.scripts]
+jewcal = 'jewcal.__main__:main'
+
 [project.urls]
 'Homepage' = 'https://github.com/essel-dev/jewcal'
 'Documentation' = 'https://jewcal.readthedocs.io/'
