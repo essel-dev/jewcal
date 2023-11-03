@@ -2,7 +2,8 @@
 
 from dataclasses import dataclass
 from datetime import date
-from typing import Optional
+from typing import Any, Optional
+from warnings import warn
 
 from .constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Months
 from .utils.calculations import (absdate_to_jewish, gregorian_to_absdate,
@@ -73,3 +74,20 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
             The Jewish date.
         """
         return f'{self.day} {Months(self.month).name.capitalize()} {self.year}'
+
+
+class Jewcal(JewCal):  # pylint: disable=too-few-public-methods
+    """Deprecated class Jewcal has been renamed to JewCal.
+
+    This class will be removed in a future release.
+    """
+
+    def __init__(self, *args: Any, **kwargs: Any):
+        """Return the new class.
+
+        Args:
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        """
+        super().__init__(*args, **kwargs)
+        warn('Class Jewcal is deprecated and renamed to JewCal')
