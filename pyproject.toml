@@ -40,8 +40,8 @@ jewcal = 'jewcal.__main__:main'
 
 [project.optional-dependencies]
 dev = [
-  'pre-commit',
-  'tox',
+	'pre-commit',
+	'tox',
 	'sphinx',
 	'sphinx-rtd-theme',
 ]
