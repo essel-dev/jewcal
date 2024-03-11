@@ -7,15 +7,12 @@ python --version
 ```
 
 To install multiple Python versions, use [pyenv](https://github.com/pyenv/pyenv).
+
 To activate:
 ```sh
-pyenv local 3.10 3.11
+pyenv local 3.10 3.11 3.12
 ```
 
-### pip and setuptools
-```sh
-python -m pip install --upgrade pip setuptools
-```
 
 ### Project code
 ```sh
@@ -25,9 +22,14 @@ git clone # path-to-this-repository.git
 
 ### Virtual environment
 ```sh
-cd # path-to-downloaded-reposity
+cd # path-to-downloaded-repository
 python -m venv env
 source env/bin/activate
+```
+
+### pip and setuptools
+```sh
+python -m pip install --upgrade pip setuptools
 ```
 
 ### Dependencies
@@ -38,24 +40,27 @@ pip install -e .[dev]
 ### Pre-commit
 ```sh
 pre-commit install
-pre-commit run --all-files
 pre-commit autoupdate
+pre-commit run --all-files
 ```
 
-https://pre-commit.com/
-
 ## Develop
-### Lint
+### Tox
 See [tox](pyproject.toml) for all linters.
+
+To run tests:
+```sh
+tox -e py311
+```
 
 To run a specific linter:
 ```sh
 tox -e flake8
 ```
 
-### Test
+To run all:
 ```sh
-tox -e py311
+tox
 ```
 
 ### Document

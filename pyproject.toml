@@ -13,9 +13,9 @@ description = 'Convert Gregorian to Jewish dates and get Shabbos / Yom Tov detai
 keywords = [
   'jewish calendar',
 ]
-license = { text = 'MIT' }
+license = {file = 'LICENSE'}
 dynamic = ['version']
-authors = [{ name='essel-dev', email='info@essel.dev' }]
+authors = [{ name='essel-dev'}]
 readme = 'README.rst'
 classifiers = [
 	'License :: OSI Approved :: MIT License',
@@ -24,6 +24,7 @@ classifiers = [
 	'Programming Language :: Python :: 3',
 	'Programming Language :: Python :: 3.10',
 	'Programming Language :: Python :: 3.11',
+	'Programming Language :: Python :: 3.12',
 	'Topic :: Utilities',
 ]
 requires-python = '>=3.10'
@@ -33,7 +34,7 @@ dependencies = []
 jewcal = 'jewcal.__main__:main'
 
 [project.urls]
-'Homepage' = 'https://github.com/essel-dev/jewcal'
+'GitHub' = 'https://github.com/essel-dev/jewcal'
 'Documentation' = 'https://jewcal.readthedocs.io/'
 'Changelog' = 'https://github.com/essel-dev/jewcal/releases'
 'Bug Tracker' = 'https://github.com/essel-dev/jewcal/issues'
@@ -50,7 +51,7 @@ dev = [
 legacy_tox_ini = """
   [tox]
 	envlist =
-		py{310,311}
+		py{310,311,312}
     isort
     flake8
     pylint
@@ -65,7 +66,8 @@ legacy_tox_ini = """
 	[gh-actions]
 	python =
 		3.10: py310
-		3.11: py311, flake8, pylint, pydocstyle, mypy, darglint
+		3.11: py311
+		3.12: py312, flake8, pylint, pydocstyle, mypy, darglint
 
 	[testenv]
 	deps = coverage
