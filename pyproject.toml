@@ -4,29 +4,45 @@ build-backend = 'setuptools.build_meta'
 
 [tool.setuptools_scm]
 
+[tool.setuptools.package-data]
+jewcal = ['py.typed']
+
 [project]
 name = 'jewcal'
 description = 'Convert Gregorian to Jewish dates and get Shabbos / Yom Tov details for Diaspora and Israel.'
 keywords = [
   'jewish calendar',
 ]
-license = { text = 'MIT' }
+license = {file = 'LICENSE'}
 dynamic = ['version']
-authors = [{ name='essel-dev', email='info@essel.dev' }]
+authors = [{ name='essel-dev'}]
 readme = 'README.rst'
+classifiers = [
+	'License :: OSI Approved :: MIT License',
+	'Operating System :: OS Independent',
+	'Programming Language :: Python',
+	'Programming Language :: Python :: 3',
+	'Programming Language :: Python :: 3.10',
+	'Programming Language :: Python :: 3.11',
+	'Programming Language :: Python :: 3.12',
+	'Topic :: Utilities',
+]
 requires-python = '>=3.10'
 dependencies = []
 
+[project.scripts]
+jewcal = 'jewcal.__main__:main'
+
 [project.urls]
-'Homepage' = 'https://github.com/essel-dev/jewcal'
+'GitHub' = 'https://github.com/essel-dev/jewcal'
 'Documentation' = 'https://jewcal.readthedocs.io/'
 'Changelog' = 'https://github.com/essel-dev/jewcal/releases'
 'Bug Tracker' = 'https://github.com/essel-dev/jewcal/issues'
 
 [project.optional-dependencies]
 dev = [
-  'pre-commit',
-  'tox',
+	'pre-commit',
+	'tox',
 	'sphinx',
 	'sphinx-rtd-theme',
 ]
@@ -35,7 +51,7 @@ dev = [
 legacy_tox_ini = """
   [tox]
 	envlist =
-		py{310,311}
+		py{310,311,312}
     isort
     flake8
     pylint
@@ -50,7 +66,8 @@ legacy_tox_ini = """
 	[gh-actions]
 	python =
 		3.10: py310
-		3.11: py311, flake8, pylint, pydocstyle, mypy, darglint
+		3.11: py311
+		3.12: py312, flake8, pylint, pydocstyle, mypy, darglint
 
 	[testenv]
 	deps = coverage
@@ -103,3 +120,7 @@ enable_error_code = ['ignore-without-code', 'redundant-expr', 'truthy-bool']
 warn_unreachable = true
 namespace_packages = true
 explicit_package_bases = true
+
+[[tool.mypy.overrides]]
+module = 'jewcal'
+ignore_missing_imports = true

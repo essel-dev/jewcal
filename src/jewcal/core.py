@@ -2,7 +2,8 @@
 
 from dataclasses import dataclass
 from datetime import date
-from typing import Optional
+from typing import Any, Optional
+from warnings import warn
 
 from .constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Months
 from .utils.calculations import (absdate_to_jewish, gregorian_to_absdate,
@@ -14,23 +15,38 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
     """Jewish date with shabbos / yom tov details."""
 
     year: int
+    """The year in the Jewish calendar."""
+
     month: int
+    """The month in the Jewish calendar."""
+
     day: int
+    """The day of the Jewish month."""
+
     gregorian_date: date
+    """The date in the Gregorian calendar."""
+
     shabbos: Optional[str] = None
+    """Is it (Erev) Shabbos."""
+
     yomtov: Optional[str] = None
+    """Is it (Erev) Yom Tov."""
+
     category: Optional[str] = None
+    """The category (Candles or Havdalah)."""
+
     diaspora: Optional[bool] = True
+    """Is the schedule for Diaspora or Israel."""
 
     def __init__(self, gregorian_date: date, diaspora: bool = True) -> None:
         """Create a new Jewish date.
 
         The Jewish date contains optional details:
-            - shabbos or yom tov
-            - category (candles or havdalah).
+            - Shabbos or Yom Tov
+            - category (Candles or Havdalah).
 
-        If the first day of a yom tov starts on shabbos, the category is set
-        to candles instead of havdalah.
+        If the first day of Yom Tov starts on Shabbos, the category is set
+        to Candles instead of Havdalah.
 
         Args:
             gregorian_date: The Gregorian date.
@@ -73,3 +89,20 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
             The Jewish date.
         """
         return f'{self.day} {Months(self.month).name.capitalize()} {self.year}'
+
+
+class Jewcal(JewCal):  # pylint: disable=too-few-public-methods
+    """Deprecated class Jewcal has been renamed to JewCal.
+
+    This class will be removed in a future release.
+    """
+
+    def __init__(self, *args: Any, **kwargs: Any):
+        """Return the new class.
+
+        Args:
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        """
+        super().__init__(*args, **kwargs)
+        warn('Class Jewcal is deprecated and renamed to JewCal')

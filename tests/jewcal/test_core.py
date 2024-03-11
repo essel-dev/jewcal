@@ -21,6 +21,7 @@ class JewCalTestCase(TestCase):
         with self.assertWarns(UserWarning):
             # pylint: disable=import-outside-toplevel,unused-import
             from src.jewcal import Jewcal  # noqa: F401
+            Jewcal(date(2022, 8, 14))
 
     def test_no_shabbos_and_yom_tov(self) -> None:
         """Create a new date."""
