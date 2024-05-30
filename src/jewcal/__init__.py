@@ -20,7 +20,7 @@ class Wrapper:  # pylint: disable=too-few-public-methods
         if name == 'Jewcal':
             # DeprecationWarning does not alert the user if not in
             # development mode
-            warn('Class Jewcal is deprecated and renamed to JewCal')
+            warn('Jewcal is deprecated, use JewCal', stacklevel=2)
 
         return cast(ModuleType, getattr(self.wrapped, name))
 
