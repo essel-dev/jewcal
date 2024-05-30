@@ -2,11 +2,13 @@
 
 from dataclasses import dataclass
 from datetime import date
-from typing import Optional
 
 from .constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Months
-from .utils.calculations import (absdate_to_jewish, gregorian_to_absdate,
-                                 weekday_from_absdate)
+from .utils.calculations import (
+    absdate_to_jewish,
+    gregorian_to_absdate,
+    weekday_from_absdate,
+)
 
 
 @dataclass
@@ -17,10 +19,10 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
     month: int
     day: int
     gregorian_date: date
-    shabbos: Optional[str] = None
-    yomtov: Optional[str] = None
-    category: Optional[str] = None
-    diaspora: Optional[bool] = True
+    shabbos: str | None = None
+    yomtov: str | None = None
+    category: str | None = None
+    diaspora: bool | None = True
 
     def __init__(self, gregorian_date: date, diaspora: bool = True) -> None:
         """Create a new Jewish date.
@@ -38,9 +40,7 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
         """
         # jewish date
         absdate = gregorian_to_absdate(
-            gregorian_date.year,
-            gregorian_date.month,
-            gregorian_date.day
+            gregorian_date.year, gregorian_date.month, gregorian_date.day
         )
         self.year, self.month, self.day = absdate_to_jewish(absdate)
 

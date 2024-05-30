@@ -10,7 +10,7 @@ description = 'Convert Gregorian to Jewish dates and get Shabbos / Yom Tov detai
 keywords = [
   'jewish calendar',
 ]
-license = { text = 'MIT' }
+license = {file = 'LICENSE'}
 dynamic = ['version']
 authors = [{ name='essel-dev', email='info@essel.dev' }]
 readme = 'README.rst'
@@ -18,65 +18,53 @@ requires-python = '>=3.10'
 dependencies = []
 
 [project.urls]
-'Homepage' = 'https://github.com/essel-dev/jewcal'
+'GitHub' = 'https://github.com/essel-dev/jewcal'
 'Documentation' = 'https://jewcal.readthedocs.io/'
 'Changelog' = 'https://github.com/essel-dev/jewcal/releases'
 'Bug Tracker' = 'https://github.com/essel-dev/jewcal/issues'
 
 [project.optional-dependencies]
 dev = [
-  'pre-commit',
-  'tox',
+	'pre-commit',
+	'tox',
 	'sphinx',
 	'sphinx-rtd-theme',
 ]
 
 [tool.tox]
 legacy_tox_ini = """
-  [tox]
+	[tox]
 	envlist =
 		py{310,311}
-    isort
-    flake8
-    pylint
-    pydocstyle
-    mypy
-    darglint
-    pre-commit
-    bandit
-	isolated_build = True
-	skipsdist = True
-
-	[gh-actions]
-	python =
-		3.10: py310
-		3.11: py311, flake8, pylint, pydocstyle, mypy, darglint
+		ruff-lint
+        ruff-format
+		pylint
+		mypy
+		darglint
+		pre-commit
+		docs
 
 	[testenv]
-	deps = coverage
-	commands =
-		coverage run --source src -m unittest discover
-		coverage report -m
-
-	[testenv:isort]
-	deps = isort
-	commands = isort src tests docs
-
-	[testenv:flake8]
+	package = wheel
+	wheel_build_env = .pkg
 	deps =
-		flake8
-		flake8-bugbear
-	commands = flake8 src tests docs
+		coverage
+		py310: coverage[toml]
+	commands =
+		coverage run -m unittest discover
+		py311: coverage report -m
+
+	[testenv:ruff-lint]
+	deps = ruff
+	commands = ruff check --fix
+
+	[testenv:ruff-format]
+	deps = ruff
+	commands = ruff format
 
 	[testenv:pylint]
 	deps = pylint
 	commands = pylint src tests docs
-
-	[testenv:pydocstyle]
-	deps =
-		pydocstyle
-		toml
-	commands = pydocstyle src tests docs --convention=google
 
 	[testenv:mypy]
 	deps = mypy
@@ -90,10 +78,58 @@ legacy_tox_ini = """
 	deps = pre-commit
 	commands = pre-commit run --all-files
 
-	[testenv:bandit]
-	deps = bandit[toml]
-	commands = bandit -r src tests docs
+	[testenv:docs]
+	changedir=docs
+	deps =
+		sphinx
+		sphinx-rtd-theme
+	allowlist_externals = make
+	commands = make clean html
+
+	[gh-actions]
+	python =
+		3.10: py310
+		3.11: py311, ruff-lint, ruff-format, pylint, mypy, darglint
 """
+
+[tool.coverage.run]
+source = [
+	'src'
+]
+omit = [
+	'__main__.py',
+]
+
+[tool.ruff.lint]
+select = [
+	'I', # isort
+	'PL', # pylint
+
+	'F', # pyflakes
+	'B', # flake8-bugbear
+	'S', # flake8-bandit
+	'SIM', # flake8-simplify
+	"PIE", # flake8-pie
+	"RET", # flake8-return
+	"RSE", # flake8-raise
+	'TD', # flake8-todo
+
+	'E', # pycodestyle
+	'D', # pydocstyle
+
+	'UP', # pyupgrade
+	"TRY", # tryceratops
+	'PERF', # perflint
+	'RUF', # ruff
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = 'google'
+
+[tool.ruff.format]
+quote-style = 'single'
+docstring-code-format = true
+
 
 [tool.mypy]
 files = 'src, tests, docs'

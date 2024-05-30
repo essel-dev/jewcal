@@ -12,22 +12,21 @@ To activate:
 pyenv local 3.10 3.11
 ```
 
-### pip and setuptools
-```sh
-python -m pip install --upgrade pip setuptools
-```
-
 ### Project code
 ```sh
-cd
-git clone # path-to-this-repository.git
+cd && git clone # path-to-this-repository.git
 ```
 
 ### Virtual environment
 ```sh
 cd # path-to-downloaded-reposity
-python -m venv env
-source env/bin/activate
+python -m venv .env
+source .env/bin/activate
+```
+
+### pip and setuptools
+```sh
+python -m pip install --upgrade pip setuptools
 ```
 
 ### Dependencies
@@ -38,30 +37,27 @@ pip install -e .[dev]
 ### Pre-commit
 ```sh
 pre-commit install
-pre-commit run --all-files
 pre-commit autoupdate
+pre-commit run --all-files
 ```
-
-https://pre-commit.com/
 
 ## Develop
-### Lint
-See [tox](pyproject.toml) for all linters.
+### Tox
+See [tox](pyproject.toml) for all test environments.
 
-To run a specific linter:
+To run all:
 ```sh
-tox -e flake8
+tox
 ```
 
-### Test
+To run a specific environment:
 ```sh
 tox -e py311
 ```
 
-### Document
+To generate documentation:
 ```sh
 cd docs
 make clean html
 ```
-
 The HTML pages are in build/html.

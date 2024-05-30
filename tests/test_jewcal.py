@@ -189,7 +189,7 @@ class JewCalTestCase(TestCase):
             repr(jewcal),
             'JewCal(year=5782, month=1, day=15, '
             + "gregorian_date=datetime.date(2022, 4, 16), shabbos='Shabbos', "
-            + "yomtov='Pesach 1', category='Candles', diaspora=True)"
+            + "yomtov='Pesach 1', category='Candles', diaspora=True)",
         )
 
         # Israel
@@ -199,5 +199,5 @@ class JewCalTestCase(TestCase):
             'JewCal(year=5782, month=1, day=15, '
             + 'gregorian_date=datetime.date(2022, 4, 16), '
             + "shabbos='Shabbos', yomtov='Pesach 1', category='Havdalah', "
-            + 'diaspora=False)'
+            + 'diaspora=False)',
         )
