@@ -24,6 +24,7 @@ dependencies = []
 classifiers = [
 	'Programming Language :: Python :: 3.10',
 	'Programming Language :: Python :: 3.11',
+	'Programming Language :: Python :: 3.12',
 	'Typing :: Typed',
 	'License :: OSI Approved :: MIT License',
 ]
@@ -46,7 +47,7 @@ dev = [
 legacy_tox_ini = """
 	[tox]
 	envlist =
-		py{310,311}
+		py{310,311,312}
 		ruff-lint
         ruff-format
 		pylint
@@ -63,7 +64,7 @@ legacy_tox_ini = """
 		py310: coverage[toml]
 	commands =
 		coverage run -m unittest discover
-		py311: coverage report -m
+		py312: coverage report -m
 
 	[testenv:ruff-lint]
 	deps = ruff
@@ -100,7 +101,8 @@ legacy_tox_ini = """
 	[gh-actions]
 	python =
 		3.10: py310
-		3.11: py311, ruff-lint, ruff-format, pylint, mypy, darglint
+		3.11: py311
+		3.12: py312, ruff-lint, ruff-format, pylint, mypy, darglint
 """
 
 [tool.coverage.run]

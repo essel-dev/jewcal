@@ -9,7 +9,7 @@ python --version
 To install multiple Python versions, use [pyenv](https://github.com/pyenv/pyenv).
 To activate:
 ```sh
-pyenv local 3.10 3.11
+pyenv local 3.10 3.11 3.12
 ```
 
 ### Project code
