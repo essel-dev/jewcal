@@ -12,6 +12,15 @@ https://www.david-greve.de/luach-code/jewish-python.html
 from calendar import isleap, monthrange
 from datetime import date
 
+from jewcal.constants import Months
+
+# Calculated date of the world's creation, is equivalent to sunset on the Julian
+# proleptic calendar date 6 October 3761 BCE
+JEWISH_EPOCH = 1373429
+
+# Moon's 19 year cycle where the Moon returns to the same place
+METONIC_CYCLE = 19
+
 
 def is_gregorian_leap(year: int) -> bool:
     """Is the Gregorian year a leap year.
@@ -43,7 +52,7 @@ def is_jewish_leap(year: int) -> bool:
     Returns:
         True for leap year, False otherwise.
     """
-    return bool((((year * 7) + 1) % 19) < 7)  # noqa: PLR2004
+    return bool((((year * 7) + 1) % METONIC_CYCLE) < 7)  # noqa: PLR2004
 
 
 def days_in_gregorian_month(month: int, year: int) -> int:
@@ -144,17 +153,17 @@ def jewish_to_absdate(year: int, month: int, day: int) -> int:
     value = day
     return_value = value
 
-    # If before Tishri
-    if month < 7:  # noqa: PLR2004
+    # If before Tishrei
+    if month < Months.TISHREI:
         # add days in prior months this year before and after Nisan.
-        for i in range(7, months_in_jewish_year(year) + 1):
+        for i in range(Months.TISHREI, months_in_jewish_year(year) + 1):
             value = days_in_jewish_month(year, i)
             return_value += value
         for i in range(1, month):
             value = days_in_jewish_month(year, i)
             return_value += value
     else:
-        for i in range(7, month):
+        for i in range(Months.TISHREI, month):
             value = days_in_jewish_month(year, i)
             return_value += value
 
@@ -163,7 +172,7 @@ def jewish_to_absdate(year: int, month: int, day: int) -> int:
     return_value += value
 
     # Days elapsed before absolute date 1.
-    value = 1373429
+    value = JEWISH_EPOCH
     return_value -= value
 
     return return_value
@@ -192,7 +201,7 @@ def absdate_to_jewish(absdate: int) -> tuple[int, int, int]:
     Returns:
         A tuple with the Jewish year, month and day.
     """
-    approx = (absdate + 1373429) // 366
+    approx = (absdate + JEWISH_EPOCH) // 366
 
     year_temp = approx
     while 1:
@@ -247,15 +256,15 @@ def _first_day_of_jewish_year(year: int) -> int:
         The absolute date number.
     """
     # Months in complete cycles so far.
-    value = 235 * ((year - 1) // 19)
+    value = 235 * ((year - 1) // METONIC_CYCLE)
     months_elapsed = value
 
     # Regular months in this cycle.
-    value = 12 * ((year - 1) % 19)
+    value = 12 * ((year - 1) % METONIC_CYCLE)
     months_elapsed += value
 
     # Leap months this cycle.
-    value = ((((year - 1) % 19) * 7) + 1) // 19
+    value = ((((year - 1) % METONIC_CYCLE) * 7) + 1) // METONIC_CYCLE
 
     months_elapsed += value
 
