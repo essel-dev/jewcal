@@ -2,8 +2,9 @@ __pycache__
 .mypy_cache
 .tox
 .coverage
-env
+.env
 build
 *.egg-info
 dist
+.ruff*
 .python-version

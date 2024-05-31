@@ -3,6 +3,7 @@
 This script can be invoked from the command line:
     `jewcal`
 """
+
 from datetime import date
 
 from jewcal import JewCal

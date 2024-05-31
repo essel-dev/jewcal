@@ -1,37 +1,34 @@
-"""JewCal usage examples.
-
-Diaspora
---------
-
->>> jewcal = JewCal(date.today())  # today's date
-
->>> jewcal = JewCal(date(2022, 4, 17))  # specific date
->>> print(jewcal)
-16 Nisan 5782
->>> print(repr(jewcal))
-JewCal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17),
-shabbos=None, yomtov='Pesach 2', category='Havdalah', diaspora=True)
-
-
-Israel
-------
-
->>> jewcal = JewCal(date.today(), diaspora=False)  # today's date
-
->>> jewcal = JewCal(date(2022, 4, 17), diaspora=False)  # specific date
->>> print(jewcal)
-16 Nisan 5782
->>> print(repr(jewcal))
-JewCal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17),
-shabbos=None, yomtov='Chol HaMoed 1 (Pesach 2)', category=None, diaspora=False)
-"""
+"""Package jewcal."""
 
 from datetime import date  # noqa: F401
+from sys import modules
+from types import ModuleType
+from typing import cast
+from warnings import warn
 
-from .core import Jewcal  # noqa: F401  # deprecated
 from .core import JewCal
 
+Jewcal = JewCal
+
+
+class _Wrapper:  # pylint: disable=too-few-public-methods
+    """Rename class `Jewcal` to `JewCal`."""
+
+    def __init__(self, wrapped: ModuleType):
+        self.wrapped: ModuleType = wrapped
+
+    def __getattr__(self, name: str) -> ModuleType:
+        if name == 'Jewcal':
+            # DeprecationWarning does not alert the user if not in
+            # development mode
+            warn('Jewcal is deprecated, use JewCal', stacklevel=2)
+
+        return cast(ModuleType, getattr(self.wrapped, name))
+
+
+modules[__name__] = cast(ModuleType, _Wrapper(modules[__name__]))
+
+
 __all__ = [
-    'Jewcal',
     'JewCal',
 ]

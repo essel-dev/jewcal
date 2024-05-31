@@ -1,6 +1,6 @@
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.5.0
+  rev: v4.6.0
   hooks:
   - id: trailing-whitespace
   - id: end-of-file-fixer
@@ -9,6 +9,7 @@ repos:
   - id: double-quote-string-fixer
   - id: no-commit-to-branch
     args: [--branch, master]
+
 - repo: local
   hooks:
   - id: unittests
@@ -19,42 +20,18 @@ repos:
     args: [
       'discover',
     ]
-- repo: https://github.com/pre-commit/mirrors-isort
-  rev: v5.10.1
+
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.3.5
   hooks:
-  - id: isort
-- repo: https://github.com/PyCQA/flake8
-  rev: 7.0.0
-  hooks:
-  - id: flake8
-    args: [
-      'src',
-      'tests',
-      'docs',
-    ]
-- repo: https://github.com/PyCQA/pylint
-  rev: v3.1.0
-  hooks:
-  - id: pylint
-    pass_filenames: false
-    args: [
-      'src',
-      'tests',
-      'docs',
-    ]
-- repo: https://github.com/PyCQA/pydocstyle
-  rev: 6.3.0
-  hooks:
-  - id: pydocstyle
-    args: [
-      'src',
-      'tests',
-      'docs',
-    ]
+    - id: ruff
+    - id: ruff-format
+
 - repo: https://github.com/pre-commit/mirrors-mypy
   rev: v1.9.0
   hooks:
   - id: mypy
+
 - repo: https://github.com/terrencepreilly/darglint
   rev: v1.8.1
   hooks:

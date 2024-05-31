@@ -61,9 +61,6 @@ The output:
 .. include_quickstart_end
 
 
-The code for this quickstart is available here: `<src/jewcal/__main__.py>`_.
-
-
 Resources
 ---------
 

@@ -16,8 +16,6 @@ def load_tests(loader, tests, ignore):  # pylint: disable=unused-argument
     # noqa: DAR201 return
     """
     tests.addTests(
-        DocTestSuite(
-            'src.jewcal.__init__', optionflags=NORMALIZE_WHITESPACE
-        )
+        DocTestSuite('src.jewcal.__init__', optionflags=NORMALIZE_WHITESPACE)
     )
     return tests
