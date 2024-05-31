@@ -4,6 +4,11 @@ build-backend = 'setuptools.build_meta'
 
 [tool.setuptools_scm]
 
+[tool.setuptools.package-data]
+jewcal = [
+	'py.typed',
+]
+
 [project]
 name = 'jewcal'
 description = 'Convert Gregorian to Jewish dates and get Shabbos / Yom Tov details for Diaspora and Israel.'
@@ -16,6 +21,12 @@ authors = [{ name='essel-dev', email='info@essel.dev' }]
 readme = 'README.rst'
 requires-python = '>=3.10'
 dependencies = []
+classifiers = [
+	'Programming Language :: Python :: 3.10',
+	'Programming Language :: Python :: 3.11',
+	'Typing :: Typed',
+	'License :: OSI Approved :: MIT License',
+]
 
 [project.urls]
 'GitHub' = 'https://github.com/essel-dev/jewcal'
