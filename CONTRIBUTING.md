@@ -7,6 +7,7 @@ python --version
 ```
 
 To install multiple Python versions, use [pyenv](https://github.com/pyenv/pyenv).
+
 To activate:
 ```sh
 pyenv local 3.10 3.11 3.12
@@ -19,7 +20,7 @@ cd && git clone # path-to-this-repository.git
 
 ### Virtual environment
 ```sh
-cd # path-to-downloaded-reposity
+cd # path-to-downloaded-repository
 python -m venv .env
 source .env/bin/activate
 ```
@@ -57,7 +58,6 @@ tox -e py311
 
 To generate documentation:
 ```sh
-cd docs
-make clean html
+tox -e docs
 ```
-The HTML pages are in build/html.
+The HTML pages are in docs/build/html.

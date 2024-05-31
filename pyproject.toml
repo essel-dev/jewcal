@@ -17,16 +17,18 @@ keywords = [
 ]
 license = {file = 'LICENSE'}
 dynamic = ['version']
-authors = [{ name='essel-dev', email='info@essel.dev' }]
+authors = [{ name='essel-dev'}]
 readme = 'README.rst'
 requires-python = '>=3.10'
 dependencies = []
 classifiers = [
+	'License :: OSI Approved :: MIT License',
+	'Operating System :: OS Independent',
 	'Programming Language :: Python :: 3.10',
 	'Programming Language :: Python :: 3.11',
 	'Programming Language :: Python :: 3.12',
+	'Topic :: Utilities',
 	'Typing :: Typed',
-	'License :: OSI Approved :: MIT License',
 ]
 
 [project.urls]
@@ -34,6 +36,9 @@ classifiers = [
 'Documentation' = 'https://jewcal.readthedocs.io/'
 'Changelog' = 'https://github.com/essel-dev/jewcal/releases'
 'Bug Tracker' = 'https://github.com/essel-dev/jewcal/issues'
+
+[project.scripts]
+jewcal = 'jewcal.__main__:main'
 
 [project.optional-dependencies]
 dev = [
@@ -50,7 +55,6 @@ legacy_tox_ini = """
 		py{310,311,312}
 		ruff-lint
         ruff-format
-		pylint
 		mypy
 		darglint
 		pre-commit
@@ -73,10 +77,6 @@ legacy_tox_ini = """
 	[testenv:ruff-format]
 	deps = ruff
 	commands = ruff format
-
-	[testenv:pylint]
-	deps = pylint
-	commands = pylint src tests docs
 
 	[testenv:mypy]
 	deps = mypy
@@ -102,7 +102,7 @@ legacy_tox_ini = """
 	python =
 		3.10: py310
 		3.11: py311
-		3.12: py312, ruff-lint, ruff-format, pylint, mypy, darglint
+		3.12: py312, ruff-lint, ruff-format, mypy, darglint
 """
 
 [tool.coverage.run]
@@ -142,7 +142,6 @@ convention = 'google'
 [tool.ruff.format]
 quote-style = 'single'
 docstring-code-format = true
-
 
 [tool.mypy]
 files = 'src, tests, docs'

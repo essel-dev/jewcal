@@ -1,5 +1,6 @@
 """Package jewcal."""
 
+from datetime import date  # noqa: F401
 from sys import modules
 from types import ModuleType
 from typing import cast
@@ -10,7 +11,7 @@ from .core import JewCal
 Jewcal = JewCal
 
 
-class Wrapper:  # pylint: disable=too-few-public-methods
+class _Wrapper:  # pylint: disable=too-few-public-methods
     """Rename class `Jewcal` to `JewCal`."""
 
     def __init__(self, wrapped: ModuleType):
@@ -25,7 +26,7 @@ class Wrapper:  # pylint: disable=too-few-public-methods
         return cast(ModuleType, getattr(self.wrapped, name))
 
 
-modules[__name__] = cast(ModuleType, Wrapper(modules[__name__]))
+modules[__name__] = cast(ModuleType, _Wrapper(modules[__name__]))
 
 
 __all__ = [

@@ -10,3 +10,4 @@ prune .github
 prune docs
 exclude .readthedocs.yaml
 exclude MANIFEST.in
+include LICENSE
