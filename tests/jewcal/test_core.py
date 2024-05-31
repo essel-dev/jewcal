@@ -20,7 +20,9 @@ class JewCalTestCase(TestCase):
         """Using the old class name should alert the user."""
         with self.assertWarns(UserWarning):
             # pylint: disable=import-outside-toplevel,unused-import
-            from src.jewcal import Jewcal  # noqa: F401
+            from src.jewcal import Jewcal
+
+            Jewcal(date(2022, 8, 14))
 
     def test_no_shabbos_and_yom_tov(self) -> None:
         """Create a new date."""
@@ -189,7 +191,7 @@ class JewCalTestCase(TestCase):
             repr(jewcal),
             'JewCal(year=5782, month=1, day=15, '
             + "gregorian_date=datetime.date(2022, 4, 16), shabbos='Shabbos', "
-            + "yomtov='Pesach 1', category='Candles', diaspora=True)"
+            + "yomtov='Pesach 1', category='Candles', diaspora=True)",
         )
 
         # Israel
@@ -199,5 +201,5 @@ class JewCalTestCase(TestCase):
             'JewCal(year=5782, month=1, day=15, '
             + 'gregorian_date=datetime.date(2022, 4, 16), '
             + "shabbos='Shabbos', yomtov='Pesach 1', category='Havdalah', "
-            + 'diaspora=False)'
+            + 'diaspora=False)',
         )

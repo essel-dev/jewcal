@@ -9,7 +9,17 @@ Source code Copyright © by Ulrich and David Greve (2005)
 https://www.david-greve.de/luach-code/jewish-python.html
 """
 
-from typing import Tuple
+from calendar import isleap, monthrange
+from datetime import date
+
+from jewcal.constants import Months
+
+# Calculated date of the world's creation, is equivalent to sunset on the Julian
+# proleptic calendar date 6 October 3761 BCE
+JEWISH_EPOCH = 1373429
+
+# Moon's 19 year cycle where the Moon returns to the same place
+METONIC_CYCLE = 19
 
 
 def is_gregorian_leap(year: int) -> bool:
@@ -24,12 +34,7 @@ def is_gregorian_leap(year: int) -> bool:
     Returns:
         True for leap year, False otherwise.
     """
-    return bool(all([
-        ((year % 4) == 0),
-        ((year % 400) != 100),
-        ((year % 400) != 200),
-        ((year % 400) != 300),
-    ]))
+    return isleap(year)
 
 
 def is_jewish_leap(year: int) -> bool:
@@ -47,7 +52,7 @@ def is_jewish_leap(year: int) -> bool:
     Returns:
         True for leap year, False otherwise.
     """
-    return bool((((year * 7) + 1) % 19) < 7)
+    return bool((((year * 7) + 1) % METONIC_CYCLE) < 7)  # noqa: PLR2004
 
 
 def days_in_gregorian_month(month: int, year: int) -> int:
@@ -60,11 +65,7 @@ def days_in_gregorian_month(month: int, year: int) -> int:
     Returns:
          The number of days.
     """
-    if is_gregorian_leap(year) is True and month == 2:
-        return 29
-
-    lengths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    return lengths[month - 1]
+    return monthrange(year, month)[1]
 
 
 def days_in_jewish_year(year: int) -> int:
@@ -79,8 +80,7 @@ def days_in_jewish_year(year: int) -> int:
     Returns:
         The number of days.
     """
-    return (_first_day_of_jewish_year(year + 1)
-            - _first_day_of_jewish_year(year))
+    return _first_day_of_jewish_year(year + 1) - _first_day_of_jewish_year(year)
 
 
 def days_in_jewish_month(year: int, month: int) -> int:
@@ -135,31 +135,7 @@ def gregorian_to_absdate(year: int, month: int, day: int) -> int:
     Returns:
         The absolute date number.
     """
-    value = day
-    absdate = value
-
-    # days in prior months this year
-    for i in range(1, month):
-        value = days_in_gregorian_month(i, year)
-        absdate += value
-
-    # days in prior years
-    value = 365 * (year - 1)
-    absdate += value
-
-    # Julian leap days in prior years
-    value = (year - 1) // 4
-    absdate += value
-
-    # minus prior century years
-    value = (year - 1) // 100
-    absdate -= value
-
-    # plus prior years divisible by 400
-    value = (year - 1) // 400
-    absdate += value
-
-    return absdate
+    return date(year, month, day).toordinal()
 
 
 def jewish_to_absdate(year: int, month: int, day: int) -> int:
@@ -177,17 +153,17 @@ def jewish_to_absdate(year: int, month: int, day: int) -> int:
     value = day
     return_value = value
 
-    # If before Tishri
-    if month < 7:
+    # If before Tishrei
+    if month < Months.TISHREI:
         # add days in prior months this year before and after Nisan.
-        for i in range(7, months_in_jewish_year(year) + 1):
+        for i in range(Months.TISHREI, months_in_jewish_year(year) + 1):
             value = days_in_jewish_month(year, i)
             return_value += value
         for i in range(1, month):
             value = days_in_jewish_month(year, i)
             return_value += value
     else:
-        for i in range(7, month):
+        for i in range(Months.TISHREI, month):
             value = days_in_jewish_month(year, i)
             return_value += value
 
@@ -196,13 +172,13 @@ def jewish_to_absdate(year: int, month: int, day: int) -> int:
     return_value += value
 
     # Days elapsed before absolute date 1.
-    value = 1373429
+    value = JEWISH_EPOCH
     return_value -= value
 
     return return_value
 
 
-def absdate_to_gregorian(absdate: int) -> Tuple[int, int, int]:
+def absdate_to_gregorian(absdate: int) -> tuple[int, int, int]:
     """Convert the absolute date number to a Gregorian date.
 
     Args:
@@ -211,35 +187,12 @@ def absdate_to_gregorian(absdate: int) -> Tuple[int, int, int]:
     Returns:
         A tuple with the Gregorian year, month and day.
     """
-    approx = absdate // 366
+    gregorian = date.fromordinal(absdate)
 
-    # search forward from the approximation
-    year_temp = approx
-    while 1:
-        absdate_temp = gregorian_to_absdate(year_temp + 1, 1, 1)
-        if absdate < absdate_temp:
-            break
-        year_temp += 1
-    year = year_temp
-
-    # search forward from January
-    month_temp = 1
-    while 1:
-        absdate_temp = gregorian_to_absdate(
-            year, month_temp, days_in_gregorian_month(month_temp, year))
-        if absdate <= absdate_temp:
-            break
-        month_temp += 1
-    month = month_temp
-
-    # calculate the day by subtraction
-    absdate_temp = gregorian_to_absdate(year, month, 1)
-    day = absdate - absdate_temp + 1
-
-    return (year, month, day)
+    return (gregorian.year, gregorian.month, gregorian.day)
 
 
-def absdate_to_jewish(absdate: int) -> Tuple[int, int, int]:
+def absdate_to_jewish(absdate: int) -> tuple[int, int, int]:
     """Convert the absolute date number to a Jewish date.
 
     Args:
@@ -248,7 +201,7 @@ def absdate_to_jewish(absdate: int) -> Tuple[int, int, int]:
     Returns:
         A tuple with the Jewish year, month and day.
     """
-    approx = (absdate + 1373429) // 366
+    approx = (absdate + JEWISH_EPOCH) // 366
 
     year_temp = approx
     while 1:
@@ -259,17 +212,12 @@ def absdate_to_jewish(absdate: int) -> Tuple[int, int, int]:
     year = year_temp
 
     absdate_temp = jewish_to_absdate(year, 1, 1)
-    if absdate < absdate_temp:
-        start = 7
-    else:
-        start = 1
+    start = 7 if absdate < absdate_temp else 1
 
     month_temp = start
     while 1:
         absdate_temp = jewish_to_absdate(
-            year,
-            month_temp,
-            days_in_jewish_month(year, month_temp)
+            year, month_temp, days_in_jewish_month(year, month_temp)
         )
         if absdate <= absdate_temp:
             break
@@ -277,7 +225,7 @@ def absdate_to_jewish(absdate: int) -> Tuple[int, int, int]:
     month = month_temp
 
     absdate_temp = jewish_to_absdate(year, month, 1)
-    day = absdate-absdate_temp + 1
+    day = absdate - absdate_temp + 1
 
     return (year, month, day)
 
@@ -308,15 +256,15 @@ def _first_day_of_jewish_year(year: int) -> int:
         The absolute date number.
     """
     # Months in complete cycles so far.
-    value = 235 * ((year - 1) // 19)
+    value = 235 * ((year - 1) // METONIC_CYCLE)
     months_elapsed = value
 
     # Regular months in this cycle.
-    value = 12 * ((year - 1) % 19)
+    value = 12 * ((year - 1) % METONIC_CYCLE)
     months_elapsed += value
 
     # Leap months this cycle.
-    value = ((((year - 1) % 19) * 7) + 1) // 19
+    value = ((((year - 1) % METONIC_CYCLE) * 7) + 1) // METONIC_CYCLE
 
     months_elapsed += value
 
@@ -330,26 +278,34 @@ def _first_day_of_jewish_year(year: int) -> int:
     )
 
     # Conjunction day.
-    day = 1 + (29 * months_elapsed) + (hours_elapsed//24)
+    day = 1 + (29 * months_elapsed) + (hours_elapsed // 24)
 
     # Conjunction parts.
     parts = ((hours_elapsed % 24) * 1080) + (parts_elapsed % 1080)
 
-    if any([
-        (parts >= 19440),  # new moon is at or after midday
-
-        all([
-            ((day % 7) == 2),  # or is on a Tuesday
-            (parts >= 9924),  # and at 9 hours, 204 parts or later
-            (not is_jewish_leap(year)),  # and of a common year
-        ]),
-
-        all([
-            ((day % 7) == 1),  # or is on a Monday
-            (parts >= 16789),  # and at 15 hours, 589 parts or later
-            (is_jewish_leap(year - 1)),  # and at the end of a leap year
-        ]),
-    ]):
+    if any(
+        [
+            (parts >= 19440),  # new moon is at or after midday  # noqa: PLR2004
+            all(
+                [
+                    ((day % 7) == 2),  # or is on a Tuesday  # noqa: PLR2004
+                    (
+                        parts >= 9924  # noqa: PLR2004
+                    ),  # and at 9 hours, 204 parts or later
+                    (not is_jewish_leap(year)),  # and of a common year
+                ]
+            ),
+            all(
+                [
+                    ((day % 7) == 1),  # or is on a Monday
+                    (
+                        parts >= 16789  # noqa: PLR2004
+                    ),  # and at 15 hours, 589 parts or later
+                    (is_jewish_leap(year - 1)),  # and at the end of a leap year
+                ]
+            ),
+        ]
+    ):
         alternative_day = day + 1  # postpone Rosh Hashana one day
     else:
         alternative_day = day
@@ -373,7 +329,7 @@ def _is_long_cheshvan(year: int) -> bool:
     Returns:
          True for long, False otherwise.
     """
-    return bool((days_in_jewish_year(year) % 10) == 5)
+    return bool((days_in_jewish_year(year) % 10) == 5)  # noqa: PLR2004
 
 
 def _is_short_kislev(year: int) -> bool:
@@ -388,4 +344,4 @@ def _is_short_kislev(year: int) -> bool:
     Returns:
          True for short, False otherwise.
     """
-    return bool((days_in_jewish_year(year) % 10) == 3)
+    return bool((days_in_jewish_year(year) % 10) == 3)  # noqa: PLR2004

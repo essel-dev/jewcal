@@ -1,7 +1,7 @@
 """Constants."""
 
 from enum import Enum, IntEnum, unique
-from typing import NamedTuple, Optional
+from typing import NamedTuple
 
 
 @unique
@@ -35,7 +35,7 @@ class Event(NamedTuple):
     """Named tuple for shabbos and yom tov."""
 
     title: str
-    category: Optional[str]
+    category: str | None
 
 
 # YOMTOV[jewish_month][day]
@@ -46,10 +46,8 @@ YOMTOV: dict[int, dict[int, Event]] = {
     7: {
         1: Event('Rosh Hashana 1', Category.CANDLES.value),
         2: Event('Rosh Hashana 2', Category.HAVDALAH.value),
-
         9: Event('Erev Yom Kippur', Category.CANDLES.value),
         10: Event('Yom Kippur', Category.HAVDALAH.value),
-
         14: Event('Erev Sukkos', Category.CANDLES.value),
         15: Event('Sukkos 1', Category.CANDLES.value),
         16: Event('Sukkos 2', Category.HAVDALAH.value),
@@ -86,10 +84,8 @@ YOMTOV_ISRAEL: dict[int, dict[int, Event]] = {
     7: {
         1: Event('Rosh Hashana 1', Category.CANDLES.value),
         2: Event('Rosh Hashana 2', Category.HAVDALAH.value),
-
         9: Event('Erev Yom Kippur', Category.CANDLES.value),
         10: Event('Yom Kippur', Category.HAVDALAH.value),
-
         14: Event('Erev Sukkot', Category.CANDLES.value),
         15: Event('Sukkot 1', Category.HAVDALAH.value),
         16: Event('Chol HaMoed 1 (Sukkot 2)', None),

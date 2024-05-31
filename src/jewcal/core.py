@@ -1,12 +1,38 @@
-"""Jewish dates with shabbos / yom tov details for Diaspora."""
+"""Usage examples.
+
+**Diaspora:**
+
+>>> jewcal = JewCal(date.today())  # today's date
+
+>>> jewcal = JewCal(date(2022, 4, 17))  # specific date
+>>> print(jewcal)
+16 Nisan 5782
+>>> print(repr(jewcal))
+JewCal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17),
+shabbos=None, yomtov='Pesach 2', category='Havdalah', diaspora=True)
+
+
+**Israel:**
+
+>>> jewcal = JewCal(date.today(), diaspora=False)  # today's date
+
+>>> jewcal = JewCal(date(2022, 4, 17), diaspora=False)  # specific date
+>>> print(jewcal)
+16 Nisan 5782
+>>> print(repr(jewcal))
+JewCal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17),
+shabbos=None, yomtov='Chol HaMoed 1 (Pesach 2)', category=None, diaspora=False)
+"""
 
 from dataclasses import dataclass
 from datetime import date
-from typing import Optional
 
 from .constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Months
-from .utils.calculations import (absdate_to_jewish, gregorian_to_absdate,
-                                 weekday_from_absdate)
+from .utils.calculations import (
+    absdate_to_jewish,
+    gregorian_to_absdate,
+    weekday_from_absdate,
+)
 
 
 @dataclass
@@ -14,23 +40,38 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
     """Jewish date with shabbos / yom tov details."""
 
     year: int
+    """The year in the Jewish calendar."""
+
     month: int
+    """The month in the Jewish calendar."""
+
     day: int
+    """The day of the Jewish month."""
+
     gregorian_date: date
-    shabbos: Optional[str] = None
-    yomtov: Optional[str] = None
-    category: Optional[str] = None
-    diaspora: Optional[bool] = True
+    """The date in the Gregorian calendar."""
+
+    shabbos: str | None = None
+    """Is it (Erev) Shabbos."""
+
+    yomtov: str | None = None
+    """Is it (Erev) Yom Tov."""
+
+    category: str | None = None
+    """The category (Candles or Havdalah)."""
+
+    diaspora: bool | None = True
+    """Is the schedule for Diaspora or Israel."""
 
     def __init__(self, gregorian_date: date, diaspora: bool = True) -> None:
         """Create a new Jewish date.
 
         The Jewish date contains optional details:
-            - shabbos or yom tov
-            - category (candles or havdalah).
+            - Shabbos or Yom Tov
+            - category (Candles or Havdalah).
 
-        If the first day of a yom tov starts on shabbos, the category is set
-        to candles instead of havdalah.
+        If the first day of Yom Tov starts on Shabbos, the category is set
+        to Candles instead of Havdalah.
 
         Args:
             gregorian_date: The Gregorian date.
@@ -38,9 +79,7 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
         """
         # jewish date
         absdate = gregorian_to_absdate(
-            gregorian_date.year,
-            gregorian_date.month,
-            gregorian_date.day
+            gregorian_date.year, gregorian_date.month, gregorian_date.day
         )
         self.year, self.month, self.day = absdate_to_jewish(absdate)
 
