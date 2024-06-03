@@ -16,7 +16,7 @@ class MainTestCase(TestCase):
         # https://stackoverflow.com/a/34738440
         capturedOutput = StringIO()  # Create StringIO.
         sys.stdout = capturedOutput  # Redirect stdout.
-        main()  # Call function.
+        main()                       # Call function.
         sys.stdout = sys.__stdout__  # Reset redirect.
 
         self.assertIn('Today is', capturedOutput.getvalue())
