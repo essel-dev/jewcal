@@ -60,7 +60,7 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
     category: str | None = None
     """The category (Candles or Havdalah)."""
 
-    diaspora: bool | None = True
+    diaspora: bool = True
     """Is the schedule for Diaspora or Israel."""
 
     def __init__(self, gregorian_date: date, diaspora: bool = True) -> None:
