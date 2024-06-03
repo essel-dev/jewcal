@@ -1,10 +1,25 @@
 """Unittests for jewcal."""
 
 from datetime import date
+from doctest import NORMALIZE_WHITESPACE, DocTestSuite
+from typing import no_type_check
 from unittest import TestCase
 
 from src.jewcal import JewCal
 from src.jewcal.constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Category
+
+
+@no_type_check
+def load_tests(loader, tests, ignore):  # pylint: disable=unused-argument
+    """Run the doctests in jewcal.core for documentation (tutorials).
+
+    # noqa: DAR101 loader
+    # noqa: DAR101 tests
+    # noqa: DAR101 ignore
+    # noqa: DAR201 return
+    """
+    tests.addTests(DocTestSuite('src.jewcal.core', optionflags=NORMALIZE_WHITESPACE))
+    return tests
 
 
 class JewCalTestCase(TestCase):
