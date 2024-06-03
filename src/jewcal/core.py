@@ -132,7 +132,7 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
         self._issur_melacha()
 
     def __str__(self) -> str:
-        """The Jewish date as a string.
+        """Jewish date as a string.
 
         Returns:
             The Jewish date.
@@ -144,7 +144,6 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
         )
 
     def _erev(self) -> None:
-        """Is it Erev Shabbos or Yom Tov."""
         is_erev_shabbos = self.shabbos and 'Erev' in self.shabbos
 
         is_erev_yom_tov = self.yomtov and any(
