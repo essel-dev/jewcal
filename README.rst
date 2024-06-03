@@ -61,6 +61,7 @@ The output:
     yomtov=None,
     category='Candles',
     is_erev=True,
+    is_issur_melacha=False,
     diaspora=True
   )
 
