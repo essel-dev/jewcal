@@ -64,6 +64,9 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
     is_erev: bool = False
     """Is it Erev Shabbos or Yom Tov."""
 
+    is_issur_melacha: bool = False
+    """Is it Issur Melacha."""
+
     diaspora: bool | None = True
     """Is the schedule for Diaspora or Israel."""
 
@@ -74,6 +77,7 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
             - Shabbos or Yom Tov
             - category (Candles or Havdalah).
             - Erev Shabbos or Yom Tov
+            - Is it Issur Melacha
 
         If Shabbos / Yom Tov has Candles / Havdalah, Candles has priority. The category
         is set to Candles instead of Havdalah.
@@ -118,6 +122,9 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
         # erev
         self._erev()
 
+        # issur melacha
+        self._issur_melacha()
+
     def __str__(self) -> str:
         """Jewish date as a string.
 
@@ -146,3 +153,7 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
             ]
         ):
             self.is_erev = True
+
+    def _issur_melacha(self) -> None:
+        """Is it issur melacha."""
+        self.is_issur_melacha = self.category is not None and not self.is_erev
