@@ -207,6 +207,7 @@ class JewCalTestCase(TestCase):
     def test_category_adjusted(self) -> None:
         """Test adjusted category."""
         # Diaspora
+        # 2023
         erev_pesach = JewCal(date(2023, 4, 5))
         self.assertEqual(erev_pesach.category, Category.CANDLES.value)
 
@@ -216,18 +217,33 @@ class JewCalTestCase(TestCase):
         pesach_2 = JewCal(date(2023, 4, 7))
         self.assertEqual(pesach_2.category, Category.CANDLES.value)
 
-        pesach_2 = JewCal(date(2023, 4, 8))
-        self.assertEqual(pesach_2.category, Category.HAVDALAH.value)
+        chol_hamoed_1 = JewCal(date(2023, 4, 8))
+        self.assertEqual(chol_hamoed_1.category, Category.HAVDALAH.value)
+
+        # 2024
+        chol_hamoed_2 = JewCal(date(2024, 4, 26))
+        self.assertEqual(chol_hamoed_2.category, Category.CANDLES.value)
+
+        chol_hamoed_3 = JewCal(date(2024, 4, 27))
+        self.assertEqual(chol_hamoed_3.category, Category.HAVDALAH.value)
 
         # Israel
+        # 2023
         erev_pesach = JewCal(date(2023, 4, 5), diaspora=False)
         self.assertEqual(erev_pesach.category, Category.CANDLES.value)
 
         pesach_1 = JewCal(date(2023, 4, 6), diaspora=False)
         self.assertEqual(pesach_1.category, Category.HAVDALAH.value)
 
-        pesach_2 = JewCal(date(2023, 4, 7), diaspora=False)
-        self.assertEqual(pesach_2.category, Category.CANDLES.value)
+        chol_hamoed_1 = JewCal(date(2023, 4, 7), diaspora=False)
+        self.assertEqual(chol_hamoed_1.category, Category.CANDLES.value)
 
-        pesach_2 = JewCal(date(2023, 4, 8), diaspora=False)
-        self.assertEqual(pesach_2.category, Category.HAVDALAH.value)
+        chol_hamoed_2 = JewCal(date(2023, 4, 8), diaspora=False)
+        self.assertEqual(chol_hamoed_2.category, Category.HAVDALAH.value)
+
+        # 2024
+        chol_hamoed_3 = JewCal(date(2024, 4, 26))
+        self.assertEqual(chol_hamoed_3.category, Category.CANDLES.value)
+
+        chol_hamoed_4 = JewCal(date(2024, 4, 27))
+        self.assertEqual(chol_hamoed_4.category, Category.HAVDALAH.value)
