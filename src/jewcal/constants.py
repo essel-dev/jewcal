@@ -1,7 +1,7 @@
 """Constants."""
 
 from enum import Enum, IntEnum, unique
-from typing import NamedTuple
+from typing import Final, NamedTuple
 
 
 @unique
@@ -39,7 +39,7 @@ class Event(NamedTuple):
 
 
 # YOMTOV[jewish_month][day]
-YOMTOV: dict[int, dict[int, Event]] = {
+YOMTOV: Final[dict[int, dict[int, Event]]] = {
     6: {
         29: Event('Erev Rosh Hashana', Category.CANDLES.value),
     },
@@ -77,7 +77,7 @@ YOMTOV: dict[int, dict[int, Event]] = {
     },
 }
 
-YOMTOV_ISRAEL: dict[int, dict[int, Event]] = {
+YOMTOV_ISRAEL: Final[dict[int, dict[int, Event]]] = {
     6: {
         29: Event('Erev Rosh Hashana', Category.CANDLES.value),
     },
@@ -113,7 +113,7 @@ YOMTOV_ISRAEL: dict[int, dict[int, Event]] = {
 }
 
 # SHABBOS[weekday]
-SHABBOS: dict[int, Event] = {
+SHABBOS: Final[dict[int, Event]] = {
     5: Event('Erev Shabbos', Category.CANDLES.value),
     6: Event('Shabbos', Category.HAVDALAH.value),
 }
