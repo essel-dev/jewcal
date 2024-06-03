@@ -191,7 +191,7 @@ class JewCalTestCase(TestCase):
             repr(jewcal),
             'JewCal(year=5782, month=1, day=15, '
             + "gregorian_date=datetime.date(2022, 4, 16), shabbos='Shabbos', "
-            + "yomtov='Pesach 1', category='Candles', diaspora=True)",
+            + "yomtov='Pesach 1', category='Candles', is_erev=False, diaspora=True)",
         )
 
         # Israel
@@ -201,7 +201,7 @@ class JewCalTestCase(TestCase):
             'JewCal(year=5782, month=1, day=15, '
             + 'gregorian_date=datetime.date(2022, 4, 16), '
             + "shabbos='Shabbos', yomtov='Pesach 1', category='Havdalah', "
-            + 'diaspora=False)',
+            + 'is_erev=False, diaspora=False)',
         )
 
     def test_category_adjusted(self) -> None:
@@ -247,3 +247,82 @@ class JewCalTestCase(TestCase):
 
         chol_hamoed_4 = JewCal(date(2024, 4, 27))
         self.assertEqual(chol_hamoed_4.category, Category.HAVDALAH.value)
+
+    def test_erev(self) -> None:
+        """Test Erev Shabbos and Yom Tov."""
+        # Shabbos
+        erev_shabbos_1 = JewCal(date(2023, 9, 15))
+        self.assertTrue(erev_shabbos_1.is_erev)
+
+        shabbos_1 = JewCal(date(2023, 9, 16))
+        self.assertFalse(shabbos_1.is_erev)
+
+        sunday = JewCal(date(2023, 9, 17))
+        self.assertFalse(sunday.is_erev)
+
+        erev_shabbos_2 = JewCal(date(2023, 9, 22), diaspora=False)
+        self.assertTrue(erev_shabbos_2.is_erev)
+
+        shabbos_2 = JewCal(date(2023, 9, 23), diaspora=False)
+        self.assertFalse(shabbos_2.is_erev)
+
+        # Diaspora
+        erev_pesach = JewCal(date(2024, 4, 22))
+        self.assertTrue(erev_pesach.is_erev)
+
+        pesach_1 = JewCal(date(2024, 4, 23))
+        self.assertFalse(pesach_1.is_erev)
+
+        pesach_2 = JewCal(date(2024, 4, 24))
+        self.assertFalse(pesach_2.is_erev)
+
+        chol_hamoed_1 = JewCal(date(2024, 4, 25))
+        self.assertFalse(chol_hamoed_1.is_erev)
+
+        chol_hamoed_2 = JewCal(date(2024, 4, 26))
+        self.assertTrue(chol_hamoed_2.is_erev)  # erev shabbos Chol HaMoed 2 (Pesach 4)
+
+        chol_hamoed_3 = JewCal(date(2024, 4, 27))
+        self.assertFalse(chol_hamoed_3.is_erev)  # shabbos
+
+        # Israel
+        erev_pesach = JewCal(date(2024, 4, 22), diaspora=False)
+        self.assertTrue(erev_pesach.is_erev)
+
+        pesach_1 = JewCal(date(2024, 4, 23), diaspora=False)
+        self.assertFalse(pesach_1.is_erev)
+
+        chol_hamoed_1 = JewCal(date(2024, 4, 24), diaspora=False)
+        self.assertFalse(chol_hamoed_1.is_erev)
+
+        chol_hamoed_2 = JewCal(date(2024, 4, 26), diaspora=False)
+        self.assertTrue(chol_hamoed_2.is_erev)  # erev shabbos Chol HaMoed 2 (Pesach 3)
+
+        chol_hamoed_3 = JewCal(date(2024, 4, 27), diaspora=False)
+        self.assertFalse(chol_hamoed_3.is_erev)  # shabbos
+
+        # Diaspora
+        erev_rosh_hashana = JewCal(date(2024, 10, 2))
+        self.assertTrue(erev_rosh_hashana.is_erev)
+
+        rosh_hashana_1 = JewCal(date(2024, 10, 3))
+        self.assertFalse(rosh_hashana_1.is_erev)
+
+        rosh_hashana_2 = JewCal(date(2024, 10, 4))  # Friday
+        self.assertFalse(rosh_hashana_2.is_erev)
+
+        shabbos = JewCal(date(2024, 10, 5))
+        self.assertFalse(shabbos.is_erev)
+
+        # Israel
+        erev_rosh_hashana = JewCal(date(2024, 10, 2), diaspora=False)
+        self.assertTrue(erev_rosh_hashana.is_erev)
+
+        rosh_hashana_1 = JewCal(date(2024, 10, 3), diaspora=False)
+        self.assertFalse(rosh_hashana_1.is_erev)
+
+        rosh_hashana_2 = JewCal(date(2024, 10, 4), diaspora=False)  # Friday
+        self.assertFalse(rosh_hashana_2.is_erev)
+
+        shabbos = JewCal(date(2024, 10, 5), diaspora=False)
+        self.assertFalse(shabbos.is_erev)
