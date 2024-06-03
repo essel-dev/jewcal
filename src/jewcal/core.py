@@ -27,7 +27,7 @@ shabbos=None, yomtov='Chol HaMoed 1 (Pesach 2)', category=None, diaspora=False)
 from dataclasses import dataclass
 from datetime import date
 
-from .constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Months
+from .constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Category, Months
 from .utils.calculations import (
     absdate_to_jewish,
     gregorian_to_absdate,
@@ -108,7 +108,7 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
                     self.category = event.category
                 elif self.category != event.category:
                     # if Shabbos / Yom Tov has Candles / Havdalah, Candles has priority
-                    self.category = 'Candles'
+                    self.category = Category.CANDLES.value
 
     def __str__(self) -> str:
         """Jewish date as a string.
