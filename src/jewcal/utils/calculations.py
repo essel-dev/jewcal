@@ -12,7 +12,7 @@ https://www.david-greve.de/luach-code/jewish-python.html
 from calendar import isleap, monthrange
 from datetime import date
 
-from jewcal.constants import Month
+from ..constants import Month
 
 # Calculated date of the world's creation, is equivalent to sunset on the Julian
 # proleptic calendar date 6 October 3761 BCE
