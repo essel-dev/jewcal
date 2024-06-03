@@ -110,9 +110,6 @@ legacy_tox_ini = """
 source = [
 	'src'
 ]
-omit = [
-	'__main__.py',
-]
 
 [tool.ruff.lint]
 select = [

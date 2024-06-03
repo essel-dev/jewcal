@@ -18,5 +18,5 @@ def main() -> None:
     print(repr(jewcal))
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     main()
