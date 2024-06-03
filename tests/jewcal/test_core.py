@@ -203,3 +203,31 @@ class JewCalTestCase(TestCase):
             + "shabbos='Shabbos', yomtov='Pesach 1', category='Havdalah', "
             + 'diaspora=False)',
         )
+
+    def test_category_adjusted(self) -> None:
+        """Test adjusted category."""
+        # Diaspora
+        erev_pesach = JewCal(date(2023, 4, 5))
+        self.assertEqual(erev_pesach.category, Category.CANDLES.value)
+
+        pesach_1 = JewCal(date(2023, 4, 6))
+        self.assertEqual(pesach_1.category, Category.CANDLES.value)
+
+        pesach_2 = JewCal(date(2023, 4, 7))
+        self.assertEqual(pesach_2.category, Category.CANDLES.value)
+
+        pesach_2 = JewCal(date(2023, 4, 8))
+        self.assertEqual(pesach_2.category, Category.HAVDALAH.value)
+
+        # Israel
+        erev_pesach = JewCal(date(2023, 4, 5), diaspora=False)
+        self.assertEqual(erev_pesach.category, Category.CANDLES.value)
+
+        pesach_1 = JewCal(date(2023, 4, 6), diaspora=False)
+        self.assertEqual(pesach_1.category, Category.HAVDALAH.value)
+
+        pesach_2 = JewCal(date(2023, 4, 7), diaspora=False)
+        self.assertEqual(pesach_2.category, Category.CANDLES.value)
+
+        pesach_2 = JewCal(date(2023, 4, 8), diaspora=False)
+        self.assertEqual(pesach_2.category, Category.HAVDALAH.value)

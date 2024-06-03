@@ -70,8 +70,8 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
             - Shabbos or Yom Tov
             - category (Candles or Havdalah).
 
-        If the first day of Yom Tov starts on Shabbos, the category is set
-        to Candles instead of Havdalah.
+        If Shabbos / Yom Tov has Candles / Havdalah, Candles has priority. The category
+        is set to Candles instead of Havdalah.
 
         Args:
             gregorian_date: The Gregorian date.
@@ -101,9 +101,14 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
         if self.month in holidays and self.day in holidays[self.month]:
             event = holidays[self.month][self.day]
             self.yomtov = event.title
+
+            # don't overwrite category `None` if Chol HaMoed is on Shabbos
             if event.category:
-                # don't overwrite category if chol hamoed is on shabbos
-                self.category = event.category
+                if not self.category:
+                    self.category = event.category
+                elif self.category != event.category:
+                    # if Shabbos / Yom Tov has Candles / Havdalah, Candles has priority
+                    self.category = 'Candles'
 
     def __str__(self) -> str:
         """Jewish date as a string.
