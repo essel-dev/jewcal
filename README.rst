@@ -52,10 +52,17 @@ The output:
 
 .. code-block:: console
 
-  Today is 18 Cheshvan 5784
+  Today is 23 Iyar 5784
 
-  JewCal(year=5784, month=8, day=18, gregorian_date=datetime.date(2023, 11, 2),
-  shabbos=None, yomtov=None, category=None, diaspora=True)
+  JewCal(
+    year=5784, month=2, day=23,
+    gregorian_date=datetime.date(2024, 5, 31),
+    shabbos='Erev Shabbos',
+    yomtov=None,
+    category='Candles',
+    is_erev=True,
+    diaspora=True
+  )
 
 
 .. include_quickstart_end
