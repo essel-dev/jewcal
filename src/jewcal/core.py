@@ -39,16 +39,23 @@ from .utils.calculations import (
 
 @dataclass
 class JewCal:  # pylint: disable=too-many-instance-attributes
-    """Jewish date with shabbos / yom tov details."""
+    """Convert Gregorian to Jewish dates for Diaspora and Israel.
+
+    The `JewCal` object contains:
+        - Shabbos and Yom Tov details
+        - The category (`Candles` or `Havdalah`)
+        - Is it Erev Shabbos or Yom Tov
+        - Is it Issur Melacha
+    """
 
     year: int
     """The year in the Jewish calendar."""
 
     month: int
-    """The month in the Jewish calendar."""
+    """The month in the Jewish year."""
 
     day: int
-    """The day of the Jewish month."""
+    """The day in the Jewish month."""
 
     _is_leap: bool = field(repr=False)
     """Is it a Jewish leap year."""
@@ -57,13 +64,16 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
     """The date in the Gregorian calendar."""
 
     shabbos: str | None = None
-    """Is it (Erev) Shabbos."""
+    """(Erev) Shabbos definition."""
 
     yomtov: str | None = None
-    """Is it (Erev) Yom Tov."""
+    """(Erev) Yom Tov definition."""
 
     category: str | None = None
-    """The category (Candles or Havdalah)."""
+    """The category (`Candles` or `Havdalah`).
+
+    If Shabbos and Yom Tov has `Candles` and `Havdalah`, `Candles` has priority.
+    """
 
     is_erev: bool = False
     """Is it Erev Shabbos or Yom Tov."""
@@ -76,15 +86,6 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
 
     def __init__(self, gregorian_date: date, diaspora: bool = True) -> None:
         """Create a new Jewish date.
-
-        The Jewish date contains optional details:
-            - Shabbos or Yom Tov
-            - category (Candles or Havdalah).
-            - Erev Shabbos or Yom Tov
-            - Is it Issur Melacha
-
-        If Shabbos / Yom Tov has Candles / Havdalah, Candles has priority. The category
-        is set to Candles instead of Havdalah.
 
         Args:
             gregorian_date: The Gregorian date.
