@@ -9,7 +9,8 @@
 16 Nisan 5782
 >>> print(repr(jewcal))
 JewCal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17),
-shabbos=None, yomtov='Pesach 2', category='Havdalah', is_erev=False, diaspora=True)
+shabbos=None, yomtov='Pesach 2', category='Havdalah', is_erev=False,
+is_issur_melacha=True, diaspora=True)
 
 
 **Israel:**
@@ -22,7 +23,7 @@ shabbos=None, yomtov='Pesach 2', category='Havdalah', is_erev=False, diaspora=Tr
 >>> print(repr(jewcal))
 JewCal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17),
 shabbos=None, yomtov='Chol HaMoed 1 (Pesach 2)', category=None, is_erev=False,
-diaspora=False)
+is_issur_melacha=False, diaspora=False)
 """
 
 from dataclasses import dataclass, field
