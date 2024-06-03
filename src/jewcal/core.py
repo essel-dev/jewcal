@@ -9,7 +9,7 @@
 16 Nisan 5782
 >>> print(repr(jewcal))
 JewCal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17),
-shabbos=None, yomtov='Pesach 2', category='Havdalah', diaspora=True)
+shabbos=None, yomtov='Pesach 2', category='Havdalah', is_erev=False, diaspora=True)
 
 
 **Israel:**
@@ -21,7 +21,8 @@ shabbos=None, yomtov='Pesach 2', category='Havdalah', diaspora=True)
 16 Nisan 5782
 >>> print(repr(jewcal))
 JewCal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17),
-shabbos=None, yomtov='Chol HaMoed 1 (Pesach 2)', category=None, diaspora=False)
+shabbos=None, yomtov='Chol HaMoed 1 (Pesach 2)', category=None, is_erev=False,
+diaspora=False)
 """
 
 from dataclasses import dataclass
@@ -60,7 +61,13 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
     category: str | None = None
     """The category (Candles or Havdalah)."""
 
-    diaspora: bool = True
+    is_erev: bool = False
+    """Is it Erev Shabbos or Yom Tov."""
+
+    is_issur_melacha: bool = False
+    """Is it Issur Melacha."""
+
+    diaspora: bool | None = True
     """Is the schedule for Diaspora or Israel."""
 
     def __init__(self, gregorian_date: date, diaspora: bool = True) -> None:
@@ -69,6 +76,8 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
         The Jewish date contains optional details:
             - Shabbos or Yom Tov
             - category (Candles or Havdalah).
+            - Erev Shabbos or Yom Tov
+            - Is it Issur Melacha
 
         If Shabbos / Yom Tov has Candles / Havdalah, Candles has priority. The category
         is set to Candles instead of Havdalah.
@@ -110,6 +119,12 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
                     # if Shabbos / Yom Tov has Candles / Havdalah, Candles has priority
                     self.category = Category.CANDLES.value
 
+        # erev
+        self._erev()
+
+        # issur melacha
+        self._issur_melacha()
+
     def __str__(self) -> str:
         """Jewish date as a string.
 
@@ -117,3 +132,28 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
             The Jewish date.
         """
         return f'{self.day} {Months(self.month).name.capitalize()} {self.year}'
+
+    def _erev(self) -> None:
+        is_erev_shabbos = self.shabbos and 'Erev' in self.shabbos
+
+        is_erev_yom_tov = self.yomtov and any(
+            [
+                'Erev' in self.yomtov,
+                'Hoshana Rabba' in self.yomtov,
+                'Pesach 6' in self.yomtov,
+            ]
+        )
+
+        if self.category == 'Candles' and any(
+            [
+                is_erev_shabbos and not self.yomtov,
+                is_erev_shabbos and is_erev_yom_tov,
+                is_erev_shabbos and self.yomtov and 'Chol HaMoed' in self.yomtov,
+                not is_erev_shabbos and is_erev_yom_tov,
+            ]
+        ):
+            self.is_erev = True
+
+    def _issur_melacha(self) -> None:
+        """Is it issur melacha."""
+        self.is_issur_melacha = self.category is not None and not self.is_erev
