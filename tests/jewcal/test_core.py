@@ -180,8 +180,25 @@ class JewCalTestCase(TestCase):
 
     def test_jewcal_to_string(self) -> None:
         """Test `JewCal`-object to `str`."""
+        # non-leap Jewish year
+        jewcal = JewCal(date(2023, 3, 15))
+        self.assertEqual(str(jewcal), '22 Adar 5783')
+
+        # leap Jewish year
         jewcal = JewCal(date(2022, 4, 16))
         self.assertEqual(str(jewcal), '15 Nisan 5782')
+
+        jewcal = JewCal(date(2022, 2, 27))
+        self.assertEqual(str(jewcal), '26 Adar 1 5782')
+
+        jewcal = JewCal(date(2022, 3, 16))
+        self.assertEqual(str(jewcal), '13 Adar 2 5782')
+
+        jewcal = JewCal(date(2024, 2, 10))
+        self.assertEqual(str(jewcal), '1 Adar 1 5784')
+
+        jewcal = JewCal(date(2024, 3, 11))
+        self.assertEqual(str(jewcal), '1 Adar 2 5784')
 
     def test_jewcal_to_repr(self) -> None:
         """Test `JewCal`-object to `repr`."""
