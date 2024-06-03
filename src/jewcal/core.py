@@ -67,7 +67,7 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
     is_issur_melacha: bool = False
     """Is it Issur Melacha."""
 
-    diaspora: bool | None = True
+    diaspora: bool = True
     """Is the schedule for Diaspora or Israel."""
 
     def __init__(self, gregorian_date: date, diaspora: bool = True) -> None:
