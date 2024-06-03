@@ -25,13 +25,14 @@ shabbos=None, yomtov='Chol HaMoed 1 (Pesach 2)', category=None, is_erev=False,
 diaspora=False)
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 
-from .constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Category, Months
+from .constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Category, Month
 from .utils.calculations import (
     absdate_to_jewish,
     gregorian_to_absdate,
+    is_jewish_leap,
     weekday_from_absdate,
 )
 
@@ -48,6 +49,9 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
 
     day: int
     """The day of the Jewish month."""
+
+    _is_leap: bool = field(repr=False)
+    """Is it a Jewish leap year."""
 
     gregorian_date: date
     """The date in the Gregorian calendar."""
@@ -91,6 +95,7 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
             gregorian_date.year, gregorian_date.month, gregorian_date.day
         )
         self.year, self.month, self.day = absdate_to_jewish(absdate)
+        self._is_leap = is_jewish_leap(self.year)
 
         # gregorian date
         self.gregorian_date = gregorian_date
@@ -131,7 +136,11 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
         Returns:
             The Jewish date.
         """
-        return f'{self.day} {Months(self.month).name.capitalize()} {self.year}'
+        return (
+            f'{self.day}'
+            f' {Month.get(self.month, self._is_leap)}'  # Adar 1/2 in leap year
+            f' {self.year}'
+        )
 
     def _erev(self) -> None:
         is_erev_shabbos = self.shabbos and 'Erev' in self.shabbos

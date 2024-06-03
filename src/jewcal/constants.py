@@ -1,5 +1,7 @@
 """Constants."""
 
+from __future__ import annotations
+
 from enum import Enum, IntEnum, unique
 from typing import Final, NamedTuple
 
@@ -13,7 +15,7 @@ class Category(Enum):
 
 
 @unique
-class Months(IntEnum):
+class Month(IntEnum):
     """The Jewish months."""
 
     TISHREI = 7
@@ -22,6 +24,7 @@ class Months(IntEnum):
     TEVET = 10
     SHEVAT = 11
     ADAR = 12
+    ADAR_1 = 14
     ADAR_2 = 13
     NISAN = 1
     IYAR = 2
@@ -29,6 +32,35 @@ class Months(IntEnum):
     TAMUZ = 4
     AV = 5
     ELUL = 6
+
+    def __str__(self) -> str:
+        """Get the month as a readable string.
+
+        Returns:
+            The month.
+        """
+        return self.name.capitalize().replace('_', ' ')
+
+    @classmethod
+    def get(cls, number: int, leap: bool) -> Month:
+        """Get the enum member.
+
+        Regarding the months Adar, Adar 1 and 2:
+        - If the Jewish year is non-leap, it returns Adar.
+        - If the Jewish year is leap, it returns Adar 1 or Adar 2.
+
+        Args:
+            number: The month number.
+            leap: Is the Jewish year a leap year.
+
+        Returns:
+            The enum member.
+        """
+        match number:
+            case 12:
+                return Month.ADAR_1 if leap else Month.ADAR
+            case _:
+                return Month(number)
 
 
 class Event(NamedTuple):

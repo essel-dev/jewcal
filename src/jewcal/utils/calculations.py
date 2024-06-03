@@ -12,7 +12,7 @@ https://www.david-greve.de/luach-code/jewish-python.html
 from calendar import isleap, monthrange
 from datetime import date
 
-from jewcal.constants import Months
+from ..constants import Month
 
 # Calculated date of the world's creation, is equivalent to sunset on the Julian
 # proleptic calendar date 6 October 3761 BCE
@@ -154,16 +154,16 @@ def jewish_to_absdate(year: int, month: int, day: int) -> int:
     return_value = value
 
     # If before Tishrei
-    if month < Months.TISHREI:
+    if month < Month.TISHREI:
         # add days in prior months this year before and after Nisan.
-        for i in range(Months.TISHREI, months_in_jewish_year(year) + 1):
+        for i in range(Month.TISHREI, months_in_jewish_year(year) + 1):
             value = days_in_jewish_month(year, i)
             return_value += value
         for i in range(1, month):
             value = days_in_jewish_month(year, i)
             return_value += value
     else:
-        for i in range(Months.TISHREI, month):
+        for i in range(Month.TISHREI, month):
             value = days_in_jewish_month(year, i)
             return_value += value
 
