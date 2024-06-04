@@ -2,7 +2,7 @@
 
 **Diaspora:**
 
->>> jewcal = JewCal(date.today())  # today's date
+>>> jewcal = JewCal()  # today's date
 
 >>> jewcal = JewCal(date(2022, 4, 17))  # specific date
 >>> print(jewcal)
@@ -15,7 +15,7 @@ is_issur_melacha=True, diaspora=True)
 
 **Israel:**
 
->>> jewcal = JewCal(date.today(), diaspora=False)  # today's date
+>>> jewcal = JewCal(diaspora=False)  # today's date
 
 >>> jewcal = JewCal(date(2022, 4, 17), diaspora=False)  # specific date
 >>> print(jewcal)
@@ -49,70 +49,79 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
         - Is it Issur Melacha
     """
 
-    year: int
+    year: int = field(init=False)
     """The year in the Jewish calendar."""
 
-    month: int
+    month: int = field(init=False)
     """The month in the Jewish year."""
 
-    day: int
+    day: int = field(init=False)
     """The day in the Jewish month."""
 
-    _is_leap: bool = field(repr=False)
+    _is_leap: bool = field(repr=False, init=False)
     """Is it a Jewish leap year."""
 
-    gregorian_date: date
+    gregorian_date: date = field(default_factory=lambda: date.today())
     """The date in the Gregorian calendar."""
 
-    shabbos: str | None = None
+    shabbos: str | None = field(init=False, default=None)
     """(Erev) Shabbos definition."""
 
-    yomtov: str | None = None
+    yomtov: str | None = field(init=False, default=None)
     """(Erev) Yom Tov definition."""
 
-    category: str | None = None
+    category: str | None = field(init=False, default=None)
     """The category (`Candles` or `Havdalah`).
 
     If Shabbos and Yom Tov has `Candles` and `Havdalah`, `Candles` has priority.
     """
 
-    is_erev: bool = False
+    is_erev: bool = field(init=False, default=False)
     """Is it Erev Shabbos or Yom Tov."""
 
-    is_issur_melacha: bool = False
+    is_issur_melacha: bool = field(init=False, default=False)
     """Is it Issur Melacha."""
 
-    diaspora: bool = True
-    """Is the schedule for Diaspora or Israel."""
+    diaspora: bool = field(default=True)
+    """Is the schedule for Diaspora or Israel.
 
-    def __init__(self, gregorian_date: date, diaspora: bool = True) -> None:
-        """Create a new Jewish date.
+    True if outside of Israel, False if in Israel.
+    """
 
-        Args:
-            gregorian_date: The Gregorian date.
-            diaspora: True if outside of Israel, False if in Israel.
-        """
-        # jewish date
+    def __post_init__(self) -> None:
+        """Create a new Jewish date."""
         absdate = gregorian_to_absdate(
-            gregorian_date.year, gregorian_date.month, gregorian_date.day
+            self.gregorian_date.year, self.gregorian_date.month, self.gregorian_date.day
         )
+
         self.year, self.month, self.day = absdate_to_jewish(absdate)
         self._is_leap = is_jewish_leap(self.year)
 
-        # gregorian date
-        self.gregorian_date = gregorian_date
+        self._shabbos(absdate)
+        self._yomtov()
+        self._erev()
+        self._issur_melacha()
 
-        # diaspora
-        self.diaspora = diaspora
+    def __str__(self) -> str:
+        """The Jewish date as a string.
 
-        # shabbos
+        Returns:
+            The Jewish date.
+        """
+        return (
+            f'{self.day}'
+            f' {Month.get(self.month, self._is_leap)}'  # Adar 1/2 in leap year
+            f' {self.year}'
+        )
+
+    def _shabbos(self, absdate: int) -> None:
         weekday: int = weekday_from_absdate(absdate)
         if weekday in SHABBOS:
             event = SHABBOS[weekday]
             self.shabbos = event.title
             self.category = event.category
 
-        # yom tov
+    def _yomtov(self) -> None:
         holidays = YOMTOV if self.diaspora else YOMTOV_ISRAEL
         if self.month in holidays and self.day in holidays[self.month]:
             event = holidays[self.month][self.day]
@@ -125,24 +134,6 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
                 elif self.category != event.category:
                     # if Shabbos / Yom Tov has Candles / Havdalah, Candles has priority
                     self.category = Category.CANDLES.value
-
-        # erev
-        self._erev()
-
-        # issur melacha
-        self._issur_melacha()
-
-    def __str__(self) -> str:
-        """Jewish date as a string.
-
-        Returns:
-            The Jewish date.
-        """
-        return (
-            f'{self.day}'
-            f' {Month.get(self.month, self._is_leap)}'  # Adar 1/2 in leap year
-            f' {self.year}'
-        )
 
     def _erev(self) -> None:
         is_erev_shabbos = self.shabbos and 'Erev' in self.shabbos
@@ -166,5 +157,4 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
             self.is_erev = True
 
     def _issur_melacha(self) -> None:
-        """Is it issur melacha."""
         self.is_issur_melacha = self.category is not None and not self.is_erev
