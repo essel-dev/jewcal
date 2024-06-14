@@ -12,7 +12,7 @@ https://www.david-greve.de/luach-code/jewish-python.html
 from calendar import isleap, monthrange
 from datetime import date
 
-from ..constants import Month
+TISHREI = 7
 
 # Calculated date of the world's creation, is equivalent to sunset on the Julian
 # proleptic calendar date 6 October 3761 BCE
@@ -154,16 +154,16 @@ def jewish_to_absdate(year: int, month: int, day: int) -> int:
     return_value = value
 
     # If before Tishrei
-    if month < Month.TISHREI:
+    if month < TISHREI:
         # add days in prior months this year before and after Nisan.
-        for i in range(Month.TISHREI, months_in_jewish_year(year) + 1):
+        for i in range(TISHREI, months_in_jewish_year(year) + 1):
             value = days_in_jewish_month(year, i)
             return_value += value
         for i in range(1, month):
             value = days_in_jewish_month(year, i)
             return_value += value
     else:
-        for i in range(Month.TISHREI, month):
+        for i in range(TISHREI, month):
             value = days_in_jewish_month(year, i)
             return_value += value
 
@@ -217,7 +217,9 @@ def absdate_to_jewish(absdate: int) -> tuple[int, int, int]:
     month_temp = start
     while 1:
         absdate_temp = jewish_to_absdate(
-            year, month_temp, days_in_jewish_month(year, month_temp)
+            year,
+            month_temp,
+            days_in_jewish_month(year, month_temp),
         )
         if absdate <= absdate_temp:
             break
@@ -293,7 +295,7 @@ def _first_day_of_jewish_year(year: int) -> int:
                         parts >= 9924  # noqa: PLR2004
                     ),  # and at 9 hours, 204 parts or later
                     (not is_jewish_leap(year)),  # and of a common year
-                ]
+                ],
             ),
             all(
                 [
@@ -302,9 +304,9 @@ def _first_day_of_jewish_year(year: int) -> int:
                         parts >= 16789  # noqa: PLR2004
                     ),  # and at 15 hours, 589 parts or later
                     (is_jewish_leap(year - 1)),  # and at the end of a leap year
-                ]
+                ],
             ),
-        ]
+        ],
     ):
         alternative_day = day + 1  # postpone Rosh Hashana one day
     else:
