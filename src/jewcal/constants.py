@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from enum import Enum, IntEnum, unique
+from enum import Enum, unique
 from typing import Final, NamedTuple
 
 
@@ -14,55 +14,6 @@ class Category(Enum):
     HAVDALAH = 'Havdalah'
 
 
-@unique
-class Month(IntEnum):
-    """The Jewish months."""
-
-    TISHREI = 7
-    CHESHVAN = 8
-    KISLEV = 9
-    TEVET = 10
-    SHEVAT = 11
-    ADAR = 12
-    ADAR_1 = 14
-    ADAR_2 = 13
-    NISAN = 1
-    IYAR = 2
-    SIVAN = 3
-    TAMUZ = 4
-    AV = 5
-    ELUL = 6
-
-    def __str__(self) -> str:
-        """Get the month as a readable string.
-
-        Returns:
-            The month.
-        """
-        return self.name.capitalize().replace('_', ' ')
-
-    @classmethod
-    def get(cls, number: int, leap: bool) -> Month:
-        """Get the enum member.
-
-        Regarding the months Adar, Adar 1 and 2:
-        - If the Jewish year is non-leap, it returns Adar.
-        - If the Jewish year is leap, it returns Adar 1 or Adar 2.
-
-        Args:
-            number: The month number.
-            leap: Is the Jewish year a leap year.
-
-        Returns:
-            The enum member.
-        """
-        match number:
-            case 12:
-                return Month.ADAR_1 if leap else Month.ADAR
-            case _:
-                return Month(number)
-
-
 class Event(NamedTuple):
     """Named tuple for shabbos and yom tov."""
 
@@ -70,7 +21,6 @@ class Event(NamedTuple):
     category: str | None
 
 
-# YOMTOV[jewish_month][day]
 YOMTOV: Final[dict[int, dict[int, Event]]] = {
     6: {
         29: Event('Erev Rosh Hashana', Category.CANDLES.value),
@@ -144,7 +94,6 @@ YOMTOV_ISRAEL: Final[dict[int, dict[int, Event]]] = {
     },
 }
 
-# SHABBOS[weekday]
 SHABBOS: Final[dict[int, Event]] = {
     5: Event('Erev Shabbos', Category.CANDLES.value),
     6: Event('Shabbos', Category.HAVDALAH.value),

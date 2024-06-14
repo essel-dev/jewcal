@@ -20,4 +20,5 @@ Contents
 
   quickstart
   tutorial
+  definitions
   reference

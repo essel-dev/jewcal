@@ -14,10 +14,10 @@ class MainTestCase(TestCase):
         """Test main()."""
         # capture standard output by temporarily redirecting sys.stdout to a StringIO
         # https://stackoverflow.com/a/34738440
-        capturedOutput = StringIO()  # Create StringIO.
-        sys.stdout = capturedOutput  # Redirect stdout.
+        output = StringIO()  # Create StringIO.
+        sys.stdout = output  # Redirect stdout.
         main()  # Call function.
         sys.stdout = sys.__stdout__  # Reset redirect.
 
-        self.assertIn('Today is', capturedOutput.getvalue())
-        self.assertIn('JewCal(year=', capturedOutput.getvalue())
+        self.assertIn('Today is', output.getvalue())
+        self.assertIn('JewCal(jewish_date=JewishDate(year=', output.getvalue())

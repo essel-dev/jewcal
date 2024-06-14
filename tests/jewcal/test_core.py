@@ -1,4 +1,4 @@
-"""Unittests for jewcal."""
+"""Unittests for jewcal.core."""
 
 from datetime import date
 from doctest import NORMALIZE_WHITESPACE, DocTestSuite
@@ -10,7 +10,8 @@ from src.jewcal.constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Category
 
 
 @no_type_check
-def load_tests(loader, tests, ignore):  # pylint: disable=unused-argument
+# pylint: disable=unused-argument
+def load_tests(loader, tests, ignore):  # noqa: ANN201, ANN001, ARG001
     """Run the doctests in jewcal.core for documentation (tutorials).
 
     # noqa: DAR101 loader
@@ -46,7 +47,7 @@ class JewCalTestCase(TestCase):
         # Diaspora
         jewcal = JewCal(gregorian_date)
 
-        self.assertEqual(jewcal.gregorian_date, gregorian_date)
+        self.assertEqual(jewcal.jewish_date.gregorian_date, gregorian_date)
 
         self.assertIsNone(jewcal.shabbos)
         self.assertIsNone(jewcal.yomtov)
@@ -55,7 +56,7 @@ class JewCalTestCase(TestCase):
         # Israel
         jewcal = JewCal(gregorian_date, diaspora=False)
 
-        self.assertEqual(jewcal.gregorian_date, gregorian_date)
+        self.assertEqual(jewcal.jewish_date.gregorian_date, gregorian_date)
 
         self.assertIsNone(jewcal.shabbos)
         self.assertIsNone(jewcal.yomtov)
@@ -68,7 +69,7 @@ class JewCalTestCase(TestCase):
         # Diaspora
         jewcal = JewCal(gregorian_date)
 
-        self.assertEqual(jewcal.gregorian_date, gregorian_date)
+        self.assertEqual(jewcal.jewish_date.gregorian_date, gregorian_date)
 
         self.assertEqual(jewcal.shabbos, SHABBOS[6].title)  # Shabbos
         self.assertEqual(jewcal.yomtov, YOMTOV[1][15].title)  # Pesach 1
@@ -77,7 +78,7 @@ class JewCalTestCase(TestCase):
         # Israel
         jewcal = JewCal(gregorian_date, diaspora=False)
 
-        self.assertEqual(jewcal.gregorian_date, gregorian_date)
+        self.assertEqual(jewcal.jewish_date.gregorian_date, gregorian_date)
 
         self.assertEqual(jewcal.shabbos, SHABBOS[6].title)  # Shabbos
         self.assertEqual(jewcal.yomtov, YOMTOV_ISRAEL[1][15].title)  # Pesach 1
@@ -90,7 +91,7 @@ class JewCalTestCase(TestCase):
         # Diaspora
         jewcal = JewCal(gregorian_date)
 
-        self.assertEqual(jewcal.gregorian_date, gregorian_date)
+        self.assertEqual(jewcal.jewish_date.gregorian_date, gregorian_date)
 
         self.assertIsNone(jewcal.shabbos)
         self.assertEqual(jewcal.yomtov, YOMTOV[1][16].title)  # Pesach 2
@@ -99,7 +100,7 @@ class JewCalTestCase(TestCase):
         # Israel
         jewcal = JewCal(gregorian_date, diaspora=False)
 
-        self.assertEqual(jewcal.gregorian_date, gregorian_date)
+        self.assertEqual(jewcal.jewish_date.gregorian_date, gregorian_date)
 
         self.assertIsNone(jewcal.shabbos)
         self.assertEqual(jewcal.yomtov, YOMTOV_ISRAEL[1][16].title)  # Ch"h 1
@@ -112,7 +113,7 @@ class JewCalTestCase(TestCase):
         # Diaspora
         jewcal = JewCal(gregorian_date)
 
-        self.assertEqual(jewcal.gregorian_date, gregorian_date)
+        self.assertEqual(jewcal.jewish_date.gregorian_date, gregorian_date)
 
         self.assertEqual(jewcal.shabbos, SHABBOS[5].title)  # Erev Shabbos
         self.assertEqual(jewcal.category, Category.CANDLES.value)
@@ -121,7 +122,7 @@ class JewCalTestCase(TestCase):
         # Israel
         jewcal = JewCal(gregorian_date, diaspora=False)
 
-        self.assertEqual(jewcal.gregorian_date, gregorian_date)
+        self.assertEqual(jewcal.jewish_date.gregorian_date, gregorian_date)
 
         self.assertEqual(jewcal.shabbos, SHABBOS[5].title)  # Erev Shabbos
         self.assertEqual(jewcal.category, Category.CANDLES.value)
@@ -134,7 +135,7 @@ class JewCalTestCase(TestCase):
         # Diaspora
         jewcal = JewCal(gregorian_date)
 
-        self.assertEqual(jewcal.gregorian_date, gregorian_date)
+        self.assertEqual(jewcal.jewish_date.gregorian_date, gregorian_date)
 
         self.assertEqual(jewcal.shabbos, SHABBOS[6].title)  # Shabbos
         self.assertEqual(jewcal.category, Category.HAVDALAH.value)
@@ -143,7 +144,7 @@ class JewCalTestCase(TestCase):
         # Israel
         jewcal = JewCal(gregorian_date, diaspora=False)
 
-        self.assertEqual(jewcal.gregorian_date, gregorian_date)
+        self.assertEqual(jewcal.jewish_date.gregorian_date, gregorian_date)
 
         self.assertEqual(jewcal.shabbos, SHABBOS[6].title)  # Shabbos
         self.assertEqual(jewcal.category, Category.HAVDALAH.value)
@@ -156,7 +157,7 @@ class JewCalTestCase(TestCase):
         # Diaspora
         jewcal = JewCal(gregorian_date)
 
-        self.assertEqual(jewcal.gregorian_date, gregorian_date)
+        self.assertEqual(jewcal.jewish_date.gregorian_date, gregorian_date)
 
         self.assertEqual(jewcal.shabbos, SHABBOS[6].title)  # Shabbos
         self.assertEqual(jewcal.category, Category.HAVDALAH.value)
@@ -165,7 +166,7 @@ class JewCalTestCase(TestCase):
         # Israel
         jewcal = JewCal(gregorian_date, diaspora=False)
 
-        self.assertEqual(jewcal.gregorian_date, gregorian_date)
+        self.assertEqual(jewcal.jewish_date.gregorian_date, gregorian_date)
 
         self.assertEqual(jewcal.shabbos, SHABBOS[6].title)  # Shabbos
         self.assertEqual(jewcal.category, Category.HAVDALAH.value)
@@ -178,7 +179,7 @@ class JewCalTestCase(TestCase):
         # Diaspora
         jewcal = JewCal(gregorian_date)
 
-        self.assertEqual(jewcal.gregorian_date, gregorian_date)
+        self.assertEqual(jewcal.jewish_date.gregorian_date, gregorian_date)
 
         self.assertEqual(jewcal.shabbos, SHABBOS[6].title)  # Shabbos
         self.assertEqual(jewcal.category, Category.HAVDALAH.value)
@@ -187,7 +188,7 @@ class JewCalTestCase(TestCase):
         # Israel
         jewcal = JewCal(gregorian_date, diaspora=False)
 
-        self.assertEqual(jewcal.gregorian_date, gregorian_date)
+        self.assertEqual(jewcal.jewish_date.gregorian_date, gregorian_date)
 
         self.assertEqual(jewcal.shabbos, SHABBOS[6].title)  # Shabbos
         self.assertEqual(jewcal.category, Category.HAVDALAH.value)
@@ -221,20 +222,24 @@ class JewCalTestCase(TestCase):
         jewcal = JewCal(date(2022, 4, 16))
         self.assertEqual(
             repr(jewcal),
-            'JewCal(year=5782, month=1, day=15, '
-            + "gregorian_date=datetime.date(2022, 4, 16), shabbos='Shabbos', "
-            + "yomtov='Pesach 1', category='Candles', is_erev=False, "
-            + 'is_issur_melacha=True, diaspora=True)',
+            (
+                'JewCal(jewish_date=JewishDate(year=5782, month=1, day=15, '
+                "gregorian_date=datetime.date(2022, 4, 16)), shabbos='Shabbos', "
+                "yomtov='Pesach 1', category='Candles', is_erev=False, "
+                'is_issur_melacha=True, diaspora=True)'
+            ),
         )
 
         # Israel
         jewcal = JewCal(date(2022, 4, 16), diaspora=False)
         self.assertEqual(
             repr(jewcal),
-            'JewCal(year=5782, month=1, day=15, '
-            + 'gregorian_date=datetime.date(2022, 4, 16), '
-            + "shabbos='Shabbos', yomtov='Pesach 1', category='Havdalah', "
-            + 'is_erev=False, is_issur_melacha=True, diaspora=False)',
+            (
+                'JewCal(jewish_date=JewishDate(year=5782, month=1, day=15, '
+                'gregorian_date=datetime.date(2022, 4, 16)), '
+                "shabbos='Shabbos', yomtov='Pesach 1', category='Havdalah', "
+                'is_erev=False, is_issur_melacha=True, diaspora=False)'
+            ),
         )
 
     def test_category_adjusted(self) -> None:
@@ -284,20 +289,20 @@ class JewCalTestCase(TestCase):
     def test_erev(self) -> None:
         """Test Erev Shabbos and Yom Tov."""
         # Shabbos
-        erev_shabbos_1 = JewCal(date(2023, 9, 15))
-        self.assertTrue(erev_shabbos_1.is_erev)
+        erev_shabbos = JewCal(date(2023, 9, 15))
+        self.assertTrue(erev_shabbos.is_erev)
 
-        shabbos_1 = JewCal(date(2023, 9, 16))
-        self.assertFalse(shabbos_1.is_erev)
+        shabbos = JewCal(date(2023, 9, 16))
+        self.assertFalse(shabbos.is_erev)
 
         sunday = JewCal(date(2023, 9, 17))
         self.assertFalse(sunday.is_erev)
 
-        erev_shabbos_2 = JewCal(date(2023, 9, 22), diaspora=False)
-        self.assertTrue(erev_shabbos_2.is_erev)
+        erev_shabbos = JewCal(date(2023, 9, 22), diaspora=False)
+        self.assertTrue(erev_shabbos.is_erev)
 
-        shabbos_2 = JewCal(date(2023, 9, 23), diaspora=False)
-        self.assertFalse(shabbos_2.is_erev)
+        shabbos = JewCal(date(2023, 9, 23), diaspora=False)
+        self.assertFalse(shabbos.is_erev)
 
         # Diaspora
         erev_pesach = JewCal(date(2024, 4, 22))
@@ -394,3 +399,23 @@ class JewCalTestCase(TestCase):
 
         chol_hamoed_2 = JewCal(date(2023, 4, 8), diaspora=False)  # Shabbos
         self.assertTrue(chol_hamoed_2.is_issur_melacha)
+
+    def test_deprecated_jewish_date_attributes(self) -> None:
+        """Test deprecated methods."""
+        jewcal = JewCal(date(2024, 6, 14))
+
+        with self.assertWarns(Warning):
+            self.assertIsNotNone(jewcal.year)
+            self.assertEqual(jewcal.year, 5784)
+
+        with self.assertWarns(Warning):
+            self.assertIsNotNone(jewcal.month)
+            self.assertEqual(jewcal.month, 3)
+
+        with self.assertWarns(Warning):
+            self.assertIsNotNone(jewcal.day)
+            self.assertEqual(jewcal.day, 8)
+
+        with self.assertWarns(Warning):
+            self.assertIsNotNone(jewcal.gregorian_date)
+            self.assertEqual(jewcal.gregorian_date, date(2024, 6, 14))

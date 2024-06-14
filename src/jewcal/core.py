@@ -8,7 +8,8 @@
 >>> print(jewcal)
 16 Nisan 5782
 >>> print(repr(jewcal))
-JewCal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17),
+JewCal(jewish_date=JewishDate(year=5782, month=1, day=16,
+gregorian_date=datetime.date(2022, 4, 17)),
 shabbos=None, yomtov='Pesach 2', category='Havdalah', is_erev=False,
 is_issur_melacha=True, diaspora=True)
 
@@ -21,15 +22,19 @@ is_issur_melacha=True, diaspora=True)
 >>> print(jewcal)
 16 Nisan 5782
 >>> print(repr(jewcal))
-JewCal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17),
+JewCal(jewish_date=JewishDate(year=5782, month=1, day=16,
+gregorian_date=datetime.date(2022, 4, 17)),
 shabbos=None, yomtov='Chol HaMoed 1 (Pesach 2)', category=None, is_erev=False,
 is_issur_melacha=False, diaspora=False)
 """
 
-from dataclasses import dataclass, field
-from datetime import date
+from dataclasses import InitVar, dataclass, field
+from datetime import date, datetime, timezone
+from warnings import warn
 
-from .constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Category, Month
+from jewcal.models.jewish_date import JewishDate
+
+from .constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Category
 from .utils.calculations import (
     absdate_to_jewish,
     gregorian_to_absdate,
@@ -39,7 +44,7 @@ from .utils.calculations import (
 
 
 @dataclass
-class JewCal:  # pylint: disable=too-many-instance-attributes
+class JewCal:
     """Convert Gregorian to Jewish dates for Diaspora and Israel.
 
     The `JewCal` object contains:
@@ -49,20 +54,10 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
         - Is it Issur Melacha
     """
 
-    year: int = field(init=False)
-    """The year in the Jewish calendar."""
+    jewish_date: JewishDate = field(init=False)
+    """The date in the Jewish calendar."""
 
-    month: int = field(init=False)
-    """The month in the Jewish year."""
-
-    day: int = field(init=False)
-    """The day in the Jewish month."""
-
-    _is_leap: bool = field(repr=False, init=False)
-    """Is it a Jewish leap year."""
-
-    gregorian_date: date = field(default_factory=lambda: date.today())
-    """The date in the Gregorian calendar."""
+    _gregorian: InitVar[date] = field(default=datetime.now(tz=timezone.utc).date())
 
     shabbos: str | None = field(init=False, default=None)
     """(Erev) Shabbos definition."""
@@ -88,14 +83,16 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
     True if outside of Israel, False if in Israel.
     """
 
-    def __post_init__(self) -> None:
-        """Create a new Jewish date."""
-        absdate = gregorian_to_absdate(
-            self.gregorian_date.year, self.gregorian_date.month, self.gregorian_date.day
-        )
+    def __post_init__(self, gregorian: date) -> None:
+        """Create a new Jewish date.
 
-        self.year, self.month, self.day = absdate_to_jewish(absdate)
-        self._is_leap = is_jewish_leap(self.year)
+        Args:
+            gregorian: The Gregorian date to convert from.
+        """
+        absdate = gregorian_to_absdate(gregorian.year, gregorian.month, gregorian.day)
+        year, month, day = absdate_to_jewish(absdate)
+        is_leap = is_jewish_leap(year)
+        self.jewish_date = JewishDate(year, month, day, gregorian, is_leap)
 
         self._shabbos(absdate)
         self._yomtov()
@@ -108,11 +105,62 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
         Returns:
             The Jewish date.
         """
-        return (
-            f'{self.day}'
-            f' {Month.get(self.month, self._is_leap)}'  # Adar 1/2 in leap year
-            f' {self.year}'
+        return str(self.jewish_date)
+
+    @property
+    def year(self) -> int:
+        """Get the year in the Jewish calendar.
+
+        .. deprecated:: 0.6.0 Use :py:attr:`jewish_date` ``.year``
+
+        Returns:
+            The year in the Jewish calendar.
+        """
+        warn('year is deprecated, use jewish_date.year', stacklevel=2)
+        year: int = self.jewish_date.year
+        return year
+
+    @property
+    def month(self) -> int:
+        """Get the month in the Jewish year.
+
+        .. deprecated:: 0.6.0 Use :py:attr:`jewish_date` ``.month``
+
+        Returns:
+            The month in the Jewish year.
+        """
+        warn('month is deprecated, use jewish_date.month', stacklevel=2)
+        month: int = self.jewish_date.month
+        return month
+
+    @property
+    def day(self) -> int:
+        """Get the day in the Jewish month.
+
+        .. deprecated:: 0.6.0 Use :py:attr:`jewish_date` ``.day``
+
+        Returns:
+            The day in the Jewish month.
+        """
+        warn('day is deprecated, use jewish_date.day', stacklevel=2)
+        day: int = self.jewish_date.day
+        return day
+
+    @property
+    def gregorian_date(self) -> date:
+        """Get the Gregorian date.
+
+        .. deprecated:: 0.6.0 Use :py:attr:`jewish_date` ``.gregorian_date``
+
+        Returns:
+            The date in the Gregorian calendar.
+        """
+        warn(
+            'gregorian_date is deprecated, use jewish_date.gregorian_date',
+            stacklevel=2,
         )
+        gregorian_date: date = self.jewish_date.gregorian_date
+        return gregorian_date
 
     def _shabbos(self, absdate: int) -> None:
         weekday: int = weekday_from_absdate(absdate)
@@ -123,8 +171,11 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
 
     def _yomtov(self) -> None:
         holidays = YOMTOV if self.diaspora else YOMTOV_ISRAEL
-        if self.month in holidays and self.day in holidays[self.month]:
-            event = holidays[self.month][self.day]
+        if (
+            self.jewish_date.month in holidays
+            and self.jewish_date.day in holidays[self.jewish_date.month]
+        ):
+            event = holidays[self.jewish_date.month][self.jewish_date.day]
             self.yomtov = event.title
 
             # don't overwrite category `None` if Chol HaMoed is on Shabbos
@@ -143,7 +194,7 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
                 'Erev' in self.yomtov,
                 'Hoshana Rabba' in self.yomtov,
                 'Pesach 6' in self.yomtov,
-            ]
+            ],
         )
 
         if self.category == 'Candles' and any(
@@ -152,7 +203,7 @@ class JewCal:  # pylint: disable=too-many-instance-attributes
                 is_erev_shabbos and is_erev_yom_tov,
                 is_erev_shabbos and self.yomtov and 'Chol HaMoed' in self.yomtov,
                 not is_erev_shabbos and is_erev_yom_tov,
-            ]
+            ],
         ):
             self.is_erev = True
 
