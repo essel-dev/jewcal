@@ -16,6 +16,7 @@ JewCal
 .. image:: https://readthedocs.org/projects/jewcal/badge/?version=latest
     :target: https://jewcal.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
+
 |
 
 
