@@ -19,6 +19,6 @@ Contents
   :maxdepth: 2
 
   quickstart
-  tutorial
+  examples
   definitions
   reference

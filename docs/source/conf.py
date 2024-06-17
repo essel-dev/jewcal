@@ -27,13 +27,6 @@ templates_path: list[str] = ['_templates']
 exclude_patterns: list[str] = []
 
 autodoc_class_signature: str = 'separated'
-autodoc_default_options: dict[str, str | bool | None] = {
-    'members': True,
-    'member-order': 'alphabetical',
-    'special-members': '__init__, __str__, __repr__',
-    'undoc-members': False,
-    'exclude-members': '__weakref__',
-}
 
 add_module_names: bool = False
 nitpicky = True  # pylint: disable=invalid-name

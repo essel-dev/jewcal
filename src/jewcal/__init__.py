@@ -6,6 +6,7 @@ from typing import cast
 from warnings import warn
 
 from .core import JewCal
+from .models.events import Events
 from .models.jewish_date import JewishDate
 
 Jewcal = JewCal
@@ -32,4 +33,5 @@ modules[__name__] = cast(ModuleType, _Wrapper(modules[__name__]))
 __all__ = [
     'JewCal',
     'JewishDate',
+    'Events',
 ]
