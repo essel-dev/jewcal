@@ -13,10 +13,9 @@ JewCal
 .. image:: https://github.com/essel-dev/jewcal/actions/workflows/pypi.yml/badge.svg
     :target: https://github.com/essel-dev/jewcal/actions/workflows/pypi.yml
     :alt: PyPi Status
-.. image:: https://readthedocs.org/projects/jewcal/badge/?version=stable
-    :target: https://jewcal.readthedocs.io/en/stable/?badge=stable
+.. image:: https://readthedocs.org/projects/jewcal/badge/?version=latest
+    :target: https://jewcal.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
-
 |
 
 
