@@ -2,150 +2,99 @@
 
 from __future__ import annotations
 
-from enum import Enum, IntEnum, unique
+from enum import Enum, unique
 from typing import Final, NamedTuple
 
 
 @unique
-class Category(Enum):
+class Action(Enum):
     """Does the shabbos or yom tov start (candles) or end (havdalah)."""
 
     CANDLES = 'Candles'
     HAVDALAH = 'Havdalah'
 
 
-@unique
-class Month(IntEnum):
-    """The Jewish months."""
-
-    TISHREI = 7
-    CHESHVAN = 8
-    KISLEV = 9
-    TEVET = 10
-    SHEVAT = 11
-    ADAR = 12
-    ADAR_1 = 14
-    ADAR_2 = 13
-    NISAN = 1
-    IYAR = 2
-    SIVAN = 3
-    TAMUZ = 4
-    AV = 5
-    ELUL = 6
-
-    def __str__(self) -> str:
-        """Get the month as a readable string.
-
-        Returns:
-            The month.
-        """
-        return self.name.capitalize().replace('_', ' ')
-
-    @classmethod
-    def get(cls, number: int, leap: bool) -> Month:
-        """Get the enum member.
-
-        Regarding the months Adar, Adar 1 and 2:
-        - If the Jewish year is non-leap, it returns Adar.
-        - If the Jewish year is leap, it returns Adar 1 or Adar 2.
-
-        Args:
-            number: The month number.
-            leap: Is the Jewish year a leap year.
-
-        Returns:
-            The enum member.
-        """
-        match number:
-            case 12:
-                return Month.ADAR_1 if leap else Month.ADAR
-            case _:
-                return Month(number)
-
-
 class Event(NamedTuple):
     """Named tuple for shabbos and yom tov."""
 
     title: str
-    category: str | None
+    action: str | None
 
 
-# YOMTOV[jewish_month][day]
 YOMTOV: Final[dict[int, dict[int, Event]]] = {
     6: {
-        29: Event('Erev Rosh Hashana', Category.CANDLES.value),
+        29: Event('Erev Rosh Hashana', Action.CANDLES.value),
     },
     7: {
-        1: Event('Rosh Hashana 1', Category.CANDLES.value),
-        2: Event('Rosh Hashana 2', Category.HAVDALAH.value),
-        9: Event('Erev Yom Kippur', Category.CANDLES.value),
-        10: Event('Yom Kippur', Category.HAVDALAH.value),
-        14: Event('Erev Sukkos', Category.CANDLES.value),
-        15: Event('Sukkos 1', Category.CANDLES.value),
-        16: Event('Sukkos 2', Category.HAVDALAH.value),
+        1: Event('Rosh Hashana 1', Action.CANDLES.value),
+        2: Event('Rosh Hashana 2', Action.HAVDALAH.value),
+        9: Event('Erev Yom Kippur', Action.CANDLES.value),
+        10: Event('Yom Kippur', Action.HAVDALAH.value),
+        14: Event('Erev Sukkos', Action.CANDLES.value),
+        15: Event('Sukkos 1', Action.CANDLES.value),
+        16: Event('Sukkos 2', Action.HAVDALAH.value),
         17: Event('Chol HaMoed 1 (Sukkos 3)', None),
         18: Event('Chol HaMoed 2 (Sukkos 4)', None),
         19: Event('Chol HaMoed 3 (Sukkos 5)', None),
         20: Event('Chol HaMoed 4 (Sukkos 6)', None),
-        21: Event('Hoshana Rabba (Sukkos 7)', Category.CANDLES.value),
-        22: Event('Shmini Atzeres (Sukkos 8)', Category.CANDLES.value),
-        23: Event('Simchas Tora', Category.HAVDALAH.value),
+        21: Event('Hoshana Rabba (Sukkos 7)', Action.CANDLES.value),
+        22: Event('Shmini Atzeres (Sukkos 8)', Action.CANDLES.value),
+        23: Event('Simchas Tora', Action.HAVDALAH.value),
     },
     1: {
-        14: Event('Erev Pesach', Category.CANDLES.value),
-        15: Event('Pesach 1', Category.CANDLES.value),
-        16: Event('Pesach 2', Category.HAVDALAH.value),
+        14: Event('Erev Pesach', Action.CANDLES.value),
+        15: Event('Pesach 1', Action.CANDLES.value),
+        16: Event('Pesach 2', Action.HAVDALAH.value),
         17: Event('Chol HaMoed 1 (Pesach 3)', None),
         18: Event('Chol HaMoed 2 (Pesach 4)', None),
         19: Event('Chol HaMoed 3 (Pesach 5)', None),
-        20: Event('Chol HaMoed 4 (Pesach 6)', Category.CANDLES.value),
-        21: Event('Pesach 7', Category.CANDLES.value),
-        22: Event('Pesach 8', Category.HAVDALAH.value),
+        20: Event('Chol HaMoed 4 (Pesach 6)', Action.CANDLES.value),
+        21: Event('Pesach 7', Action.CANDLES.value),
+        22: Event('Pesach 8', Action.HAVDALAH.value),
     },
     3: {
-        5: Event('Erev Shavuos', Category.CANDLES.value),
-        6: Event('Shavuos 1', Category.CANDLES.value),
-        7: Event('Shavuos 2', Category.HAVDALAH.value),
+        5: Event('Erev Shavuos', Action.CANDLES.value),
+        6: Event('Shavuos 1', Action.CANDLES.value),
+        7: Event('Shavuos 2', Action.HAVDALAH.value),
     },
 }
 
 YOMTOV_ISRAEL: Final[dict[int, dict[int, Event]]] = {
     6: {
-        29: Event('Erev Rosh Hashana', Category.CANDLES.value),
+        29: Event('Erev Rosh Hashana', Action.CANDLES.value),
     },
     7: {
-        1: Event('Rosh Hashana 1', Category.CANDLES.value),
-        2: Event('Rosh Hashana 2', Category.HAVDALAH.value),
-        9: Event('Erev Yom Kippur', Category.CANDLES.value),
-        10: Event('Yom Kippur', Category.HAVDALAH.value),
-        14: Event('Erev Sukkot', Category.CANDLES.value),
-        15: Event('Sukkot 1', Category.HAVDALAH.value),
+        1: Event('Rosh Hashana 1', Action.CANDLES.value),
+        2: Event('Rosh Hashana 2', Action.HAVDALAH.value),
+        9: Event('Erev Yom Kippur', Action.CANDLES.value),
+        10: Event('Yom Kippur', Action.HAVDALAH.value),
+        14: Event('Erev Sukkot', Action.CANDLES.value),
+        15: Event('Sukkot 1', Action.HAVDALAH.value),
         16: Event('Chol HaMoed 1 (Sukkot 2)', None),
         17: Event('Chol HaMoed 2 (Sukkot 3)', None),
         18: Event('Chol HaMoed 3 (Sukkot 4)', None),
         19: Event('Chol HaMoed 4 (Sukkot 5)', None),
         20: Event('Chol HaMoed 5 (Sukkot 6)', None),
-        21: Event('Hoshana Rabba (Sukkot 7)', Category.CANDLES.value),
-        22: Event('Shmini Atzeret / Simchat Tora', Category.HAVDALAH.value),
+        21: Event('Hoshana Rabba (Sukkot 7)', Action.CANDLES.value),
+        22: Event('Shmini Atzeret / Simchat Tora', Action.HAVDALAH.value),
     },
     1: {
-        14: Event('Erev Pesach', Category.CANDLES.value),
-        15: Event('Pesach 1', Category.HAVDALAH.value),
+        14: Event('Erev Pesach', Action.CANDLES.value),
+        15: Event('Pesach 1', Action.HAVDALAH.value),
         16: Event('Chol HaMoed 1 (Pesach 2)', None),
         17: Event('Chol HaMoed 2 (Pesach 3)', None),
         18: Event('Chol HaMoed 3 (Pesach 4)', None),
         19: Event('Chol HaMoed 4 (Pesach 5)', None),
-        20: Event('Chol HaMoed 5 (Pesach 6)', Category.CANDLES.value),
-        21: Event('Pesach 7', Category.HAVDALAH.value),
+        20: Event('Chol HaMoed 5 (Pesach 6)', Action.CANDLES.value),
+        21: Event('Pesach 7', Action.HAVDALAH.value),
     },
     3: {
-        5: Event('Erev Shavuot', Category.CANDLES.value),
-        6: Event('Shavuot', Category.HAVDALAH.value),
+        5: Event('Erev Shavuot', Action.CANDLES.value),
+        6: Event('Shavuot', Action.HAVDALAH.value),
     },
 }
 
-# SHABBOS[weekday]
 SHABBOS: Final[dict[int, Event]] = {
-    5: Event('Erev Shabbos', Category.CANDLES.value),
-    6: Event('Shabbos', Category.HAVDALAH.value),
+    5: Event('Erev Shabbos', Action.CANDLES.value),
+    6: Event('Shabbos', Action.HAVDALAH.value),
 }

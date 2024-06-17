@@ -11,7 +11,7 @@ jewcal = [
 
 [project]
 name = 'jewcal'
-description = 'Convert Gregorian to Jewish dates and get Shabbos / Yom Tov details for Diaspora and Israel.'
+description = 'Convert Gregorian to Jewish dates with holidays for Diaspora and Israel.'
 keywords = [
   'jewish calendar',
   'hebrew calendar',
@@ -54,8 +54,9 @@ legacy_tox_ini = """
 	[tox]
 	envlist =
 		py{310,311,312}
-		ruff-lint
         ruff-format
+		ruff-lint
+		pylint
 		mypy
 		darglint
 		pre-commit
@@ -70,6 +71,10 @@ legacy_tox_ini = """
 	commands =
 		coverage run -m unittest discover
 		py312: coverage report -m
+
+	[testenv:pylint]
+	deps = pylint
+	commands = pylint src tests docs
 
 	[testenv:ruff-lint]
 	deps = ruff
@@ -103,7 +108,7 @@ legacy_tox_ini = """
 	python =
 		3.10: py310
 		3.11: py311
-		3.12: py312, ruff-lint, ruff-format, mypy, darglint
+		3.12: py312, isort, ruff-format, ruff-lint, pylint, mypy, darglint
 """
 
 [tool.coverage.run]
@@ -113,29 +118,22 @@ source = [
 
 [tool.ruff.lint]
 select = [
-	'I', # isort
-	'PL', # pylint
-
-	'F', # pyflakes
-	'B', # flake8-bugbear
-	'S', # flake8-bandit
-	'SIM', # flake8-simplify
-	"PIE", # flake8-pie
-	"RET", # flake8-return
-	"RSE", # flake8-raise
-	'TD', # flake8-todo
-
-	'E', # pycodestyle
-	'D', # pydocstyle
-
-	'UP', # pyupgrade
-	"TRY", # tryceratops
-	'PERF', # perflint
-	'RUF', # ruff
+	'ALL',
 ]
+ignore = [
+	'ANN101', # flake8-annotations : missing-type-self: deprecated
+	'PT009'  # Use a regular `assert` instead of unittest-style `assertEqual`
+]
+
+[tool.ruff.lint.per-file-ignores]
+'docs/source/conf.py' = ['INP001']  # __init__.py missing
+'src/jewcal/__main__.py' = ['T201']  # print
 
 [tool.ruff.lint.pydocstyle]
 convention = 'google'
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = 'single'
 
 [tool.ruff.format]
 quote-style = 'single'
@@ -149,3 +147,7 @@ enable_error_code = ['ignore-without-code', 'redundant-expr', 'truthy-bool']
 warn_unreachable = true
 namespace_packages = true
 explicit_package_bases = true
+
+[[tool.mypy.overrides]]
+module = 'jewcal.*'
+ignore_missing_imports = true

@@ -1,35 +1,79 @@
-"""Usage examples.
+"""Usage examples for Diaspora and Israel.
 
-**Diaspora:**
+Diaspora
+--------
 
->>> jewcal = JewCal(date.today())  # today's date
+>>> from jewcal import JewCal
 
->>> jewcal = JewCal(date(2022, 4, 17))  # specific date
->>> print(jewcal)
+>>> today = JewCal()  # today's date
+>>> pesach_2 = JewCal(date(2022, 4, 17))  # specific date
+
+>>> print(pesach_2.jewish_date)
 16 Nisan 5782
->>> print(repr(jewcal))
-JewCal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17),
-shabbos=None, yomtov='Pesach 2', category='Havdalah', is_erev=False,
-is_issur_melacha=True, diaspora=True)
+>>> print(pesach_2.events)
+Pesach 2
+>>> print(pesach_2.events.shabbos)
+None
+>>> print(pesach_2.events.yomtov)
+Pesach 2
+>>> print(pesach_2.events.action)
+Havdalah
+
+>>> print(pesach_2.has_events())
+True
+>>> print(pesach_2.is_erev())
+False
+>>> print(pesach_2.is_erev_shabbos())
+False
+>>> print(pesach_2.is_shabbos())
+False
+>>> print(pesach_2.is_erev_yomtov())
+False
+>>> print(pesach_2.is_yomtov())
+True
+>>> print(pesach_2.is_issur_melacha())
+True
 
 
-**Israel:**
+Israel
+------
 
->>> jewcal = JewCal(date.today(), diaspora=False)  # today's date
+>>> today = JewCal(diaspora=False)  # today's date
+>>> chol_hamoed_1 = JewCal(date(2022, 4, 17), diaspora=False)  # specific date
 
->>> jewcal = JewCal(date(2022, 4, 17), diaspora=False)  # specific date
->>> print(jewcal)
+>>> print(chol_hamoed_1.jewish_date)
 16 Nisan 5782
->>> print(repr(jewcal))
-JewCal(year=5782, month=1, day=16, gregorian_date=datetime.date(2022, 4, 17),
-shabbos=None, yomtov='Chol HaMoed 1 (Pesach 2)', category=None, is_erev=False,
-is_issur_melacha=False, diaspora=False)
+>>> print(chol_hamoed_1.events)
+Chol HaMoed 1 (Pesach 2)
+>>> print(chol_hamoed_1.events.shabbos)
+None
+>>> print(chol_hamoed_1.events.yomtov)
+Chol HaMoed 1 (Pesach 2)
+>>> print(chol_hamoed_1.events.action)
+None
+
+>>> print(chol_hamoed_1.has_events())
+True
+>>> print(chol_hamoed_1.is_erev())
+False
+>>> print(chol_hamoed_1.is_erev_shabbos())
+False
+>>> print(chol_hamoed_1.is_shabbos())
+False
+>>> print(chol_hamoed_1.is_erev_yomtov())
+False
+>>> print(chol_hamoed_1.is_yomtov())
+False
+>>> print(chol_hamoed_1.is_issur_melacha())
+False
 """
 
-from dataclasses import dataclass, field
-from datetime import date
+from datetime import date, datetime, timezone
+from warnings import warn
 
-from .constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Category, Month
+from .constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Action
+from .models.events import Events
+from .models.jewish_date import JewishDate
 from .utils.calculations import (
     absdate_to_jewish,
     gregorian_to_absdate,
@@ -38,133 +82,269 @@ from .utils.calculations import (
 )
 
 
-@dataclass
-class JewCal:  # pylint: disable=too-many-instance-attributes
-    """Convert Gregorian to Jewish dates for Diaspora and Israel.
+class JewCal:
+    """Convert Gregorian to Jewish dates with holidays for Diaspora and Israel."""
 
-    The `JewCal` object contains:
-        - Shabbos and Yom Tov details
-        - The category (`Candles` or `Havdalah`)
-        - Is it Erev Shabbos or Yom Tov
-        - Is it Issur Melacha
-    """
-
-    year: int
-    """The year in the Jewish calendar."""
-
-    month: int
-    """The month in the Jewish year."""
-
-    day: int
-    """The day in the Jewish month."""
-
-    _is_leap: bool = field(repr=False)
-    """Is it a Jewish leap year."""
-
-    gregorian_date: date
-    """The date in the Gregorian calendar."""
-
-    shabbos: str | None = None
-    """(Erev) Shabbos definition."""
-
-    yomtov: str | None = None
-    """(Erev) Yom Tov definition."""
-
-    category: str | None = None
-    """The category (`Candles` or `Havdalah`).
-
-    If Shabbos and Yom Tov has `Candles` and `Havdalah`, `Candles` has priority.
-    """
-
-    is_erev: bool = False
-    """Is it Erev Shabbos or Yom Tov."""
-
-    is_issur_melacha: bool = False
-    """Is it Issur Melacha."""
-
-    diaspora: bool = True
-    """Is the schedule for Diaspora or Israel."""
-
-    def __init__(self, gregorian_date: date, diaspora: bool = True) -> None:
-        """Create a new Jewish date.
+    def __init__(
+        self,
+        gregorian_date: date | None = None,
+        *,
+        diaspora: bool = True,
+    ) -> None:
+        """Create a new Jewish date for Diaspora or Israel.
 
         Args:
-            gregorian_date: The Gregorian date.
-            diaspora: True if outside of Israel, False if in Israel.
+            gregorian_date: The Gregorian date to convert from, default is
+                `date.today()`.
+            diaspora: `True` if outside of Israel, `False` if in Israel.
         """
-        # jewish date
-        absdate = gregorian_to_absdate(
-            gregorian_date.year, gregorian_date.month, gregorian_date.day
+        self._diaspora: bool = diaspora
+
+        gregorian = (
+            gregorian_date if gregorian_date else datetime.now(tz=timezone.utc).date()
         )
-        self.year, self.month, self.day = absdate_to_jewish(absdate)
-        self._is_leap = is_jewish_leap(self.year)
 
-        # gregorian date
-        self.gregorian_date = gregorian_date
+        absdate = gregorian_to_absdate(gregorian.year, gregorian.month, gregorian.day)
+        year, month, day = absdate_to_jewish(absdate)
+        is_leap = is_jewish_leap(year)
+        self._jewish_date = JewishDate(year, month, day, gregorian, is_leap)
 
-        # diaspora
-        self.diaspora = diaspora
+        self._events = Events()
 
-        # shabbos
-        weekday: int = weekday_from_absdate(absdate)
-        if weekday in SHABBOS:
-            event = SHABBOS[weekday]
-            self.shabbos = event.title
-            self.category = event.category
+        self._shabbos(absdate)
+        self._yomtov()
 
-        # yom tov
-        holidays = YOMTOV if self.diaspora else YOMTOV_ISRAEL
-        if self.month in holidays and self.day in holidays[self.month]:
-            event = holidays[self.month][self.day]
-            self.yomtov = event.title
+    @property
+    def diaspora(self) -> bool:
+        """Is the schedule for Diaspora or Israel.
 
-            # don't overwrite category `None` if Chol HaMoed is on Shabbos
-            if event.category:
-                if not self.category:
-                    self.category = event.category
-                elif self.category != event.category:
-                    # if Shabbos / Yom Tov has Candles / Havdalah, Candles has priority
-                    self.category = Category.CANDLES.value
+        Returns:
+            `True` if outside of Israel, `False` if in Israel.
+        """
+        return self._diaspora
 
-        # erev
-        self._erev()
-
-        # issur melacha
-        self._issur_melacha()
-
-    def __str__(self) -> str:
-        """Jewish date as a string.
+    @property
+    def jewish_date(self) -> JewishDate:
+        """Get the date in the Jewish calendar.
 
         Returns:
             The Jewish date.
         """
+        return self._jewish_date
+
+    @property
+    def events(self) -> Events:
+        """Get the events (Shabbos and Yom Tov) with an action (Candles or Havdalah).
+
+        Returns:
+            The events.
+        """
+        return self._events
+
+    def __str__(self) -> str:
+        """The Jewish date and events as a string.
+
+        Returns:
+            The Jewish date and events.
+        """
+        date_str = self._jewish_date.__str__()
+        events_str = self._events.__str__()
+
+        if events_str:
+            return f'{date_str}: {events_str}'
+
+        return date_str
+
+    def __repr__(self) -> str:
+        """Get a printable representation.
+
+        Returns:
+            The `JewCal` object as a printable representation.
+        """
         return (
-            f'{self.day}'
-            f' {Month.get(self.month, self._is_leap)}'  # Adar 1/2 in leap year
-            f' {self.year}'
+            f'{self.__class__.__name__}('
+            f'jewish_date={self._jewish_date.__repr__()},'
+            f' events={self._events.__repr__()},'
+            f' diaspora={self._diaspora}'
+            ')'
         )
 
-    def _erev(self) -> None:
-        is_erev_shabbos = self.shabbos and 'Erev' in self.shabbos
+    @property
+    def year(self) -> int:
+        """Get the year in the Jewish calendar.
 
-        is_erev_yom_tov = self.yomtov and any(
-            [
-                'Erev' in self.yomtov,
-                'Hoshana Rabba' in self.yomtov,
-                'Pesach 6' in self.yomtov,
-            ]
+        .. deprecated:: 0.6.0 Use :py:attr:`jewish_date` ``.year``
+
+        Returns:
+            The year in the Jewish calendar.
+        """
+        warn('year is deprecated, use jewish_date.year', stacklevel=2)
+        year: int = self._jewish_date.year
+        return year
+
+    @property
+    def month(self) -> int:
+        """Get the month in the Jewish year.
+
+        .. deprecated:: 0.6.0 Use :py:attr:`jewish_date` ``.month``
+
+        Returns:
+            The month in the Jewish year.
+        """
+        warn('month is deprecated, use jewish_date.month', stacklevel=2)
+        month: int = self._jewish_date.month
+        return month
+
+    @property
+    def day(self) -> int:
+        """Get the day in the Jewish month.
+
+        .. deprecated:: 0.6.0 Use :py:attr:`jewish_date` ``.day``
+
+        Returns:
+            The day in the Jewish month.
+        """
+        warn('day is deprecated, use jewish_date.day', stacklevel=2)
+        day: int = self._jewish_date.day
+        return day
+
+    @property
+    def gregorian_date(self) -> date:
+        """Get the Gregorian date.
+
+        .. deprecated:: 0.6.0 Use :py:attr:`jewish_date` ``.gregorian_date``
+
+        Returns:
+            The date in the Gregorian calendar.
+        """
+        warn(
+            'gregorian_date is deprecated, use jewish_date.gregorian_date',
+            stacklevel=2,
         )
+        gregorian_date: date = self._jewish_date.gregorian_date
+        return gregorian_date
 
-        if self.category == 'Candles' and any(
-            [
-                is_erev_shabbos and not self.yomtov,
-                is_erev_shabbos and is_erev_yom_tov,
-                is_erev_shabbos and self.yomtov and 'Chol HaMoed' in self.yomtov,
-                not is_erev_shabbos and is_erev_yom_tov,
-            ]
-        ):
-            self.is_erev = True
+    @property
+    def shabbos(self) -> str | None:
+        """Get the (Erev) Shabbos definition.
 
-    def _issur_melacha(self) -> None:
-        """Is it issur melacha."""
-        self.is_issur_melacha = self.category is not None and not self.is_erev
+        .. deprecated:: 0.6.0 Use :py:attr:`events` ``.shabbos``
+
+        Returns:
+            The (Erev) Shabbos definition.
+        """
+        warn('shabbos is deprecated, use events.shabbos', stacklevel=2)
+        return self._events.shabbos
+
+    @property
+    def yomtov(self) -> str | None:
+        """Get the (Erev) Yom Tov definition.
+
+        .. deprecated:: 0.6.0 Use :py:attr:`events` ``.yomtov``
+
+        Returns:
+            The (Erev) Yom Tov definition.
+        """
+        warn('yomtov is deprecated, use events.yomtov', stacklevel=2)
+        return self._events.yomtov
+
+    @property
+    def category(self) -> str | None:
+        """Get the category (`Candles` or `Havdalah`).
+
+        .. deprecated:: 0.6.0 Use :py:attr:`events` ``.action``
+
+        Returns:
+            The category (`Candles` or `Havdalah`).
+        """
+        warn('category is deprecated, use events.action', stacklevel=2)
+        return self._events.action
+
+    def _shabbos(self, absdate: int) -> None:
+        weekday: int = weekday_from_absdate(absdate)
+        if weekday in SHABBOS:
+            event = SHABBOS[weekday]
+            self._events.shabbos = event.title
+            self._events.action = event.action
+
+    def _yomtov(self) -> None:
+        month = self._jewish_date.month
+        day = self._jewish_date.day
+
+        holidays = YOMTOV if self._diaspora else YOMTOV_ISRAEL
+        if month in holidays and day in holidays[month]:
+            event = holidays[month][day]
+            self._events.yomtov = event.title
+
+            # don't overwrite action `None` if Chol HaMoed is on Shabbos
+            if event.action:
+                if not self._events.action:
+                    self._events.action = event.action
+                elif self._events.action != event.action:
+                    # if Shabbos / Yom Tov has Candles / Havdalah, Candles has priority
+                    self._events.action = Action.CANDLES.value
+
+    def has_events(self) -> bool:
+        """Are there any events [(Erev) Shabbos or (Erev) Yom Tov].
+
+        Returns:
+            `True` if there are any events, `False` otherwise.
+        """
+        # pylint: disable=W0212
+        return self._events._has_events()  # noqa: SLF001 Private member accessed
+
+    def is_erev_shabbos(self) -> bool:
+        """Is it Erev Shabbos.
+
+        Returns:
+            `True` if it is Erev Shabbos, `False` otherwise.
+        """
+        # pylint: disable=W0212
+        return self._events._is_erev_shabbos()  # noqa: SLF001 Private member accessed
+
+    def is_shabbos(self) -> bool:
+        """Is it Shabbos.
+
+        Returns:
+            `True` if it is Shabbos, `False` otherwise.
+        """
+        # pylint: disable=W0212
+        return self._events._is_shabbos()  # noqa: SLF001 Private member accessed
+
+    def is_erev_yomtov(self) -> bool:
+        """Is it Erev Yom Tov.
+
+        Returns:
+            `True` if it is Erev Yom Tov, `False` otherwise.
+        """
+        # pylint: disable=W0212
+        return self._events._is_erev_yomtov()  # noqa: SLF001 Private member accessed
+
+    def is_yomtov(self) -> bool:
+        """Is it Yom Tov.
+
+        Chol HaMoed is not considered Yom Tov.
+
+        Returns:
+            `True` if it is Yom Tov, `False` otherwise.
+        """
+        # pylint: disable=W0212
+        return self._events._is_yomtov()  # noqa: SLF001 Private member accessed
+
+    def is_erev(self) -> bool:
+        """Is it Erev Shabbos and/or Erev Yom Tov.
+
+        Returns:
+            `True` if it is Erev Shabbos and/or Erev Yom Tov, `False` otherwise.
+        """
+        # pylint: disable=W0212
+        return self._events._is_erev()  # noqa: SLF001 Private member accessed
+
+    def is_issur_melacha(self) -> bool:
+        """Is it Issur Melacha.
+
+        Returns:
+            `True` if it is Issur Melacha, `False` otherwise.
+        """
+        # pylint: disable=W0212
+        return self._events._is_issur_melacha()  # noqa: SLF001 Private member accessed
