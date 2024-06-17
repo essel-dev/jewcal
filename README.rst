@@ -23,7 +23,22 @@ JewCal
 
 .. include_intro_start
 
-Convert Gregorian to Jewish dates and get Shabbos / Yom Tov details for Diaspora and Israel.
+Convert Gregorian to Jewish dates with holidays for Diaspora and Israel.
+
+Get info about:
+
+  * The Jewish date
+  * Shabbos and Yom Tov events
+  * The action (`Candles` or `Havdalah`)
+
+
+Determine whether it is:
+
+  * Erev Shabbos or Erev Yom Tov
+  * Shabbos
+  * Yom Tov
+  * Issur Melacha
+
 
 .. include_intro_end
 
@@ -52,10 +67,28 @@ The output:
 
 .. code-block:: console
 
-  Today is 18 Cheshvan 5784
+  Today is 23 Iyar 5784
 
-  JewCal(year=5784, month=8, day=18, gregorian_date=datetime.date(2023, 11, 2),
-  shabbos=None, yomtov=None, category=None, diaspora=True)
+  today.has_events()=True
+  today.is_erev()=True
+  today.is_erev_shabbos()=True
+  today.is_shabbos()=False
+  today.is_erev_yomtov()=False
+  today.is_yomtov()=False
+  today.is_issur_melacha()=False
+
+  JewCal(
+    jewish_date=JewishDate(
+      year=5784, month=2, day=23,
+      gregorian_date=datetime.date(2024, 5, 31)
+    ),
+    events=Events(
+      shabbos='Erev Shabbos',
+      yomtov=None,
+      action='Candles'
+    ),
+    diaspora=True
+  )
 
 
 .. include_quickstart_end
