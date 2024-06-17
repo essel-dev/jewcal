@@ -27,17 +27,17 @@ Convert Gregorian to Jewish dates with holidays for Diaspora and Israel.
 
 Get info about:
 
-  * The Jewish date
-  * Shabbos and Yom Tov events
-  * The action (`Candles` or `Havdalah`)
+* The Jewish date
+* Shabbos and Yom Tov events
+* The action (`Candles` or `Havdalah`)
 
 
 Determine whether it is:
 
-  * Erev Shabbos or Erev Yom Tov
-  * Shabbos
-  * Yom Tov
-  * Issur Melacha
+* Erev Shabbos or Erev Yom Tov
+* Shabbos
+* Yom Tov
+* Issur Melacha
 
 
 .. include_intro_end
