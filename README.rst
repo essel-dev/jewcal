@@ -23,13 +23,20 @@ JewCal
 
 .. include_intro_start
 
-Convert Gregorian to Jewish dates with holidays for Diaspora and Israel.
+Convert Gregorian to Jewish dates with holidays and zmanim (Diaspora/Israel).
 
 Get info about:
 
 * The Jewish date
 * Shabbos and Yom Tov events
 * The action (`Candles` or `Havdalah`)
+* The zmanim
+
+  * Sunrise
+  * Sunset
+  * Plag Hamincha
+  * Hadlokas Haneiros (adjust the minutes before sunset)
+  * Tzeis (adjust to stars or minutes after sunset)
 
 
 Determine whether it is:
@@ -38,6 +45,9 @@ Determine whether it is:
 * Shabbos
 * Yom Tov
 * Issur Melacha
+
+If latitude and longitude are specified, nightfall is taken into account to calculate
+the Jewish date.
 
 
 .. include_intro_end
@@ -87,7 +97,26 @@ The output:
       yomtov=None,
       action='Candles'
     ),
-    diaspora=True
+    diaspora=True,
+    zmanim=None
+  )
+
+
+  Zmanim for Jerushalayim:
+  {
+    'hadlokas_haneiros': '2024-05-31T15:59:58.418285+00:00',
+    'plag_hamincha': '2024-05-31T15:11:40.067150+00:00',
+    'sunrise': '2024-05-31T02:32:14.247357+00:00',
+    'sunset': '2024-05-31T16:39:58.418285+00:00',
+    'tzeis_hakochavim': '2024-05-31T17:21:58.418285+00:00',
+    'tzeis_minutes': '2024-05-31T17:51:58.418285+00:00'
+  }
+
+  Location(
+    latitude=31.76904, longitude=35.21633,
+    use_tzeis_hakochavim=True,
+    hadlokas_haneiros_minutes=40,
+    tzeis_minutes=72
   )
 
 

@@ -8,6 +8,7 @@ from warnings import warn
 from .core import JewCal
 from .models.events import Events
 from .models.jewish_date import JewishDate
+from .models.zmanim import Location, Zmanim
 
 Jewcal = JewCal
 
@@ -34,4 +35,6 @@ __all__ = [
     'JewCal',
     'JewishDate',
     'Events',
+    'Location',
+    'Zmanim',
 ]

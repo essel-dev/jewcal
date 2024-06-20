@@ -21,3 +21,7 @@ class MainTestCase(TestCase):
 
         self.assertIn('Today is', output.getvalue())
         self.assertIn('JewCal(jewish_date=JewishDate(year=', output.getvalue())
+
+        self.assertIn('Zmanim for Jerushalayim:', output.getvalue())
+        self.assertIn('sunrise', output.getvalue())
+        self.assertIn('Location(latitude=31.76904', output.getvalue())
