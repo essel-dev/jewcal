@@ -36,7 +36,7 @@ Get info about:
   * Sunset
   * Plag Hamincha
   * Hadlokas Haneiros (adjust the minutes before sunset)
-  * Tzeis (adjust to stars or minutes)
+  * Tzeis (adjust to stars or minutes after sunset)
 
 
 Determine whether it is:
