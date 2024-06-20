@@ -15,6 +15,14 @@ API Reference
     :members:
     :exclude-members: __init__
 
+.. autoclass:: Location
+    :members:
+    :exclude-members: __init__
+
+.. autoclass:: Zmanim
+    :members:
+
+
 Deprecated
 ~~~~~~~~~~
 

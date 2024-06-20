@@ -34,6 +34,7 @@ nitpick_ignore = [
     # https://stackoverflow.com/a/30624034 Bug in the Python docs: references to some
     # of the Python built-ins do not resolve correctly
     ('py:class', 'dataclasses.InitVar'),
+    ('py:class', 'datetime.datetime'),
     ('py:class', 'datetime.date'),
     ('py:class', 'date'),
 ]

@@ -1,52 +1,52 @@
 [build-system]
-requires = ['setuptools', 'setuptools_scm[toml]']
 build-backend = 'setuptools.build_meta'
+requires = ['setuptools', 'setuptools_scm[toml]']
 
 [tool.setuptools_scm]
 
 [tool.setuptools.package-data]
 jewcal = [
-	'py.typed',
+  'py.typed',
 ]
 
 [project]
-name = 'jewcal'
-description = 'Convert Gregorian to Jewish dates with holidays for Diaspora and Israel.'
+authors = [{name = 'essel-dev'}]
+classifiers = [
+  'License :: OSI Approved :: MIT License',
+  'Operating System :: OS Independent',
+  'Programming Language :: Python :: 3.10',
+  'Programming Language :: Python :: 3.11',
+  'Programming Language :: Python :: 3.12',
+  'Topic :: Utilities',
+  'Typing :: Typed',
+]
+dependencies = []
+description = 'Convert Gregorian to Jewish dates with holidays and zmanim (Diaspora/Israel).'
+dynamic = ['version']
 keywords = [
   'jewish calendar',
   'hebrew calendar',
 ]
 license = {file = 'LICENSE'}
-dynamic = ['version']
-authors = [{ name='essel-dev'}]
+name = 'jewcal'
 readme = 'README.rst'
 requires-python = '>=3.10'
-dependencies = []
-classifiers = [
-	'License :: OSI Approved :: MIT License',
-	'Operating System :: OS Independent',
-	'Programming Language :: Python :: 3.10',
-	'Programming Language :: Python :: 3.11',
-	'Programming Language :: Python :: 3.12',
-	'Topic :: Utilities',
-	'Typing :: Typed',
-]
 
 [project.urls]
-'GitHub' = 'https://github.com/essel-dev/jewcal'
-'Documentation' = 'https://jewcal.readthedocs.io/'
-'Changelog' = 'https://github.com/essel-dev/jewcal/releases'
 'Bug Tracker' = 'https://github.com/essel-dev/jewcal/issues'
+'Changelog' = 'https://github.com/essel-dev/jewcal/releases'
+'Documentation' = 'https://jewcal.readthedocs.io/'
+'GitHub' = 'https://github.com/essel-dev/jewcal'
 
 [project.scripts]
 jewcal = 'jewcal.__main__:main'
 
 [project.optional-dependencies]
 dev = [
-	'pre-commit',
-	'tox',
-	'sphinx',
-	'sphinx-rtd-theme',
+  'pre-commit',
+  'tox',
+  'sphinx',
+  'sphinx-rtd-theme',
 ]
 
 [tool.tox]
@@ -61,6 +61,7 @@ legacy_tox_ini = """
 		darglint
 		pre-commit
 		docs
+		jewcal
 
 	[testenv]
 	package = wheel
@@ -90,44 +91,49 @@ legacy_tox_ini = """
 
 	[testenv:darglint]
 	deps = darglint
-	commands = darglint -s google src tests docs
+	commands = darglint -s google src docs
 
 	[testenv:pre-commit]
 	deps = pre-commit
 	commands = pre-commit run --all-files
 
 	[testenv:docs]
-	changedir=docs
+	changedir=docs/source
 	deps =
 		sphinx
 		sphinx-rtd-theme
 	allowlist_externals = make
-	commands = make clean html
+	commands = sphinx-build -W -b html -d {envtmpdir}/doctrees . {envtmpdir}/html
+
+	[testenv:jewcal]
+	allowlist_externals = jewcal
+	commands = jewcal
 
 	[gh-actions]
 	python =
 		3.10: py310
 		3.11: py311
-		3.12: py312, isort, ruff-format, ruff-lint, pylint, mypy, darglint
+		3.12: py312, isort, ruff-format, ruff-lint, pylint, mypy, darglint, jewcal
 """
 
 [tool.coverage.run]
 source = [
-	'src'
+  'src',
 ]
 
 [tool.ruff.lint]
-select = [
-	'ALL',
-]
 ignore = [
-	'ANN101', # flake8-annotations : missing-type-self: deprecated
-	'PT009'  # Use a regular `assert` instead of unittest-style `assertEqual`
+  'ANN101', # flake8-annotations : missing-type-self: deprecated
+  'PT009', # Use a regular `assert` instead of unittest-style `assertEqual`
+]
+select = [
+  'ALL',
 ]
 
 [tool.ruff.lint.per-file-ignores]
-'docs/source/conf.py' = ['INP001']  # __init__.py missing
-'src/jewcal/__main__.py' = ['T201']  # print
+'docs/source/conf.py' = ['INP001'] # __init__.py missing
+'src/jewcal/__main__.py' = ['T201', 'T203'] # print, pprint
+'src/jewcal/core.py' = ['SLF001'] # Private member accessed
 
 [tool.ruff.lint.pydocstyle]
 convention = 'google'
@@ -136,18 +142,18 @@ convention = 'google'
 inline-quotes = 'single'
 
 [tool.ruff.format]
-quote-style = 'single'
 docstring-code-format = true
+quote-style = 'single'
 
 [tool.mypy]
-files = 'src, tests, docs'
-strict = true
-show_error_codes = true
 enable_error_code = ['ignore-without-code', 'redundant-expr', 'truthy-bool']
-warn_unreachable = true
-namespace_packages = true
 explicit_package_bases = true
+files = 'src, tests, docs'
+namespace_packages = true
+show_error_codes = true
+strict = true
+warn_unreachable = true
 
 [[tool.mypy.overrides]]
-module = 'jewcal.*'
 ignore_missing_imports = true
+module = 'jewcal.*'

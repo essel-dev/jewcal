@@ -34,12 +34,26 @@ True
 >>> print(pesach_2.is_issur_melacha())
 True
 
+>>> print(pesach_2.zmanim is None)
+True
+
 
 Israel
 ------
+>>> jerushalayim = Location(
+...     latitude=31.76904,
+...     longitude=35.21633,
+...     use_tzeis_hakochavim=True,
+...     hadlokas_haneiros_minutes=40,
+...     tzeis_minutes=72,
+... )
 
 >>> today = JewCal(diaspora=False)  # today's date
->>> chol_hamoed_1 = JewCal(date(2022, 4, 17), diaspora=False)  # specific date
+>>> chol_hamoed_1 = JewCal(
+...     date(2022, 4, 17),  # specific date
+...     diaspora=False,
+...     location=jerushalayim,
+... )
 
 >>> print(chol_hamoed_1.jewish_date)
 16 Nisan 5782
@@ -66,43 +80,68 @@ False
 False
 >>> print(chol_hamoed_1.is_issur_melacha())
 False
+
+>>> print(chol_hamoed_1.zmanim.to_dict())
+{'sunrise': '2022-04-17T03:06:33.211979+00:00',
+'sunset': '2022-04-17T16:08:57.179850+00:00',
+'plag_hamincha': '2022-04-17T14:47:27.183201+00:00',
+'hadlokas_haneiros': None,
+'tzeis_hakochavim': '2022-04-17T16:46:57.179850+00:00',
+'tzeis_minutes': '2022-04-17T17:20:57.179850+00:00'}
 """
 
-from datetime import date, datetime, timezone
+from datetime import date, timedelta
 from warnings import warn
 
 from .constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Action
 from .models.events import Events
 from .models.jewish_date import JewishDate
+from .models.zmanim import Location, Zmanim
 from .utils.calculations import (
     absdate_to_jewish,
     gregorian_to_absdate,
     is_jewish_leap,
     weekday_from_absdate,
 )
+from .utils.datetime import date_today
+
+# pylint: disable=protected-access
 
 
 class JewCal:
-    """Convert Gregorian to Jewish dates with holidays for Diaspora and Israel."""
+    """Convert Gregorian to Jewish dates with holidays and zmanim (Diaspora/Israel)."""
 
     def __init__(
         self,
         gregorian_date: date | None = None,
+        location: Location | None = None,
         *,
         diaspora: bool = True,
     ) -> None:
-        """Create a new Jewish date for Diaspora or Israel.
+        """Create a new Jewish date with holidays and zmanim for Diaspora or Israel.
+
+        - Zmanim are available only if :py:class:`Location` is set.
+        - If the Gregorian date is today, check if `datetime.now` is after nightfall.
+        - If it is after nightfall, the next day for :py:attr:`jewish_date` is set.
 
         Args:
-            gregorian_date: The Gregorian date to convert from, default is
-                `date.today()`.
+            gregorian_date: The Gregorian date to convert from, default is today.
             diaspora: `True` if outside of Israel, `False` if in Israel.
+            location: The location to calculate the Zmanim for.
         """
         self._diaspora: bool = diaspora
 
-        gregorian = (
-            gregorian_date if gregorian_date else datetime.now(tz=timezone.utc).date()
-        )
+        gregorian = gregorian_date if gregorian_date else date_today()
+
+        self._zmanim = None
+        if location:
+            self._zmanim = Zmanim(gregorian, location, set_hadlokas_haneiros=True)
+
+            if gregorian == date_today() and self._zmanim.is_now_after_nightfall(
+                use_tzeis_hakochavim=location.use_tzeis_hakochavim,
+            ):
+                gregorian += timedelta(days=1)
+                self._zmanim = Zmanim(gregorian, location)
 
         absdate = gregorian_to_absdate(gregorian.year, gregorian.month, gregorian.day)
         year, month, day = absdate_to_jewish(absdate)
@@ -113,6 +152,9 @@ class JewCal:
 
         self._shabbos(absdate)
         self._yomtov()
+
+        if self._zmanim is not None and not self._events._is_erev():
+            self._zmanim.hadlokas_haneiros = None
 
     @property
     def diaspora(self) -> bool:
@@ -141,6 +183,17 @@ class JewCal:
         """
         return self._events
 
+    @property
+    def zmanim(self) -> Zmanim | None:
+        """Get the Zmanim.
+
+        Zmanim are set only if :py:class:`Location` is set.
+
+        Returns:
+            The Zmanim.
+        """
+        return self._zmanim
+
     def __str__(self) -> str:
         """The Jewish date and events as a string.
 
@@ -163,9 +216,10 @@ class JewCal:
         """
         return (
             f'{self.__class__.__name__}('
-            f'jewish_date={self._jewish_date.__repr__()},'
-            f' events={self._events.__repr__()},'
-            f' diaspora={self._diaspora}'
+            f'jewish_date={self._jewish_date!r},'
+            f' events={self._events!r},'
+            f' diaspora={self._diaspora},'
+            f' zmanim={self._zmanim!r}'
             ')'
         )
 
@@ -290,8 +344,7 @@ class JewCal:
         Returns:
             `True` if there are any events, `False` otherwise.
         """
-        # pylint: disable=W0212
-        return self._events._has_events()  # noqa: SLF001 Private member accessed
+        return self._events._has_events()
 
     def is_erev_shabbos(self) -> bool:
         """Is it Erev Shabbos.
@@ -299,8 +352,7 @@ class JewCal:
         Returns:
             `True` if it is Erev Shabbos, `False` otherwise.
         """
-        # pylint: disable=W0212
-        return self._events._is_erev_shabbos()  # noqa: SLF001 Private member accessed
+        return self._events._is_erev_shabbos()
 
     def is_shabbos(self) -> bool:
         """Is it Shabbos.
@@ -308,8 +360,7 @@ class JewCal:
         Returns:
             `True` if it is Shabbos, `False` otherwise.
         """
-        # pylint: disable=W0212
-        return self._events._is_shabbos()  # noqa: SLF001 Private member accessed
+        return self._events._is_shabbos()
 
     def is_erev_yomtov(self) -> bool:
         """Is it Erev Yom Tov.
@@ -317,8 +368,7 @@ class JewCal:
         Returns:
             `True` if it is Erev Yom Tov, `False` otherwise.
         """
-        # pylint: disable=W0212
-        return self._events._is_erev_yomtov()  # noqa: SLF001 Private member accessed
+        return self._events._is_erev_yomtov()
 
     def is_yomtov(self) -> bool:
         """Is it Yom Tov.
@@ -328,17 +378,21 @@ class JewCal:
         Returns:
             `True` if it is Yom Tov, `False` otherwise.
         """
-        # pylint: disable=W0212
-        return self._events._is_yomtov()  # noqa: SLF001 Private member accessed
+        return self._events._is_yomtov()
 
     def is_erev(self) -> bool:
         """Is it Erev Shabbos and/or Erev Yom Tov.
 
+        The return value is `False` when it is Erev Shabbos or Erev Yom Tov and already
+        Issur Melacha:
+
+        - it is Erev Shabbos and Yom Tov.
+        - it is Shabbos and Erev Yom Tov.
+
         Returns:
             `True` if it is Erev Shabbos and/or Erev Yom Tov, `False` otherwise.
         """
-        # pylint: disable=W0212
-        return self._events._is_erev()  # noqa: SLF001 Private member accessed
+        return self._events._is_erev()
 
     def is_issur_melacha(self) -> bool:
         """Is it Issur Melacha.
@@ -346,5 +400,4 @@ class JewCal:
         Returns:
             `True` if it is Issur Melacha, `False` otherwise.
         """
-        # pylint: disable=W0212
-        return self._events._is_issur_melacha()  # noqa: SLF001 Private member accessed
+        return self._events._is_issur_melacha()

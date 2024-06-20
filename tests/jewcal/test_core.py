@@ -4,9 +4,13 @@ from datetime import date
 from doctest import NORMALIZE_WHITESPACE, DocTestSuite
 from typing import no_type_check
 from unittest import TestCase
+from unittest.mock import Mock, patch
 
 from src.jewcal import JewCal
 from src.jewcal.constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Action
+from src.jewcal.models.zmanim import Location
+
+# pylint: disable=too-many-public-methods
 
 
 @no_type_check
@@ -227,7 +231,7 @@ class JewCalTestCase(TestCase):
                 'JewCal(jewish_date=JewishDate(year=5782, month=1, day=15, '
                 'gregorian_date=datetime.date(2022, 4, 16)), '
                 "events=Events(shabbos='Shabbos', yomtov='Pesach 1', "
-                "action='Candles'), diaspora=True)"
+                "action='Candles'), diaspora=True, zmanim=None)"
             ),
         )
 
@@ -239,7 +243,7 @@ class JewCalTestCase(TestCase):
                 'JewCal(jewish_date=JewishDate(year=5782, month=1, day=15, '
                 'gregorian_date=datetime.date(2022, 4, 16)), '
                 "events=Events(shabbos='Shabbos', yomtov='Pesach 1', "
-                "action='Havdalah'), diaspora=False)"
+                "action='Havdalah'), diaspora=False, zmanim=None)"
             ),
         )
 
@@ -320,7 +324,7 @@ class JewCalTestCase(TestCase):
         with self.assertWarns(Warning):
             self.assertEqual(jewcal.category, Action.CANDLES.value)
 
-    def test_methods_exists(self) -> None:
+    def test_events_methods_exists(self) -> None:
         """Test `Events` methods are accessible in `JewCal` class."""
         jewcal = JewCal()
 
@@ -331,3 +335,86 @@ class JewCalTestCase(TestCase):
         self.assertIsNotNone(jewcal.is_yomtov())
         self.assertIsNotNone(jewcal.is_erev())
         self.assertIsNotNone(jewcal.is_issur_melacha())
+
+    def test_zmanim_property_exists(self) -> None:
+        """Test `Zmanim` property exists."""
+        jewcal = JewCal()
+        self.assertIsNone(jewcal.zmanim)
+
+    def test_zmanim_init(self) -> None:
+        """Test Zmanim init."""
+        lat, lon = 51.22047, 4.40026  # Antwerpen
+        jewcal = JewCal(location=Location(latitude=lat, longitude=lon))
+        self.assertIsNotNone(jewcal.zmanim)
+
+    def test_zmanim_init_fail(self) -> None:
+        """Zmanim should be `None` when no `Location` is given."""
+        jewcal = JewCal()
+        self.assertIsNone(jewcal.zmanim)
+
+    @patch('src.jewcal.core.date_today', autospec=True)
+    @patch('src.jewcal.core.Zmanim.is_now_after_nightfall', autospec=True)
+    def test_is_now_after_nightfall_true(
+        self,
+        mock_zmanim: Mock,
+        mock_today: Mock,
+    ) -> None:
+        """Test Gregorian date should be next day."""
+        lat, lon = 51.22047, 4.40026  # Antwerpen
+        location = Location(latitude=lat, longitude=lon)
+
+        date_ = date(2024, 5, 31)
+        mock_today.return_value = date_
+        mock_zmanim.return_value = True
+        jewcal = JewCal(date_, location)
+        self.assertEqual(jewcal.jewish_date.gregorian_date, date(2024, 6, 1))
+
+    @patch('src.jewcal.core.date_today', autospec=True)
+    @patch('src.jewcal.core.Zmanim.is_now_after_nightfall', autospec=True)
+    def test_is_now_after_nightfall_false(
+        self,
+        mock_zmanim: Mock,
+        mock_today: Mock,
+    ) -> None:
+        """Test Gregorian date remains the same."""
+        lat, lon = 51.22047, 4.40026  # Antwerpen
+        location = Location(latitude=lat, longitude=lon)
+
+        date_ = date(2024, 5, 31)
+        mock_today.return_value = date_
+        mock_zmanim.return_value = False
+        jewcal = JewCal(date_, location)
+        self.assertEqual(jewcal.jewish_date.gregorian_date, date_)
+
+    @patch('src.jewcal.core.date_today', autospec=True)
+    def test_hadlokas_haneiros_is_set(self, mock_today: Mock) -> None:
+        """Test Hadlokas Haneiros is set."""
+        lat, lon = 51.22047, 4.40026  # Antwerpen
+        location = Location(latitude=lat, longitude=lon)
+
+        date_ = date(2024, 5, 31)  # erev shabbos
+        mock_today.return_value = date_
+        jewcal = JewCal(date_, location)
+        if not jewcal.zmanim:
+            raise TypeError
+        self.assertIsNotNone(jewcal.zmanim.hadlokas_haneiros)
+
+    @patch('src.jewcal.core.date_today', autospec=True)
+    def test_hadlokas_haneiros_is_not_set(self, mock_today: Mock) -> None:
+        """Test Hadlokas Haneiros is not set."""
+        lat, lon = 51.22047, 4.40026  # Antwerpen
+        location = Location(latitude=lat, longitude=lon)
+
+        date_ = date(2024, 6, 1)  # shabbos
+        mock_today.return_value = date_
+        jewcal = JewCal(date_, location)
+        if not jewcal.zmanim:
+            raise TypeError
+        self.assertIsNone(jewcal.zmanim.hadlokas_haneiros)
+
+        date_ = date(2024, 6, 2)  # sunday
+        mock_today.return_value = date_
+        jewcal = JewCal(date_, location)
+        if not jewcal.zmanim:
+            raise TypeError
+        self.assertIsNone(jewcal.zmanim.hadlokas_haneiros)
