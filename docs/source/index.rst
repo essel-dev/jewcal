@@ -20,5 +20,5 @@ Contents
 
   quickstart
   examples
-  definitions
+  constants
   reference

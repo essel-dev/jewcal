@@ -3,28 +3,42 @@ API Reference
 
 .. currentmodule:: jewcal
 
+The JewCal Class
+----------------
+
 .. autoclass:: JewCal
     :members:
     :exclude-members: year, month, day, gregorian_date, shabbos, yomtov, category
 
+The Jewish Date
+----------------
+
 .. autoclass:: JewishDate
     :members:
-    :exclude-members: __init__
+
+.. autoclass:: Month
+   :members:
+   :member-order: bysource
+   :undoc-members:
+
+The Events
+----------
 
 .. autoclass:: Events
     :members:
-    :exclude-members: __init__
+
+The Zmanim
+----------
 
 .. autoclass:: Location
     :members:
-    :exclude-members: __init__
 
 .. autoclass:: Zmanim
     :members:
 
 
 Deprecated
-~~~~~~~~~~
+----------
 
 .. autoproperty:: JewCal.year
 .. autoproperty:: JewCal.month
