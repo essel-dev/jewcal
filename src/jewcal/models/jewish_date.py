@@ -38,23 +38,24 @@ class Month(IntEnum):
         return self.name.capitalize().replace('_', ' ')
 
     @classmethod
-    def get(cls: type[Month], number: int, *, leap: bool) -> Month:
+    def get(cls: type[Month], number: int, *, is_leap: bool) -> Month:
         """Get the enum member.
 
         Regarding the months Adar, Adar 1 and 2:
+
         - If the Jewish year is non-leap, it returns Adar.
         - If the Jewish year is leap, it returns Adar 1 or Adar 2.
 
         Args:
             number: The month number.
-            leap: Is the Jewish year a leap year.
+            is_leap: Is the Jewish year a leap year.
 
         Returns:
             The enum member.
         """
         match number:
             case 12:
-                return Month.ADAR_1 if leap else Month.ADAR
+                return Month.ADAR_1 if is_leap else Month.ADAR
             case _:
                 return Month(number)
 
@@ -86,6 +87,6 @@ class JewishDate:
         """
         return (
             f'{self.day}'
-            f' {Month.get(self.month, leap=self._is_leap_year)}'
+            f' {Month.get(self.month, is_leap=self._is_leap_year)}'
             f' {self.year}'
         )

@@ -1,5 +1,5 @@
-Event and action constants
-==========================
+Constants
+=========
 
 Shabbos
 -------

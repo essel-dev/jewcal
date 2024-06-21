@@ -16,13 +16,13 @@ class MonthTestCase(TestCase):
     def test_month_number_to_enum_member(self) -> None:
         """Test month number to enum member."""
         # non-leap year
-        self.assertEqual(Month.get(1, leap=False), Month.NISAN)
-        self.assertEqual(Month.get(12, leap=False), Month.ADAR)
+        self.assertEqual(Month.get(1, is_leap=False), Month.NISAN)
+        self.assertEqual(Month.get(12, is_leap=False), Month.ADAR)
 
         # leap year
-        self.assertEqual(Month.get(1, leap=True), Month.NISAN)
-        self.assertEqual(Month.get(12, leap=True), Month.ADAR_1)
-        self.assertEqual(Month.get(13, leap=True), Month.ADAR_2)
+        self.assertEqual(Month.get(1, is_leap=True), Month.NISAN)
+        self.assertEqual(Month.get(12, is_leap=True), Month.ADAR_1)
+        self.assertEqual(Month.get(13, is_leap=True), Month.ADAR_2)
 
 
 class JewishDateTestCase(TestCase):
