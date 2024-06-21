@@ -1,13 +1,25 @@
 """Events model."""
 
-from dataclasses import dataclass, field
+from dataclasses import InitVar, dataclass, field
 
-from jewcal.constants import Action
+from jewcal.constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Action
 
 
 @dataclass
 class Events:
     """The events with an action."""
+
+    weekday: InitVar[int]
+    """The weekday number in the range of 0-6, where 0=Sunday."""
+
+    month: InitVar[int]
+    """The month of the Jewish year."""
+
+    day: InitVar[int]
+    """The day in the Jewish month."""
+
+    diaspora: InitVar[bool]
+    """`True` if outside of Israel, `False` if in Israel."""
 
     shabbos: str | None = field(init=False, default=None)
     """(Erev) Shabbos definition."""
@@ -20,6 +32,38 @@ class Events:
 
     If Shabbos and Yom Tov has `Candles` and `Havdalah`, `Candles` has priority.
     """
+
+    def __post_init__(self, weekday: int, month: int, day: int, diaspora: bool) -> None:
+        """Post init.
+
+        Args:
+            weekday:  The weekday number in the range of 0-6, where 0=Sunday.
+            month: The month of the Jewish year.
+            day: The day in the Jewish month.
+            diaspora: `True` if outside of Israel, `False` if in Israel.
+        """
+        self._set_shabbos(weekday)
+        self._set_yomtov(month, day, diaspora=diaspora)
+
+    def _set_shabbos(self, weekday: int) -> None:
+        if weekday in SHABBOS:
+            event = SHABBOS[weekday]
+            self.shabbos = event.title
+            self.action = event.action
+
+    def _set_yomtov(self, month: int, day: int, *, diaspora: bool) -> None:
+        holidays = YOMTOV if diaspora else YOMTOV_ISRAEL
+        if month in holidays and day in holidays[month]:
+            event = holidays[month][day]
+            self.yomtov = event.title
+
+            # don't overwrite action `None` if Chol HaMoed is on Shabbos
+            if event.action:
+                if not self.action:
+                    self.action = event.action
+                elif self.action != event.action:
+                    # if Shabbos / Yom Tov has Candles / Havdalah, Candles has priority
+                    self.action = Action.CANDLES.value
 
     def __str__(self) -> str:
         """Get all the events as a string.

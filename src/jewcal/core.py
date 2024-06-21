@@ -93,7 +93,6 @@ False
 from datetime import date, timedelta
 from warnings import warn
 
-from .constants import SHABBOS, YOMTOV, YOMTOV_ISRAEL, Action
 from .models.events import Events
 from .models.jewish_date import JewishDate
 from .models.zmanim import Location, Zmanim
@@ -148,10 +147,8 @@ class JewCal:
         is_leap = is_jewish_leap(year)
         self._jewish_date = JewishDate(year, month, day, gregorian, is_leap)
 
-        self._events = Events()
-
-        self._shabbos(absdate)
-        self._yomtov()
+        weekday: int = weekday_from_absdate(absdate)
+        self._events = Events(weekday, month, day, diaspora)
 
         if self._zmanim is not None and not self._events._is_erev():
             self._zmanim.hadlokas_haneiros = None
@@ -313,30 +310,6 @@ class JewCal:
         """
         warn('category is deprecated, use events.action', stacklevel=2)
         return self._events.action
-
-    def _shabbos(self, absdate: int) -> None:
-        weekday: int = weekday_from_absdate(absdate)
-        if weekday in SHABBOS:
-            event = SHABBOS[weekday]
-            self._events.shabbos = event.title
-            self._events.action = event.action
-
-    def _yomtov(self) -> None:
-        month = self._jewish_date.month
-        day = self._jewish_date.day
-
-        holidays = YOMTOV if self._diaspora else YOMTOV_ISRAEL
-        if month in holidays and day in holidays[month]:
-            event = holidays[month][day]
-            self._events.yomtov = event.title
-
-            # don't overwrite action `None` if Chol HaMoed is on Shabbos
-            if event.action:
-                if not self._events.action:
-                    self._events.action = event.action
-                elif self._events.action != event.action:
-                    # if Shabbos / Yom Tov has Candles / Havdalah, Candles has priority
-                    self._events.action = Action.CANDLES.value
 
     def has_events(self) -> bool:
         """Are there any events [(Erev) Shabbos or (Erev) Yom Tov].
