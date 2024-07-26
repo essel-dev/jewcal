@@ -140,7 +140,7 @@ class JewCal:
                 use_tzeis_hakochavim=location.use_tzeis_hakochavim,
             ):
                 gregorian += timedelta(days=1)
-                self._zmanim = Zmanim(gregorian, location)
+                self._zmanim = Zmanim(gregorian, location, set_hadlokas_haneiros=True)
 
         absdate = gregorian_to_absdate(gregorian.year, gregorian.month, gregorian.day)
         year, month, day = absdate_to_jewish(absdate)
