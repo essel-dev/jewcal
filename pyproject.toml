@@ -26,6 +26,7 @@ dynamic = ['version']
 keywords = [
   'jewish calendar',
   'hebrew calendar',
+  'zmanim',
 ]
 license = {file = 'LICENSE'}
 name = 'jewcal'
