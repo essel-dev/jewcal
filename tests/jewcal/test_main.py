@@ -3,6 +3,7 @@
 import sys
 from io import StringIO
 from unittest import TestCase
+from unittest.mock import patch
 
 from src.jewcal.__main__ import main
 
@@ -12,12 +13,8 @@ class MainTestCase(TestCase):
 
     def test_main(self) -> None:
         """Test main()."""
-        # capture standard output by temporarily redirecting sys.stdout to a StringIO
-        # https://stackoverflow.com/a/34738440
-        output = StringIO()  # Create StringIO.
-        sys.stdout = output  # Redirect stdout.
-        main()  # Call function.
-        sys.stdout = sys.__stdout__  # Reset redirect.
+        with patch.object(sys, 'stdout', StringIO()) as output:
+            main()  # Call function.
 
         self.assertIn('Today is', output.getvalue())
         self.assertIn('JewCal(jewish_date=JewishDate(year=', output.getvalue())

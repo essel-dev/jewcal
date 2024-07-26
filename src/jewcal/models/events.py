@@ -99,7 +99,6 @@ class Events:
                         self.yomtov and 'Pesach 6' in self.yomtov,
                     ],
                 ),
-                self.action == Action.CANDLES.value,
             ],
         )
 

@@ -1,5 +1,10 @@
 # Local Development
 ## Install
+### Project code
+```sh
+cd && git clone # path-to-this-repository.git
+```
+
 ### Python
 Verify if Python is installed.
 ```sh
@@ -11,11 +16,6 @@ To install multiple Python versions, use [pyenv](https://github.com/pyenv/pyenv)
 To activate:
 ```sh
 pyenv local 3.10 3.11 3.12
-```
-
-### Project code
-```sh
-cd && git clone # path-to-this-repository.git
 ```
 
 ### Virtual environment

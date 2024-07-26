@@ -1,6 +1,6 @@
 """Unittests for jewcal.core."""
 
-from datetime import date
+from datetime import date, datetime, timezone
 from doctest import NORMALIZE_WHITESPACE, DocTestSuite
 from typing import no_type_check
 from unittest import TestCase
@@ -219,6 +219,30 @@ class JewCalTestCase(TestCase):
         jewcal = JewCal(date_, location)
         if not jewcal.zmanim:
             raise TypeError
+        self.assertIsNotNone(jewcal.zmanim.hadlokas_haneiros)
+
+    @patch('src.jewcal.models.zmanim.datetime_now', autospec=True)
+    @patch('src.jewcal.models.zmanim.date_today', autospec=True)
+    @patch('src.jewcal.core.date_today', autospec=True)
+    def test_hadlokas_haneiros_is_set_and_after_nightfall(
+        self,
+        mock_core_today: Mock,
+        mock_today: Mock,
+        mock_now: Mock,
+    ) -> None:
+        """Test has Hadlokas Haneiros, is after nightfall, has next Gregorian date."""
+        lat, lon = 51.22047, 4.40026  # Antwerpen
+        location = Location(latitude=lat, longitude=lon)
+
+        date_ = date(2024, 7, 25)
+        now_ = datetime(2024, 7, 25, 20, 42, tzinfo=timezone.utc)
+        mock_core_today.return_value = date_
+        mock_today.return_value = date_
+        mock_now.return_value = now_
+        jewcal = JewCal(date_, location)
+        if not jewcal.zmanim:
+            raise TypeError
+
         self.assertIsNotNone(jewcal.zmanim.hadlokas_haneiros)
 
     @patch('src.jewcal.core.date_today', autospec=True)
