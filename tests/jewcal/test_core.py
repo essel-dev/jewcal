@@ -208,14 +208,12 @@ class JewCalTestCase(TestCase):
         jewcal = JewCal(date_, location)
         self.assertEqual(jewcal.jewish_date.gregorian_date, date_)
 
-    @patch('src.jewcal.core.date_today', autospec=True)
-    def test_hadlokas_haneiros_is_set(self, mock_today: Mock) -> None:
+    def test_hadlokas_haneiros_is_set(self) -> None:
         """Test Hadlokas Haneiros is set."""
         lat, lon = 51.22047, 4.40026  # Antwerpen
         location = Location(latitude=lat, longitude=lon)
 
         date_ = date(2024, 5, 31)  # erev shabbos
-        mock_today.return_value = date_
         jewcal = JewCal(date_, location)
         if not jewcal.zmanim:
             raise TypeError
@@ -245,21 +243,53 @@ class JewCalTestCase(TestCase):
 
         self.assertIsNotNone(jewcal.zmanim.hadlokas_haneiros)
 
-    @patch('src.jewcal.core.date_today', autospec=True)
-    def test_hadlokas_haneiros_is_not_set(self, mock_today: Mock) -> None:
+    def test_hadlokas_haneiros_is_set_second_day_yom_tov(self) -> None:
+        """Test has Hadlokas Haneiros for second day of Yom Tov."""
+        lat, lon = 51.22047, 4.40026  # Antwerpen
+        location = Location(latitude=lat, longitude=lon)
+
+        date_ = date(2024, 6, 11)  # Erev Shavuos
+        jewcal = JewCal(date_, location)
+        if not jewcal.zmanim:
+            raise TypeError
+        self.assertIsNotNone(jewcal.zmanim.hadlokas_haneiros)
+
+        date_ = date(2024, 6, 12)  # Shavuos 1
+        jewcal = JewCal(date_, location)
+        if not jewcal.zmanim:
+            raise TypeError
+        self.assertIsNotNone(jewcal.zmanim.hadlokas_haneiros)
+
+        date_ = date(2024, 6, 13)  # Shavuos 2
+        jewcal = JewCal(date_, location)
+        if not jewcal.zmanim:
+            raise TypeError
+        self.assertIsNone(jewcal.zmanim.hadlokas_haneiros)
+
+        date_ = date(2024, 6, 14)  # Erev Shabbos
+        jewcal = JewCal(date_, location)
+        if not jewcal.zmanim:
+            raise TypeError
+        self.assertIsNotNone(jewcal.zmanim.hadlokas_haneiros)
+
+        date_ = date(2024, 6, 15)  # Shabbos
+        jewcal = JewCal(date_, location)
+        if not jewcal.zmanim:
+            raise TypeError
+        self.assertIsNone(jewcal.zmanim.hadlokas_haneiros)
+
+    def test_hadlokas_haneiros_is_not_set(self) -> None:
         """Test Hadlokas Haneiros is not set."""
         lat, lon = 51.22047, 4.40026  # Antwerpen
         location = Location(latitude=lat, longitude=lon)
 
         date_ = date(2024, 6, 1)  # shabbos
-        mock_today.return_value = date_
         jewcal = JewCal(date_, location)
         if not jewcal.zmanim:
             raise TypeError
         self.assertIsNone(jewcal.zmanim.hadlokas_haneiros)
 
         date_ = date(2024, 6, 2)  # sunday
-        mock_today.return_value = date_
         jewcal = JewCal(date_, location)
         if not jewcal.zmanim:
             raise TypeError

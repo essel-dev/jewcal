@@ -93,6 +93,7 @@ False
 from datetime import date, timedelta
 from warnings import warn
 
+from .constants import Action
 from .models.events import Events
 from .models.jewish_date import JewishDate
 from .models.zmanim import Location, Zmanim
@@ -150,7 +151,7 @@ class JewCal:
         weekday: int = weekday_from_absdate(absdate)
         self._events = Events(weekday, month, day, diaspora)
 
-        if self._zmanim is not None and not self._events._is_erev():
+        if self._zmanim is not None and self._events.action != Action.CANDLES.value:
             self._zmanim.hadlokas_haneiros = None
 
     @property
