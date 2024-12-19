@@ -32,10 +32,10 @@ modules[__name__] = cast(ModuleType, _Wrapper(modules[__name__]))
 
 
 __all__ = [
+    'Events',
     'JewCal',
     'JewishDate',
-    'Month',
-    'Events',
     'Location',
+    'Month',
     'Zmanim',
 ]

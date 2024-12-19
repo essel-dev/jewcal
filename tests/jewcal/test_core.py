@@ -1,4 +1,4 @@
-"""Unittests for jewcal.core."""
+"""Unit tests for jewcal.core."""
 
 from datetime import date, datetime, timezone
 from doctest import NORMALIZE_WHITESPACE, DocTestSuite
@@ -14,7 +14,7 @@ from src.jewcal.models.zmanim import Location
 @no_type_check
 # pylint: disable=unused-argument
 def load_tests(loader, tests, ignore):  # noqa: ANN201, ANN001, ARG001
-    """Run the doctests in jewcal.core for documentation (tutorials).
+    """Run the doc tests in jewcal.core for documentation (tutorials).
 
     # noqa: DAR101 loader
     # noqa: DAR101 tests
@@ -26,7 +26,7 @@ def load_tests(loader, tests, ignore):  # noqa: ANN201, ANN001, ARG001
 
 
 class JewCalTestCase(TestCase):
-    """Unittests for JewCal."""
+    """Unit tests for JewCal."""
 
     def setUp(self) -> None:
         """Initialize."""
@@ -165,7 +165,7 @@ class JewCalTestCase(TestCase):
 
     def test_zmanim_init(self) -> None:
         """Test Zmanim init."""
-        lat, lon = 51.22047, 4.40026  # Antwerpen
+        lat, lon = 51.22047, 4.40026  # Antwerp
         jewcal = JewCal(location=Location(latitude=lat, longitude=lon))
         self.assertIsNotNone(jewcal.zmanim)
 
@@ -182,7 +182,7 @@ class JewCalTestCase(TestCase):
         mock_today: Mock,
     ) -> None:
         """Test Gregorian date should be next day."""
-        lat, lon = 51.22047, 4.40026  # Antwerpen
+        lat, lon = 51.22047, 4.40026  # Antwerp
         location = Location(latitude=lat, longitude=lon)
 
         date_ = date(2024, 5, 31)
@@ -199,7 +199,7 @@ class JewCalTestCase(TestCase):
         mock_today: Mock,
     ) -> None:
         """Test Gregorian date remains the same."""
-        lat, lon = 51.22047, 4.40026  # Antwerpen
+        lat, lon = 51.22047, 4.40026  # Antwerp
         location = Location(latitude=lat, longitude=lon)
 
         date_ = date(2024, 5, 31)
@@ -210,7 +210,7 @@ class JewCalTestCase(TestCase):
 
     def test_hadlokas_haneiros_is_set(self) -> None:
         """Test Hadlokas Haneiros is set."""
-        lat, lon = 51.22047, 4.40026  # Antwerpen
+        lat, lon = 51.22047, 4.40026  # Antwerp
         location = Location(latitude=lat, longitude=lon)
 
         date_ = date(2024, 5, 31)  # erev shabbos
@@ -229,11 +229,11 @@ class JewCalTestCase(TestCase):
         mock_now: Mock,
     ) -> None:
         """Test has Hadlokas Haneiros, is after nightfall, has next Gregorian date."""
-        lat, lon = 51.22047, 4.40026  # Antwerpen
+        lat, lon = 51.22047, 4.40026  # Antwerp
         location = Location(latitude=lat, longitude=lon)
 
-        date_ = date(2024, 7, 25)
-        now_ = datetime(2024, 7, 25, 20, 42, tzinfo=timezone.utc)
+        date_ = date(2024, 7, 25)  # Thursday
+        now_ = datetime(2024, 7, 25, 23, 42, tzinfo=timezone.utc)  # after nightfall
         mock_core_today.return_value = date_
         mock_today.return_value = date_
         mock_now.return_value = now_
@@ -245,7 +245,7 @@ class JewCalTestCase(TestCase):
 
     def test_hadlokas_haneiros_is_set_second_day_yom_tov(self) -> None:
         """Test has Hadlokas Haneiros for second day of Yom Tov."""
-        lat, lon = 51.22047, 4.40026  # Antwerpen
+        lat, lon = 51.22047, 4.40026  # Antwerp
         location = Location(latitude=lat, longitude=lon)
 
         date_ = date(2024, 6, 11)  # Erev Shavuos
@@ -280,7 +280,7 @@ class JewCalTestCase(TestCase):
 
     def test_hadlokas_haneiros_is_not_set(self) -> None:
         """Test Hadlokas Haneiros is not set."""
-        lat, lon = 51.22047, 4.40026  # Antwerpen
+        lat, lon = 51.22047, 4.40026  # Antwerp
         location = Location(latitude=lat, longitude=lon)
 
         date_ = date(2024, 6, 1)  # shabbos

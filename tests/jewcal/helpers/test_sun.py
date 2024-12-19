@@ -1,4 +1,4 @@
-"""Unittests for jewcal.helpers.sun."""
+"""Unit tests for jewcal.helpers.sun."""
 
 from datetime import date, datetime, timezone
 from unittest import TestCase
@@ -7,14 +7,14 @@ from src.jewcal.helpers.sun import Sun, SunEvent
 
 
 class SunTestCase(TestCase):
-    """Unittests for sun."""
+    """Unit tests for sun."""
 
     def test_init(self) -> None:
         """Test init."""
         lat, lon = 51.22047, 4.40026
 
-        expected_sunrise = datetime(2024, 5, 31, 3, 29, 55, 470753, tzinfo=timezone.utc)
-        expected_sunset = datetime(2024, 5, 31, 19, 47, 51, 641803, tzinfo=timezone.utc)
+        expected_sunrise = datetime(2024, 5, 31, 3, 33, 11, 506283, tzinfo=timezone.utc)
+        expected_sunset = datetime(2024, 5, 31, 19, 47, 48, 504226, tzinfo=timezone.utc)
 
         sun = Sun(date(2024, 5, 31), lat, lon)
 
@@ -27,10 +27,10 @@ class SunTestCase(TestCase):
             2024,
             6,
             1,
-            20,
-            59,
-            55,
-            50901,
+            18,
+            39,
+            42,
+            429379,
             tzinfo=timezone.utc,
         )
 
