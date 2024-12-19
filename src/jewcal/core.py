@@ -5,6 +5,8 @@ Diaspora
 
 >>> from jewcal import JewCal
 
+>>> from pprint import pprint
+
 >>> today = JewCal()  # today's date
 >>> pesach_2 = JewCal(date(2022, 4, 17))  # specific date
 
@@ -81,13 +83,13 @@ False
 >>> print(chol_hamoed_1.is_issur_melacha())
 False
 
->>> print(chol_hamoed_1.zmanim.to_dict())
-{'sunrise': '2022-04-17T03:06:33.211979+00:00',
-'sunset': '2022-04-17T16:08:57.179850+00:00',
-'plag_hamincha': '2022-04-17T14:47:27.183201+00:00',
-'hadlokas_haneiros': None,
-'tzeis_hakochavim': '2022-04-17T16:46:57.179850+00:00',
-'tzeis_minutes': '2022-04-17T17:20:57.179850+00:00'}
+>>> pprint(chol_hamoed_1.zmanim.to_dict())
+ {'hadlokas_haneiros': None,
+     'plag_hamincha': '2022-04-17T14:47:52.245352+00:00',
+     'sunrise': '2022-04-17T03:08:46.392244+00:00',
+     'sunset': '2022-04-17T16:09:09.670131+00:00',
+     'tzeis_hakochavim': '2022-04-17T16:47:02.815607+00:00',
+     'tzeis_minutes': '2022-04-17T17:21:09.670131+00:00'}
 """
 
 from datetime import date, timedelta

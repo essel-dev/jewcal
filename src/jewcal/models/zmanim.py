@@ -9,7 +9,7 @@ from jewcal.utils.datetime import date_today, datetime_now
 
 HALACHIC_HOURS: Final[int] = 12
 PLAG_HAMINCHA: Final[float] = 10.75
-TZEIS_HAKOCHAVIM: Final[float] = 8.5
+TZEIS_HAKOCHAVIM: Final[float] = -8.5
 
 
 @dataclass
@@ -25,7 +25,7 @@ class Location:
     use_tzeis_hakochavim: bool = field(default=True)
     """Use Tzeis Hakochavim or Tzeis at minutes after sunset for nightfall.
 
-    `True` to use :py:class:`Zmanim.hadlokas_haneiros`, `False` to use
+    `True` to use :py:class:`Zmanim.tzeis_hakochavim`, `False` to use
     :py:class:`Zmanim.tzeis_minutes`.
     """
 

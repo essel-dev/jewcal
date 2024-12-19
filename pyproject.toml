@@ -20,7 +20,9 @@ classifiers = [
   'Topic :: Utilities',
   'Typing :: Typed',
 ]
-dependencies = []
+dependencies = [
+    "astral>=3.2",
+]
 description = 'Convert Gregorian to Jewish dates with holidays and zmanim (Diaspora/Israel).'
 dynamic = ['version']
 keywords = [
