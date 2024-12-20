@@ -36,7 +36,8 @@ def main() -> None:
     )
 
     jewcal = JewCal(diaspora=False, location=location)
-    pprint(jewcal.zmanim.to_dict())
+    if zmanim := jewcal.zmanim:
+        pprint(zmanim.to_dict())
 
     print(f'\n{location}')
 
