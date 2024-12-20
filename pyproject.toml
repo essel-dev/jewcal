@@ -17,6 +17,7 @@ classifiers = [
   'Programming Language :: Python :: 3.10',
   'Programming Language :: Python :: 3.11',
   'Programming Language :: Python :: 3.12',
+  'Programming Language :: Python :: 3.13',
   'Topic :: Utilities',
   'Typing :: Typed',
 ]
@@ -56,7 +57,7 @@ dev = [
 legacy_tox_ini = """
 	[tox]
 	envlist =
-		py{310,311,312}
+		py{310,311,312,313}
         ruff-format
 		ruff-lint
 		pylint
@@ -74,7 +75,7 @@ legacy_tox_ini = """
 		py310: coverage[toml]
 	commands =
 		coverage run -m unittest discover
-		py312: coverage report -m
+		py313: coverage report -m
 
 	[testenv:pylint]
 	deps = pylint
@@ -116,7 +117,8 @@ legacy_tox_ini = """
 	python =
 		3.10: py310
 		3.11: py311
-		3.12: py312, isort, ruff-format, ruff-lint, pylint, mypy, darglint, jewcal
+		3.12: py312
+		3.13: py313, isort, ruff-format, ruff-lint, pylint, mypy, darglint, jewcal
 """
 
 [tool.coverage.run]
