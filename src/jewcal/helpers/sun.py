@@ -42,9 +42,6 @@ class Sun:
         - Decimal degrees (DD): 2.17403
     """
 
-    elevation: float = 0
-    """The sea level in meters."""
-
     sunrise: datetime = field(init=False)
     """The time for sunrise in UTC."""
 
