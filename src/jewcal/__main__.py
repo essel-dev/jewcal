@@ -4,7 +4,6 @@ This script can be invoked from the command line:
     `jewcal`
 """
 
-from datetime import date
 from pprint import pprint
 
 from jewcal import JewCal
@@ -24,6 +23,7 @@ def main() -> None:
     print(f'{today.is_erev_yomtov()=}')
     print(f'{today.is_yomtov()=}')
     print(f'{today.is_issur_melacha()=}')
+
     print(f'\n{today!r}')
 
     print('\n\nZmanim for Jerushalayim:')
@@ -36,22 +36,8 @@ def main() -> None:
     )
 
     jewcal = JewCal(diaspora=False, location=location)
-    if jewcal.zmanim:
-        pprint(jewcal.zmanim.to_dict())
-
-    print(f'\n{location}')
-
-    print('\n\nZmanim for Antwerp:')
-    location = Location(
-        latitude=51.201000,
-        longitude=4.421800,
-        use_tzeis_hakochavim=True,
-        hadlokas_haneiros_minutes=18,
-    )
-
-    jewcal = JewCal(diaspora=True, location=location, gregorian_date=date(2024, 12, 21))
-    if jewcal.zmanim:
-        pprint(jewcal.zmanim.to_dict())
+    if zmanim := jewcal.zmanim:
+        pprint(zmanim.to_dict())
 
     print(f'\n{location}')
 
