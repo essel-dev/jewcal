@@ -59,7 +59,7 @@ the Jewish date.
 Quickstart
 ----------
 
-Install with pip:
+Install JewCal using pip:
 
 .. code-block:: bash
 
@@ -104,12 +104,12 @@ The output:
 
   Zmanim for Jerushalayim:
   {
-    'hadlokas_haneiros': '2024-05-31T15:59:58.418285+00:00',
-    'plag_hamincha': '2024-05-31T15:11:40.067150+00:00',
-    'sunrise': '2024-05-31T02:32:14.247357+00:00',
-    'sunset': '2024-05-31T16:39:58.418285+00:00',
-    'tzeis_hakochavim': '2024-05-31T17:21:58.418285+00:00',
-    'tzeis_minutes': '2024-05-31T17:51:58.418285+00:00'
+    'hadlokas_haneiros': '2024-05-31T15:59:12.468117+00:00',
+    'plag_hamincha': '2024-05-31T15:11:15.201081+00:00',
+    'sunrise': '2024-05-31T02:34:50.704559+00:00',
+    'sunset': '2024-05-31T16:39:12.468117+00:00',
+    'tzeis_hakochavim': '2024-05-31T17:21:11.859783+00:00',
+    'tzeis_minutes': '2024-05-31T17:51:12.468117+00:00'
   }
 
   Location(
